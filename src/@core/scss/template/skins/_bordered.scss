@@ -1,0 +1,31 @@
+@use "sass:map";
+@use "@core/scss/base/mixins";
+@use "@configured-variables" as variables;
+
+$header: ".layout-navbar";
+
+@if variables.$layout-vertical-nav-navbar-is-contained {
+  $header: ".layout-navbar .navbar-content-container";
+}
+
+.skin--bordered {
+  // Expansion Panels
+
+  .v-expansion-panels:not(.customized-panels) {
+    .v-expansion-panel__shadow {
+      box-shadow: none !important;
+    }
+
+    .v-expansion-panel {
+      border: 1px solid rgba(var(--v-border-color), var(--v-border-opacity));
+
+      &:not(:last-child) {
+        margin-block-end: -1px;
+      }
+
+      &::after {
+        content: none;
+      }
+    }
+  }
+}

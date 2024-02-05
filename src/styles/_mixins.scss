@@ -1,0 +1,10 @@
+@mixin maxQuery($size) {
+    @media (max-width: #{$size}) {
+      @content;
+    }
+  }
+  @mixin minQuery($size) {
+    @media (min-width: #{$size}) {
+      @content;
+    }
+  }
