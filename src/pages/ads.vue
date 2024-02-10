@@ -1,5 +1,16 @@
 <template>
-  <v-data-table :headers="headers" :items="desserts" :items-per-page="5" vbtn>
+  <v-data-table-server
+    :headers="table.headers"
+    :items="api_data.data"
+    :items-length="api_data.total"
+    :loading="api_data.loading"
+    :items-per-page="5"
+    no-data-text="لا يوجد بيانات"
+    :expand-on-click="false"
+    items-per-page-text="عدد العناصر في الصفحة"
+    @update:options="initialize"
+    vbtn
+  >
     <template v-slot:top>
       <v-toolbar flat>
         <v-toolbar-title align="center">الأعلانات</v-toolbar-title>
@@ -18,35 +29,24 @@
             <v-card-text>
               <v-container>
                 <v-row>
-                  <v-col cols="12" sm="6" md="4">
+                  <v-col cols="12" md="6">
                     <v-text-field
-                      v-model="editedItem.name"
-                      label="Dessert name"
+                      v-model="editedItem.title"
+                      label="العنوان"
                     ></v-text-field>
                   </v-col>
-                  <v-col cols="12" sm="6" md="4">
-                    <v-text-field
-                      v-model="editedItem.calories"
-                      label="Calories"
-                    ></v-text-field>
+                  <v-col cols="12" md="6">
+                    <v-file-input
+                      v-model="editedItem.image"
+                      label="الصورة"
+                      accept="image/*"
+                    ></v-file-input>
                   </v-col>
-                  <v-col cols="12" sm="6" md="4">
-                    <v-text-field
-                      v-model="editedItem.fat"
-                      label="Fat (g)"
-                    ></v-text-field>
-                  </v-col>
-                  <v-col cols="12" sm="6" md="4">
-                    <v-text-field
-                      v-model="editedItem.carbs"
-                      label="Carbs (g)"
-                    ></v-text-field>
-                  </v-col>
-                  <v-col cols="12" sm="6" md="4">
-                    <v-text-field
-                      v-model="editedItem.protein"
-                      label="Protein (g)"
-                    ></v-text-field>
+                  <v-col cols="12">
+                    <v-textarea
+                      v-model="editedItem.description"
+                      label="الوصف"
+                    ></v-textarea>
                   </v-col>
                 </v-row>
               </v-container>
@@ -85,8 +85,12 @@
         </v-dialog>
       </v-toolbar>
     </template>
-    <template v-slot:[`item.image_url`]="{ item }">
-      <v-img :src="item.value.image_url"></v-img>
+    <template v-slot:[`item.image`]="{ item }">
+      <v-img
+        width="100"
+        height="100"
+        :src="content_url + item.columns.image"
+      ></v-img>
     </template>
 
     <template v-slot:[`item.actions`]="{ item }">
@@ -95,43 +99,59 @@
       </v-icon>
       <v-icon size="small" @click="deleteItem(item)"> mdi-delete </v-icon>
     </template>
-  </v-data-table>
+  </v-data-table-server>
 </template>
 <script>
-import { VDataTable } from "vuetify/labs/VDataTable";
+import { get_ads_service } from "@/services/ads";
+import { VDataTableServer } from "vuetify/labs/VDataTable";
+
 export default {
   components: {
-    VDataTable,
+    VDataTableServer,
   },
   data: () => ({
     dialog: false,
     dialogDelete: false,
-    headers: [
-      { title: "العنوان", key: "name", sortable: true },
-      {
-        title: "الصورة",
-        align: "start",
-        sortable: true,
-        key: "image_url",
-      },
-      { title: "الوصف", key: "discription" },
-      { title: "العمليات", key: "actions" },
-    ],
-    desserts: [],
+
+    table: {
+      page: 1,
+      limit: 10,
+      headers: [
+        { title: "العنوان", key: "title", sortable: true },
+        {
+          title: "الصورة",
+          align: "start",
+          sortable: true,
+          key: "image",
+        },
+        { title: "الوصف", key: "description" },
+        { title: "العمليات", key: "actions" },
+      ],
+    },
+
+    api_data: {
+      loading: false,
+      data: [],
+      total: 0,
+    },
     editedIndex: -1,
     editedItem: {
-      name: "",
-      calories: 0,
-      fat: 0,
-      carbs: 0,
-      protein: 0,
+      title: null,
+      image: null,
+      description: null,
     },
     defaultItem: {
-      name: "",
-      calories: 0,
-      fat: 0,
-      carbs: 0,
-      protein: 0,
+      title: null,
+      image: null,
+      description: null,
+    },
+
+    content_url: null,
+
+    dialogData: {
+      open: false,
+      color: "info",
+      bodyText: "test",
     },
   }),
 
@@ -155,49 +175,44 @@ export default {
   },
 
   methods: {
-    initialize() {
-      this.desserts = [
-        {
-          name: "العرض الأول",
-          image_url:
-            "https://cdn.britannica.com/79/232779-050-6B0411D7/German-Shepherd-dog-Alsatian.jpg",
-          discription: "هاذا وصف العرض الاول للتجربة فقط لاغير",
-        },
-        {
-          name: "العرض الثاني",
-          image_url:
-            "https://cdn.britannica.com/79/232779-050-6B0411D7/German-Shepherd-dog-Alsatian.jpg",
-          discription: "هاذا وصف العرض الاول للتجربة فقط لاغير",
-        },
-        {
-          name: "العرض الثالث",
-          image_url:
-            "https://cdn.britannica.com/79/232779-050-6B0411D7/German-Shepherd-dog-Alsatian.jpg",
-          discription: "هاذا وصف العرض الاول للتجربة فقط لاغير",
-        },
-        {
-          name: "العرض الرابع",
-          image_url:
-            "https://cdn.britannica.com/79/232779-050-6B0411D7/German-Shepherd-dog-Alsatian.jpg",
-          discription: "هاذا وصف العرض الاول للتجربة فقط لاغير",
-        },
-      ];
+    async initialize() {
+      this.api_data.loading = true;
+
+      if (!this.search_value) {
+        this.search_value = "";
+      }
+      console.log("this.table.page", this.table.page);
+      const response = await get_ads_service({
+        page: this.table.page,
+        limit: 10,
+        search: this.search_value,
+      });
+
+      if (response.status === 500) {
+        this.api_data.loading = false;
+        this.showDialogFunction(response.data.results, "#FF5252");
+      } else {
+        this.api_data.loading = false;
+        this.api_data.data = response.results.data;
+        this.api_data.total = response.results.count;
+        this.content_url = response.content_url;
+      }
     },
 
     editItem(item) {
-      this.editedIndex = this.desserts.indexOf(item);
+      this.editedIndex = this.data.indexOf(item);
       this.editedItem = Object.assign({}, item);
       this.dialog = true;
     },
 
     deleteItem(item) {
-      this.editedIndex = this.desserts.indexOf(item);
+      this.editedIndex = this.data.indexOf(item);
       this.editedItem = Object.assign({}, item);
       this.dialogDelete = true;
     },
 
     deleteItemConfirm() {
-      this.desserts.splice(this.editedIndex, 1);
+      this.data.splice(this.editedIndex, 1);
       this.closeDelete();
     },
 
@@ -217,11 +232,17 @@ export default {
       });
     },
 
+    showDialogFunction(bodyText, color) {
+      this.dialogData.open = true;
+      this.dialogData.bodyText = bodyText;
+      this.dialogData.color = color;
+    },
+
     save() {
       if (this.editedIndex > -1) {
-        Object.assign(this.desserts[this.editedIndex], this.editedItem);
+        Object.assign(this.data[this.editedIndex], this.editedItem);
       } else {
-        this.desserts.push(this.editedItem);
+        this.data.push(this.editedItem);
       }
       this.close();
     },

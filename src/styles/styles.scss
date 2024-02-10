@@ -1,1 +1,8 @@
 // Write your overrides
+@use "vuetify/styles" as * with (
+  $body-font-family: "Cairo, sans-serif"
+);
+
+* {
+  font-family: Cairo, sans-serif !important;
+}

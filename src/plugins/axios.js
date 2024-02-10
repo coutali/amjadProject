@@ -1,13 +1,19 @@
-import axios from 'axios'
-import router from '@/router'
+import {
+  staticUrl
+} from '@/constants/static_url';
+import router from '@/router';
+import axios from 'axios';
 
 const axiosIns = axios.create({
-// You can add your headers here
-// ================================
-// baseURL: 'https://some-domain.com/api/',
-// timeout: 1000,
-// headers: {'X-Custom-Header': 'foobar'}
-})
+  // You can add your headers here
+  // ================================
+  baseURL: staticUrl,
+  timeout: 3000,
+  headers: {
+    "Content-Type": "application/json",
+    Authorization: localStorage.getItem("accessToken"),
+  },
+});
 
 
 // ℹ️ Add request interceptor to send the authorization header on each subsequent request after login
@@ -22,7 +28,7 @@ axiosIns.interceptors.request.use(config => {
 
     // Set authorization header
     // ℹ️ JSON.parse will convert token to string
-    config.headers.Authorization = token ? `Bearer ${JSON.parse(token)}` : ''
+    config.headers.Authorization = token ?? ''
   }
 
   // Return modified config
@@ -45,8 +51,7 @@ axiosIns.interceptors.response.use(response => {
 
     // If 401 response returned from api
     router.push('/login')
-  }
-  else {
+  } else {
     return Promise.reject(error)
   }
 })

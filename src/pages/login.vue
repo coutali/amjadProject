@@ -1,28 +1,3 @@
-<script setup>
-import { useGenerateImageVariant } from '@core/composable/useGenerateImageVariant'
-import authV2LoginIllustrationBorderedDark from '@images/pages/auth-v2-login-illustration-bordered-dark.png'
-import authV2LoginIllustrationBorderedLight from '@images/pages/auth-v2-login-illustration-bordered-light.png'
-import authV2LoginIllustrationDark from '@images/pages/auth-v2-login-illustration-dark.png'
-import authV2LoginIllustrationLight from '@images/pages/auth-v2-login-illustration-light.png'
-import authV2MaskDark from '@images/pages/auth-v2-mask-dark.png'
-import authV2MaskLight from '@images/pages/auth-v2-mask-light.png'
-import tree from '@images/pages/tree.png'
-import { VNodeRenderer } from '@layouts/components/VNodeRenderer'
-import { themeConfig } from '@themeConfig'
-
-const router = useRouter()
-
-const form = ref({
-  email: '',
-  password: '',
-  remember: false,
-})
-
-const isPasswordVisible = ref(false)
-const authThemeImg = useGenerateImageVariant(authV2LoginIllustrationLight, authV2LoginIllustrationDark, authV2LoginIllustrationBorderedLight, authV2LoginIllustrationBorderedDark, true)
-const authThemeMask = useGenerateImageVariant(authV2MaskLight, authV2MaskDark)
-</script>
-
 <template>
   <div>
     <!-- Title and Logo -->
@@ -34,28 +9,17 @@ const authThemeMask = useGenerateImageVariant(authV2MaskLight, authV2MaskDark)
       </h1>
     </div>
 
-    <VRow
-      no-gutters
-      class="auth-wrapper"
-    >
-
-      <VCol
-        class="auth-card-v2 d-flex align-center justify-center"
-      >
-        <VCard
-          flat
-          class="mt-12 mt-sm-0 pa-4 w-100 loginCard"
-        >
+    <VRow no-gutters class="auth-wrapper">
+      <VCol class="auth-card-v2 d-flex align-center justify-center">
+        <VCard flat class="mt-12 mt-sm-0 pa-4 w-100 loginCard">
           <VCardText>
             <h5 class="text-h6 font-weight-medium mb-2 mt-7">
               مرحباً بك في {{ themeConfig.app.title }}! 👋🏻
             </h5>
-            <p class="mb-0 font-weight-bold">
-              الرجاء تسجيل الدخول الى حسابك
-            </p>
+            <p class="mb-0 font-weight-bold">الرجاء تسجيل الدخول الى حسابك</p>
           </VCardText>
           <VCardText>
-            <VForm @submit.prevent="router.push('/')">
+            <VForm @submit.prevent="login">
               <VRow>
                 <!-- email -->
                 <VCol cols="12">
@@ -72,25 +36,34 @@ const authThemeMask = useGenerateImageVariant(authV2MaskLight, authV2MaskDark)
                     v-model="form.password"
                     label="كلمة المرور"
                     :type="isPasswordVisible ? 'text' : 'password'"
-                    :append-inner-icon="isPasswordVisible ? 'mdi-eye-off-outline' : 'mdi-eye-outline'"
+                    :append-inner-icon="
+                      isPasswordVisible
+                        ? 'mdi-eye-off-outline'
+                        : 'mdi-eye-outline'
+                    "
                     @click:append-inner="isPasswordVisible = !isPasswordVisible"
                   />
 
-                  <div class="d-flex align-center flex-wrap justify-space-between mt-1 mb-4">
-                    <a
-                      class="text-primary forgot mt-2"
-                      href="#"
-                    >
-                      نسيت رمز الحساب ؟
-                    </a>
-                  </div>
+                  <div
+                    class="d-flex align-center flex-wrap justify-space-between mt-1 mb-4"
+                  ></div>
 
-                  <VBtn
-                    block
-                    type="submit"
-                  >
+                  <VBtn block :loading="authStore.btnLoading" type="submit">
                     تسجيل الدخول
                   </VBtn>
+                </VCol>
+              </VRow>
+              <VRow>
+                <VCol cols="12">
+                  <v-alert
+                    v-if="authStore.is_error"
+                    closable
+                    @click:close="authStore.is_error = false"
+                    icon="mdi-error"
+                    type="error"
+                    variant="tonal"
+                    >{{ authStore.error_message }}</v-alert
+                  >
                 </VCol>
               </VRow>
             </VForm>
@@ -101,15 +74,42 @@ const authThemeMask = useGenerateImageVariant(authV2MaskLight, authV2MaskDark)
   </div>
 </template>
 
+<script setup>
+import { useAuthStore } from "@/stores/auth";
+import { ref } from "vue";
+
+import { VNodeRenderer } from "@layouts/components/VNodeRenderer";
+import { themeConfig } from "@themeConfig";
+
+const form = ref({
+  email: "",
+  password: "",
+  remember: false,
+});
+
+const isPasswordVisible = ref(false);
+
+const authStore = useAuthStore();
+
+const login = () => {
+  authStore.submitLogin({
+    email: form.value.email,
+    password: form.value.password,
+  });
+};
+</script>
+
 <style lang="scss">
 @use "@core/scss/template/pages/page-auth.scss";
-@use '@/styles/mixins' as *;
-.loginCard{
-  @include minQuery(500px){
-    width: 75% !important;
+@use "@/styles/mixins" as *;
+
+.loginCard {
+  @include minQuery(500px) {
+    inline-size: 75% !important;
   }
-  .forgot{
-    border-bottom: solid 1px;
+
+  .forgot {
+    border-block-end: solid 1px;
   }
 }
 </style>

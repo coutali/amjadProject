@@ -44,6 +44,7 @@ declare module '@vue/runtime-core' {
     Notifications: typeof import('./src/@core/components/Notifications.vue')['default']
     PricingPlanDialog: typeof import('./src/components/dialogs/PricingPlanDialog.vue')['default']
     ReferAndEarnDialog: typeof import('./src/components/dialogs/ReferAndEarnDialog.vue')['default']
+    RespondMessage: typeof import('./src/components/respondMessage.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
     ScrollToTop: typeof import('./src/@core/components/ScrollToTop.vue')['default']

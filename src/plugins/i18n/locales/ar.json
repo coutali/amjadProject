@@ -134,6 +134,9 @@
   "Form Wizard": "معالج النموذج",
   "Numbered": "مرقم",
   "$vuetify": {
+    "dataIterator": {
+      "rowsPerPageText": "الصفوف في الصفحة:"
+    },
     "badge": "شارة",
     "pagination": {
       "ariaLabel": {
