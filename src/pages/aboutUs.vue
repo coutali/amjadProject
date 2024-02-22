@@ -1,99 +1,155 @@
 <template>
-  <v-row>
-    <v-col cols="12" md="6">
-      <v-text-field
+  <VRow>
+    <VCol cols="12" md="6">
+      <template>
+        <div class="text-center">
+          <VDialog v-model="dialog" activator="parent" width="auto">
+            <VCard>
+              <VCardText> {{ finalMessage }}</VCardText>
+              <VCardActions>
+                <VBtn color="primary" block @click="dialog = false"> تم </VBtn>
+              </VCardActions>
+            </VCard>
+          </VDialog>
+        </div>
+      </template>
+      <VTextField
+        v-model="data.address"
         variant="solo-filled"
         label="العنوان"
-        v-model="data.address"
         :max-width="mdAndUp ? '50%' : '100%'"
-      ></v-text-field>
-    </v-col>
-    <v-col cols="12" md="6">
-      <v-text-field
+        :loading="loading"
+      />
+    </VCol>
+    <VCol cols="12" md="6">
+      <VTextField
+        v-model="data.phone"
         variant="solo-filled"
         label="رقم الهاتف"
-        v-model="data.phone"
-      ></v-text-field>
-    </v-col>
-    <v-col cols="12" md="6">
-      <v-text-field
+        :loading="loading"
+      />
+    </VCol>
+    <VCol cols="12" md="6">
+      <VTextField
+        v-model="data.email"
         variant="solo-filled"
         label="الحساب الألكتروني"
-        v-model="data.email"
-      ></v-text-field>
-    </v-col>
-    <v-col cols="12" md="6">
-      <v-text-field
+        :loading="loading"
+      />
+    </VCol>
+    <VCol cols="12" md="6">
+      <VTextField
+        v-model="data.facebook"
         variant="solo-filled"
         label="حساب فيسبوك"
-        v-model="data.facebook"
-      ></v-text-field>
-    </v-col>
-    <v-col cols="12" md="6">
-      <v-text-field
+        :loading="loading"
+      />
+    </VCol>
+    <VCol cols="12" md="6">
+      <VTextField
+        v-model="data.instagram"
         variant="solo-filled"
         label="حساب انستقرام"
-        v-model="data.instagram"
-      ></v-text-field>
-    </v-col>
-    <v-col cols="12" md="6">
-      <v-text-field
+        :loading="loading"
+      />
+    </VCol>
+    <VCol cols="12" md="6">
+      <VTextField
+        v-model="data.whatsapp"
         variant="solo-filled"
         label="رقم الواتساب"
-        v-model="data.whatsapp"
-      ></v-text-field>
-    </v-col>
-    <v-col cols="12" md="6">
-      <v-text-field
+        :loading="loading"
+      />
+    </VCol>
+    <VCol cols="12" md="6">
+      <VTextField
+        v-model="data.telegram"
         variant="solo-filled"
         label="حساب تيليجرام"
-        v-model="data.telegram"
-      ></v-text-field>
-    </v-col>
-    <v-col cols="12" md="6">
-      <v-text-field
+        :loading="loading"
+      />
+    </VCol>
+    <VCol cols="12" md="6">
+      <VTextField
+        v-model="data.location"
         variant="solo-filled"
         label="الموقع الحالي"
-        v-model="data.location"
-      ></v-text-field>
-    </v-col>
-    <v-col cols="12">
-      <v-textarea
+        :loading="loading"
+      />
+    </VCol>
+    <VCol cols="12">
+      <VTextarea
+        v-model="data.description"
         variant="solo-filled"
         label="الوصف"
-        v-model="data.description"
-      ></v-textarea>
-    </v-col>
-  </v-row>
-  <v-row>
-    <v-col>
-      <v-btn
+        :loading="loading"
+      />
+    </VCol>
+  </VRow>
+  <VRow>
+    <VCol>
+      <VBtn
         append-icon="mdi-content-save-all-outline"
         variant="outlined"
         block
+        @click="editData"
       >
-        <h4 class="btn-word">حفظ</h4>
-      </v-btn>
-    </v-col>
-  </v-row>
+        <h4 class="btn-word" :loading="loading">حفظ</h4>
+      </VBtn>
+    </VCol>
+  </VRow>
 </template>
+
 <script>
+import { edit_aboutUs_service, get_aboutUs_service } from "@/services/aboutUs";
+
 export default {
   data() {
     return {
-      data: {
-        _id: "65bfce9aee959222c7210c0f",
-        address: null,
-        phone: null,
-        email: null,
-        facebook: null,
-        instagram: null,
-        whatsapp: null,
-        location: null,
-        telegram: null,
-        description: null,
-      },
+      content_url: "",
+      loading: false,
+      finalMessage: "",
+      dialog: false,
+      data: {},
     };
+  },
+  mounted() {
+    this.getData();
+  },
+  methods: {
+    async editData() {
+      this.loading = true;
+
+      try {
+        const response = await edit_aboutUs_service({
+          address: this.data.address,
+          phone: this.data.phone,
+          email: this.data.email,
+          facebook: this.data.facebook,
+          instagram: this.data.instagram,
+          whatsapp: this.data.whatsapp,
+          location: this.data.location,
+          telegram: this.data.telegram,
+          description: this.data.description,
+        });
+
+        this.finalMessage = response.message;
+      } catch (error) {
+        this.finalMessage = response.message;
+      }
+      this.dialog = true;
+      this.getData();
+    },
+    async getData() {
+      this.loading = true;
+
+      const response = await get_aboutUs_service();
+
+      this.data = response.results;
+      this.content_url = response.content_url;
+
+      this.loading = false;
+    },
   },
 };
 </script>

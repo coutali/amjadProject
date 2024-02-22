@@ -1,14 +1,14 @@
 import axiosIns from "@/plugins/axios"
 
 
-export const get_ads_service = async ({
+export const get_products_service = async ({
   page,
   limit,
   search,
 }) => {
   try {
     const response =
-      await axiosIns.get(`ads?page=${page}&limit=${limit}&search=${search}`)
+      await axiosIns.get(`products?page=${page}&limit=${limit}&search=${search}`)
 
     
     return response.data
@@ -19,17 +19,21 @@ export const get_ads_service = async ({
   }
 }
 
-export const add_ads_service = async ({
+export const add_products_service = async ({
   title,
   description,
   image,
+  price,
+  category,
 }) => {
   try {
     const response =
-      await axiosIns.post("ads", {
+      await axiosIns.post("products", {
         title,
         description,
         image,
+        price,
+        category,
       })
 
     return response.data
@@ -39,18 +43,22 @@ export const add_ads_service = async ({
     return error.response.data
   }
 }
-export const edit_ads_service = async ({
+export const edit_products_service = async ({
   id,
   title,
   description,
   image,
+  price,
+  category,
 }) => {
   try {
     const response =
-      await axiosIns.put(`ads/${id}`, {
+      await axiosIns.put(`products/${id}`, {
         title,
         description,
         image,
+        price,
+        category,
       })
 
     return response.data
@@ -61,10 +69,10 @@ export const edit_ads_service = async ({
   }
 }
 
-export const remove_ads_service = async id => {
+export const remove_products_service = async id => {
   try {
     const response =
-      await axiosIns.delete(`ads/${id}`)
+      await axiosIns.delete(`products/${id}`)
 
     return response.data
   } catch (error) {

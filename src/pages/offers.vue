@@ -1,10 +1,10 @@
 <script>
 import {
-  add_ads_service,
-  edit_ads_service,
-  get_ads_service,
-  remove_ads_service,
-} from "@/services/ads";
+  add_offers_service,
+  edit_offers_service,
+  get_offers_service,
+  remove_offers_service,
+} from "@/services/offers";
 import { defineComponent, onMounted, ref } from "vue";
 
 export default defineComponent({
@@ -15,19 +15,21 @@ export default defineComponent({
       deleteDialog: false,
       loading: false,
       content_url: "",
-      selectedAdImage: "anything", // this can by the image of the ad on edit or the new ad
+      selectedAdImage: "", // this can by the image of the ad on edit or the new ad
       finalMessage: null,
       toBeDeleted: null,
       addData: {
         title: null,
         description: null,
         image: null,
+        price: null,
       },
       onEditAd: {
         id: null,
         title: null,
         description: null,
         image: null,
+        price: null,
         toBeSentImage: null,
       },
       table: {
@@ -36,6 +38,7 @@ export default defineComponent({
           { title: "العنوان", value: "title" },
           { title: "الوصف", value: "description" },
           { title: "الصورة", value: "image" },
+          { title: "السعر", value: "price" },
           { title: "العمليات", value: "actions" },
         ],
 
@@ -79,8 +82,10 @@ export default defineComponent({
       this.onEditAd.title = e.title;
       this.onEditAd.description = e.description;
       this.onEditAd.image = e.image;
+      this.onEditAd.price = e.price;
       this.selectedAdImage = this.content_url + this.onEditAd.image;
       this.editDialog = true;
+      console.log(e);
     },
     clearAdImage() {
       this.addData.image = null;
@@ -123,7 +128,7 @@ export default defineComponent({
     async getData() {
       this.table.loading = true;
 
-      const response = await get_ads_service({
+      const response = await get_offers_service({
         page: this.table.options.page,
         limit: this.table.options.itemsPerPage,
         search: this.table.search,
@@ -144,14 +149,15 @@ export default defineComponent({
       this.getData();
     },
 
-    // here were you send new add to the api and other stuff --Ali--
+    // here were you send new ad to the api and other stuff --Ali--
     async saveBtnActions() {
       this.loading = true;
       try {
-        const result = await add_ads_service({
+        const result = await add_offers_service({
           title: this.addData.title,
           description: this.addData.description,
           image: this.selectedAdImage,
+          price: this.addData.price,
         });
 
         this.getData();
@@ -159,6 +165,7 @@ export default defineComponent({
         this.finalMessage = result.message;
         this.addData.selectedAdImage = null;
         Object.keys(this.addData).forEach((key) => (this.addData[key] = null));
+        console.log("result", result);
       } catch (error) {
         this.finalMessage = result.message;
       }
@@ -171,13 +178,14 @@ export default defineComponent({
     async editSaveBtnActions() {
       this.loading = true;
       try {
-        const result = await edit_ads_service({
+        const result = await edit_offers_service({
           id: this.onEditAd.id,
           title: this.onEditAd.title,
           description: this.onEditAd.description,
           image: this.onEditAd.toBeSentImage
             ? this.onEditAd.toBeSentImage
             : this.onEditAd.image,
+          price: this.onEditAd.price,
         });
 
         this.getData();
@@ -195,7 +203,7 @@ export default defineComponent({
     },
     async deletingAd() {
       try {
-        const result = await remove_ads_service(this.toBeDeleted);
+        const result = await remove_offers_service(this.toBeDeleted);
 
         this.deleteDialog = false;
         this.toBeDeleted = null;
@@ -211,7 +219,7 @@ export default defineComponent({
 <template>
   <div>
     <VContainer>
-      <h1 class="text-center mb-5">الأعلانات</h1>
+      <h1 class="text-center mb-5">العروض</h1>
       <VCard class="bg-grey-400">
         <div class="d-flex flex-column justify-sm-space-around">
           <VCard class="pa-3">
@@ -226,12 +234,12 @@ export default defineComponent({
                     no-restricted-class
                     class="mt-4 mr-4"
                   >
-                    أضافة اعلان جديد
+                    أضافة عرض جديد
                   </VBtn>
                 </template>
                 <VCard>
                   <VCardTitle class="d-flex mt-5 mr-5">
-                    <span v-cloak class="text-h5">أضافة اعلان جديد</span>
+                    <span v-cloak class="text-h5">أضافة عرض جديد</span>
                   </VCardTitle>
                   <VCardText>
                     <VContainer>
@@ -264,7 +272,7 @@ export default defineComponent({
                                 @change="adImgChange"
                               />
                               <button class="addBtn">+</button>
-                              <h4>صورة الاعلان</h4>
+                              <h4>صورة العرض</h4>
                             </div>
                           </div>
                         </VCol>
@@ -272,17 +280,17 @@ export default defineComponent({
                         <!-- this is the image holder -->
                         <VCol cols="12">
                           <VTextField
-                            v-model="addData.title"
-                            label="عنوان الاعلان"
+                            v-model="addData.price"
+                            label="السعر"
                             required
                             :hint="fileInputHint"
                           />
                         </VCol>
-                        <!-- this is the title holder -->
+                        <!-- this is the price holder -->
                         <VCol cols="12">
                           <VTextarea
                             v-model="addData.description"
-                            label="وصف الاعلان"
+                            label="وصف العرض"
                             required
                             rows="3"
                           />
@@ -354,17 +362,17 @@ export default defineComponent({
                         <!-- this is the image holder -->
                         <VCol cols="12">
                           <VTextField
-                            v-model="onEditAd.title"
-                            label="عنوان الاعلان"
+                            v-model="onEditAd.price"
+                            label="السعر"
                             required
                             :hint="fileInputHint"
                           />
                         </VCol>
-                        <!-- this is the title holder -->
+                        <!-- this is the price holder -->
                         <VCol cols="12">
                           <VTextarea
                             v-model="onEditAd.description"
-                            label="وصف الاعلان"
+                            label="وصف العرض"
                             required
                             rows="3"
                           />
