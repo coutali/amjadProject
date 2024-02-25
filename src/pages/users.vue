@@ -90,6 +90,7 @@ export default defineComponent({
       this.table.data = response.results.data;
       this.table.total_data = response.results.count;
       this.table.loading = false;
+      console.log("rest", response.results.data);
     },
     async searchChange() {
       this.table.options.page = 1;
@@ -144,12 +145,16 @@ export default defineComponent({
 
         this.getData();
         this.editDialog = false;
-        this.finalMessage = result.message;
+
+        // this.finalMessage = result.message;
         Object.keys(this.onEditAd).forEach(
           (key) => (this.onEditAd[key] = null)
         );
       } catch (error) {
-        this.finalMessage = error.message;
+        console.error("Error editing user:", error);
+
+        // Always return a consistent structure, consider using an object with an 'error' property
+        return { error: error };
       }
       this.loading = false;
     },

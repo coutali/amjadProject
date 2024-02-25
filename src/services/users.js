@@ -42,7 +42,7 @@ export const add_users_service = async ({
   } catch (error) {
     console.log("error", error)
     
-    return error.response.data
+    return error.response
   }
 }
 export const edit_users_service = async ({
@@ -69,7 +69,7 @@ export const edit_users_service = async ({
   } catch (error) {
     console.log("error", error)
     
-    return error.response.data
+    return error.response
   }
 }
 
