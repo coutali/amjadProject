@@ -18,9 +18,11 @@ export default defineComponent({
       selectedAdImage: "", // this can by the image of the ad on edit or the new ad
       finalMessage: null,
       toBeDeleted: null,
-      categorys: ["val1", "val2", "val3", "val4"],
-      categorys_urls: {
+      categorys: {
         val1: "65c3d42bb94626941e6c2abf",
+        val2: "65c3d42bb94626941e6c2abf",
+        val3: "65c3d42bb94626941e6c2abf",
+        val4: "65c3d42bb94626941e6c2abf",
       },
       addData: {
         title: null,
@@ -90,10 +92,11 @@ export default defineComponent({
       this.onEditAd.description = e.description;
       this.onEditAd.image = e.image;
       this.onEditAd.price = e.price;
-      this.onEditAd.category = e.category;
+      this.onEditAd.category = Object.keys(this.categorys).find(
+        (key) => this.categorys[key] === e.category
+      );
       this.selectedAdImage = this.content_url + this.onEditAd.image;
       this.editDialog = true;
-      console.log(e);
     },
     clearAdImage() {
       this.addData.image = null;
@@ -166,19 +169,17 @@ export default defineComponent({
           description: this.addData.description,
           image: this.selectedAdImage,
           price: this.addData.price,
-          category: this.categorys_urls[this.addData.category],
+          category: this.categorys[this.addData.category],
         });
 
         this.getData();
         this.dialog = false;
         this.finalMessage = result.message;
-        this.addData.selectedAdImage = null;
-        console.log(this.addData);
+        this.selectedAdImage = null;
 
         Object.keys(this.addData).forEach((key) => (this.addData[key] = null));
-        console.log("result", result);
       } catch (error) {
-        console.log(error);
+        this.finalMessage = result.message;
       }
       this.loading = false;
     },
@@ -197,7 +198,7 @@ export default defineComponent({
             ? this.onEditAd.toBeSentImage
             : this.onEditAd.image,
           price: this.onEditAd.price,
-          category: this.onEditAd.category,
+          category: this.categorys[this.onEditAd.category],
         });
 
         this.getData();
@@ -255,7 +256,7 @@ export default defineComponent({
                   </VCardTitle>
                   <VCardText>
                     <VContainer>
-                      <VRow class="">
+                      <VRow>
                         <VCol cols="12">
                           <div
                             class="imgContainer personalImg d-flex align-center"
@@ -302,7 +303,7 @@ export default defineComponent({
                         <VCol cols="6">
                           <VSelect
                             v-model="addData.category"
-                            :items="categorys"
+                            :items="Object.keys(categorys)"
                             label="الصنف"
                           />
                         </VCol>
@@ -399,11 +400,10 @@ export default defineComponent({
                         </VCol>
                         <!-- this is the title holder -->
                         <VCol cols="6">
-                          <VTextField
+                          <VSelect
                             v-model="onEditAd.category"
+                            :items="Object.keys(categorys)"
                             label="الصنف"
-                            required
-                            :hint="fileInputHint"
                           />
                         </VCol>
                         <!-- this is the category holder -->
@@ -500,6 +500,17 @@ export default defineComponent({
                   :items-per-page-options="table.itemsPerPageOptions"
                   @update:options="optionsChange($event)"
                 >
+                  <template #[`item.category`]="{ item }">
+                    <VRow>
+                      <VCol>
+                        {{
+                          Object.keys(categorys).find(
+                            (key) => categorys[key] === item.category
+                          )
+                        }}
+                      </VCol>
+                    </VRow>
+                  </template>
                   <template #[`item.image`]="{ item }">
                     <VRow>
                       <VCol>

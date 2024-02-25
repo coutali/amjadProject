@@ -1,10 +1,10 @@
 <script>
 import {
-  add_offers_service,
-  edit_offers_service,
-  get_offers_service,
-  remove_offers_service,
-} from "@/services/offers";
+  add_jobs_service,
+  edit_jobs_service,
+  get_jobs_service,
+  remove_jobs_service,
+} from "@/services/jobs";
 import { defineComponent, onMounted, ref } from "vue";
 
 export default defineComponent({
@@ -22,14 +22,14 @@ export default defineComponent({
         title: null,
         description: null,
         image: null,
-        price: null,
+        salary: null,
       },
       onEditAd: {
         id: null,
         title: null,
         description: null,
         image: null,
-        price: null,
+        salary: null,
         toBeSentImage: null,
       },
       table: {
@@ -37,8 +37,8 @@ export default defineComponent({
         headers: [
           { title: "العنوان", value: "title" },
           { title: "الوصف", value: "description" },
+          { title: "الراتب", value: "salary" },
           { title: "الصورة", value: "image" },
-          { title: "السعر", value: "price" },
           { title: "العمليات", value: "actions" },
         ],
 
@@ -82,7 +82,7 @@ export default defineComponent({
       this.onEditAd.title = e.title;
       this.onEditAd.description = e.description;
       this.onEditAd.image = e.image;
-      this.onEditAd.price = e.price;
+      this.onEditAd.salary = e.salary;
       this.selectedAdImage = this.content_url + this.onEditAd.image;
       this.editDialog = true;
       console.log(e);
@@ -128,7 +128,7 @@ export default defineComponent({
     async getData() {
       this.table.loading = true;
 
-      const response = await get_offers_service({
+      const response = await get_jobs_service({
         page: this.table.options.page,
         limit: this.table.options.itemsPerPage,
         search: this.table.search,
@@ -153,11 +153,11 @@ export default defineComponent({
     async saveBtnActions() {
       this.loading = true;
       try {
-        const result = await add_offers_service({
+        const result = await add_jobs_service({
           title: this.addData.title,
           description: this.addData.description,
           image: this.selectedAdImage,
-          price: this.addData.price,
+          salary: this.addData.salary,
         });
 
         this.getData();
@@ -167,7 +167,7 @@ export default defineComponent({
         Object.keys(this.addData).forEach((key) => (this.addData[key] = null));
         console.log("result", result);
       } catch (error) {
-        this.finalMessage = result.message;
+        console.log("hello");
       }
       this.loading = false;
     },
@@ -178,14 +178,14 @@ export default defineComponent({
     async editSaveBtnActions() {
       this.loading = true;
       try {
-        const result = await edit_offers_service({
+        const result = await edit_jobs_service({
           id: this.onEditAd.id,
           title: this.onEditAd.title,
           description: this.onEditAd.description,
           image: this.onEditAd.toBeSentImage
             ? this.onEditAd.toBeSentImage
             : this.onEditAd.image,
-          price: this.onEditAd.price,
+          salary: this.onEditAd.salary,
         });
 
         this.getData();
@@ -203,7 +203,7 @@ export default defineComponent({
     },
     async deletingAd() {
       try {
-        const result = await remove_offers_service(this.toBeDeleted);
+        const result = await remove_jobs_service(this.toBeDeleted);
 
         this.deleteDialog = false;
         this.toBeDeleted = null;
@@ -278,15 +278,24 @@ export default defineComponent({
                         </VCol>
 
                         <!-- this is the image holder -->
-                        <VCol cols="12">
+                        <VCol cols="8">
                           <VTextField
-                            v-model="addData.price"
-                            label="السعر"
+                            v-model="addData.title"
+                            label="عنوان الوضيفة"
                             required
                             :hint="fileInputHint"
                           />
                         </VCol>
-                        <!-- this is the price holder -->
+                        <!-- this is the salary holder -->
+                        <VCol cols="4">
+                          <VTextField
+                            v-model="addData.salary"
+                            label="الراتب"
+                            required
+                            :hint="fileInputHint"
+                          />
+                        </VCol>
+                        <!-- this is the salary holder -->
                         <VCol cols="12">
                           <VTextarea
                             v-model="addData.description"
@@ -360,15 +369,24 @@ export default defineComponent({
                         </VCol>
 
                         <!-- this is the image holder -->
-                        <VCol cols="12">
+                        <VCol cols="8">
                           <VTextField
-                            v-model="onEditAd.price"
-                            label="السعر"
+                            v-model="onEditAd.title"
+                            label="عنوان الوضيفة"
                             required
                             :hint="fileInputHint"
                           />
                         </VCol>
-                        <!-- this is the price holder -->
+                        <!-- this is the salary holder -->
+                        <VCol cols="4">
+                          <VTextField
+                            v-model="onEditAd.salary"
+                            label="الراتب"
+                            required
+                            :hint="fileInputHint"
+                          />
+                        </VCol>
+                        <!-- this is the salary holder -->
                         <VCol cols="12">
                           <VTextarea
                             v-model="onEditAd.description"

@@ -1,10 +1,10 @@
 <script>
 import {
-  add_offers_service,
-  edit_offers_service,
-  get_offers_service,
-  remove_offers_service,
-} from "@/services/offers";
+  add_packages_service,
+  edit_packages_service,
+  get_packages_service,
+  remove_packages_service,
+} from "@/services/packages";
 import { defineComponent, onMounted, ref } from "vue";
 
 export default defineComponent({
@@ -20,14 +20,14 @@ export default defineComponent({
       toBeDeleted: null,
       addData: {
         title: null,
-        description: null,
+        discount: null,
         image: null,
         price: null,
       },
       onEditAd: {
         id: null,
         title: null,
-        description: null,
+        discount: null,
         image: null,
         price: null,
         toBeSentImage: null,
@@ -36,9 +36,10 @@ export default defineComponent({
         loading: false,
         headers: [
           { title: "العنوان", value: "title" },
-          { title: "الوصف", value: "description" },
-          { title: "الصورة", value: "image" },
+          { title: "النوع", value: "type" },
           { title: "السعر", value: "price" },
+          { title: "التخفيض", value: "discount" },
+          { title: "الصورة", value: "image" },
           { title: "العمليات", value: "actions" },
         ],
 
@@ -80,9 +81,10 @@ export default defineComponent({
     editDialogActions(e) {
       this.onEditAd.id = e["_id"];
       this.onEditAd.title = e.title;
-      this.onEditAd.description = e.description;
+      this.onEditAd.type = e.type;
       this.onEditAd.image = e.image;
       this.onEditAd.price = e.price;
+      this.onEditAd.discount = e.discount;
       this.selectedAdImage = this.content_url + this.onEditAd.image;
       this.editDialog = true;
       console.log(e);
@@ -128,12 +130,13 @@ export default defineComponent({
     async getData() {
       this.table.loading = true;
 
-      const response = await get_offers_service({
+      const response = await get_packages_service({
         page: this.table.options.page,
         limit: this.table.options.itemsPerPage,
         search: this.table.search,
       });
 
+      console.log(response);
       this.table.data = response.results.data;
       this.table.total_data = response.results.count;
       this.content_url = response.content_url;
@@ -153,9 +156,10 @@ export default defineComponent({
     async saveBtnActions() {
       this.loading = true;
       try {
-        const result = await add_offers_service({
+        const result = await add_packages_service({
           title: this.addData.title,
-          description: this.addData.description,
+          type: this.addData.type,
+          discount: this.addData.discount,
           image: this.selectedAdImage,
           price: this.addData.price,
         });
@@ -178,10 +182,11 @@ export default defineComponent({
     async editSaveBtnActions() {
       this.loading = true;
       try {
-        const result = await edit_offers_service({
+        const result = await edit_packages_service({
           id: this.onEditAd.id,
           title: this.onEditAd.title,
-          description: this.onEditAd.description,
+          type: this.onEditAd.type,
+          discount: this.onEditAd.discount,
           image: this.onEditAd.toBeSentImage
             ? this.onEditAd.toBeSentImage
             : this.onEditAd.image,
@@ -203,7 +208,7 @@ export default defineComponent({
     },
     async deletingAd() {
       try {
-        const result = await remove_offers_service(this.toBeDeleted);
+        const result = await remove_packages_service(this.toBeDeleted);
 
         this.deleteDialog = false;
         this.toBeDeleted = null;
@@ -278,7 +283,24 @@ export default defineComponent({
                         </VCol>
 
                         <!-- this is the image holder -->
-                        <VCol cols="12">
+                        <VCol cols="8">
+                          <VTextField
+                            v-model="addData.title"
+                            label="العنوان"
+                            required
+                            :hint="fileInputHint"
+                          />
+                        </VCol>
+                        <!-- this is the title holder -->
+                        <VCol cols="4">
+                          <VSelect
+                            v-model="addData.type"
+                            :items="['fiber', 'wireless']"
+                            label="النوع"
+                          />
+                        </VCol>
+                        <!-- this is the type holder -->
+                        <VCol cols="6">
                           <VTextField
                             v-model="addData.price"
                             label="السعر"
@@ -287,15 +309,15 @@ export default defineComponent({
                           />
                         </VCol>
                         <!-- this is the price holder -->
-                        <VCol cols="12">
-                          <VTextarea
-                            v-model="addData.description"
-                            label="وصف العرض"
+                        <VCol cols="6">
+                          <VTextField
+                            v-model="addData.discount"
+                            label="التخفيض"
                             required
                             rows="3"
                           />
                         </VCol>
-                        <!-- this is the description holder -->
+                        <!-- this is the discount holder -->
                       </VRow>
                     </VContainer>
                   </VCardText>
@@ -360,7 +382,24 @@ export default defineComponent({
                         </VCol>
 
                         <!-- this is the image holder -->
-                        <VCol cols="12">
+                        <VCol cols="8">
+                          <VTextField
+                            v-model="onEditAd.title"
+                            label="العنوان"
+                            required
+                            :hint="fileInputHint"
+                          />
+                        </VCol>
+                        <!-- this is the title holder -->
+                        <VCol cols="4">
+                          <VSelect
+                            v-model="onEditAd.type"
+                            :items="['fiber', 'wireless']"
+                            label="النوع"
+                          />
+                        </VCol>
+                        <!-- this is the type holder -->
+                        <VCol cols="6">
                           <VTextField
                             v-model="onEditAd.price"
                             label="السعر"
@@ -369,15 +408,15 @@ export default defineComponent({
                           />
                         </VCol>
                         <!-- this is the price holder -->
-                        <VCol cols="12">
-                          <VTextarea
-                            v-model="onEditAd.description"
-                            label="وصف العرض"
+                        <VCol cols="6">
+                          <VTextField
+                            v-model="onEditAd.discount"
+                            label="التخفيض"
                             required
                             rows="3"
                           />
                         </VCol>
-                        <!-- this is the description holder -->
+                        <!-- this is the discount holder -->
                       </VRow>
                     </VContainer>
                   </VCardText>

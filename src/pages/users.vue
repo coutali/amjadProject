@@ -1,11 +1,11 @@
 <script>
 import {
-  add_offers_service,
-  edit_offers_service,
-  get_offers_service,
-  remove_offers_service,
-} from "@/services/offers";
-import { defineComponent, onMounted, ref } from "vue";
+  add_users_service,
+  edit_users_service,
+  get_users_service,
+  remove_users_service,
+} from "@/services/users";
+import { defineComponent } from "vue";
 
 export default defineComponent({
   data() {
@@ -15,30 +15,34 @@ export default defineComponent({
       deleteDialog: false,
       loading: false,
       content_url: "",
-      selectedAdImage: "", // this can by the image of the ad on edit or the new ad
       finalMessage: null,
       toBeDeleted: null,
       addData: {
-        title: null,
-        description: null,
-        image: null,
-        price: null,
+        name: null,
+        phone: null,
+        password_show: null,
+        email: null,
+        address: null,
+        privileges: { actions: [] },
       },
       onEditAd: {
         id: null,
-        title: null,
-        description: null,
-        image: null,
-        price: null,
-        toBeSentImage: null,
+        name: null,
+        phone: null,
+        password_show: null,
+        email: null,
+        address: null,
+        privileges: null,
       },
       table: {
         loading: false,
         headers: [
-          { title: "العنوان", value: "title" },
-          { title: "الوصف", value: "description" },
-          { title: "الصورة", value: "image" },
-          { title: "السعر", value: "price" },
+          { title: "الأسم", value: "name" },
+          { title: "الهاتف", value: "phone" },
+          { title: "كلمة السر", value: "password_show" },
+          { title: "الحساب", value: "email" },
+          { title: "الموقع", value: "address" },
+          { title: "الأمكانات", value: "privileges.actions" },
           { title: "العمليات", value: "actions" },
         ],
 
@@ -59,76 +63,25 @@ export default defineComponent({
           sortDesc: [false],
         },
       },
-      setup() {
-        // Create a ref for the element
-        const ImageRef = ref(null);
-
-        // Access the DOM element after the component is mounted
-        onMounted(() => {
-          toRefs(ImageRef).value;
-
-          // Now 'element' contains the underlying DOM element
-        });
-
-        return {
-          ImageRef,
-        };
-      },
     };
   },
   methods: {
     editDialogActions(e) {
       this.onEditAd.id = e["_id"];
-      this.onEditAd.title = e.title;
-      this.onEditAd.description = e.description;
-      this.onEditAd.image = e.image;
-      this.onEditAd.price = e.price;
-      this.selectedAdImage = this.content_url + this.onEditAd.image;
+      this.onEditAd.name = e.name;
+      this.onEditAd.phone = e.phone;
+      this.onEditAd.password_show = e.password_show;
+      this.onEditAd.email = e.email;
+      this.onEditAd.address = e.address;
+      this.onEditAd.privileges = e.privileges;
       this.editDialog = true;
       console.log(e);
-    },
-    clearAdImage() {
-      this.addData.image = null;
-      this.onEditAd.image = null;
-      this.selectedAdImage = null;
-    },
-
-    openFileSelectionAdlImg() {
-      var id =
-        this.$refs.ImageRef.$el.lastElementChild.firstElementChild.childNodes[3]
-          .childNodes[4].id;
-      document.querySelector(`input#${id}`).click();
-    },
-
-    imageToBase64(file) {
-      return new Promise((resolve, reject) => {
-        const reader = new FileReader();
-
-        reader.readAsDataURL(file);
-        reader.onload = () => resolve(reader.result);
-        reader.onerror = (error) => reject(error);
-      });
-    },
-
-    async adImgChange(file) {
-      if (file) {
-        const files = event.target.files;
-        if (files.length > 0) {
-          this.selectedAdImage = await this.imageToBase64(files[0]);
-        }
-        this.addData.image = file;
-        this.onEditAd.image = file;
-        this.onEditAd.toBeSentImage = this.selectedAdImage;
-      } else {
-        this.addData.image = null;
-        this.selectedAdImage = null;
-      }
     },
 
     async getData() {
       this.table.loading = true;
 
-      const response = await get_offers_service({
+      const response = await get_users_service({
         page: this.table.options.page,
         limit: this.table.options.itemsPerPage,
         search: this.table.search,
@@ -136,7 +89,6 @@ export default defineComponent({
 
       this.table.data = response.results.data;
       this.table.total_data = response.results.count;
-      this.content_url = response.content_url;
       this.table.loading = false;
     },
     async searchChange() {
@@ -153,21 +105,23 @@ export default defineComponent({
     async saveBtnActions() {
       this.loading = true;
       try {
-        const result = await add_offers_service({
-          title: this.addData.title,
-          description: this.addData.description,
-          image: this.selectedAdImage,
-          price: this.addData.price,
+        const result = await add_users_service({
+          name: this.addData.name,
+          phone: this.addData.phone,
+          password_show: this.addData.password_show,
+          email: this.addData.email,
+          address: this.addData.address,
+          privileges: this.addData.privileges,
         });
 
         this.getData();
         this.dialog = false;
         this.finalMessage = result.message;
-        this.selectedAdImage = null;
         Object.keys(this.addData).forEach((key) => (this.addData[key] = null));
-        console.log("result", result);
       } catch (error) {
-        this.finalMessage = result.message;
+        console.log("data", this.addData);
+
+        console.log("error", error);
       }
       this.loading = false;
     },
@@ -178,32 +132,30 @@ export default defineComponent({
     async editSaveBtnActions() {
       this.loading = true;
       try {
-        const result = await edit_offers_service({
+        const result = await edit_users_service({
           id: this.onEditAd.id,
-          title: this.onEditAd.title,
-          description: this.onEditAd.description,
-          image: this.onEditAd.toBeSentImage
-            ? this.onEditAd.toBeSentImage
-            : this.onEditAd.image,
-          price: this.onEditAd.price,
+          name: this.onEditAd.name,
+          phone: this.onEditAd.phone,
+          password_show: this.onEditAd.password_show,
+          email: this.onEditAd.email,
+          address: this.onEditAd.address,
+          privileges: this.onEditAd.privileges,
         });
 
         this.getData();
         this.editDialog = false;
         this.finalMessage = result.message;
-        this.selectedAdImage = null;
         Object.keys(this.onEditAd).forEach(
           (key) => (this.onEditAd[key] = null)
         );
-        this.addData.image = null;
       } catch (error) {
-        this.finalMessage = result.message;
+        this.finalMessage = error.message;
       }
       this.loading = false;
     },
     async deletingAd() {
       try {
-        const result = await remove_offers_service(this.toBeDeleted);
+        const result = await remove_users_service(this.toBeDeleted);
 
         this.deleteDialog = false;
         this.toBeDeleted = null;
@@ -244,58 +196,58 @@ export default defineComponent({
                   <VCardText>
                     <VContainer>
                       <VRow class="">
-                        <VCol cols="12">
-                          <div
-                            class="imgContainer personalImg d-flex align-center"
-                          >
-                            <div v-show="addData.image" class="imageDisplay">
-                              <VImg
-                                v-model="addData.image"
-                                class="imgS"
-                                :src="selectedAdImage"
-                              />
-                              <button class="deleteBtn" @click="clearAdImage">
-                                <VIcon class="delete_icon"> mdi-close </VIcon>
-                              </button>
-                            </div>
-                            <div
-                              v-show="!addData.image"
-                              class="imgBox"
-                              @click="openFileSelectionAdlImg"
-                            >
-                              <VFileInput
-                                v-show="false"
-                                ref="ImageRef"
-                                type="file"
-                                accept="image/*"
-                                class="input_style"
-                                @change="adImgChange"
-                              />
-                              <button class="addBtn">+</button>
-                              <h4>صورة العرض</h4>
-                            </div>
-                          </div>
-                        </VCol>
-
-                        <!-- this is the image holder -->
-                        <VCol cols="12">
+                        <VCol cols="8">
                           <VTextField
-                            v-model="addData.price"
-                            label="السعر"
+                            v-model="addData.name"
+                            label="الأسم"
                             required
                             :hint="fileInputHint"
                           />
                         </VCol>
-                        <!-- this is the price holder -->
-                        <VCol cols="12">
-                          <VTextarea
-                            v-model="addData.description"
-                            label="وصف العرض"
+                        <!-- this is the title holder -->
+                        <VCol cols="6">
+                          <VTextField
+                            v-model="addData.phone"
+                            label="الرقم"
                             required
-                            rows="3"
+                            :hint="fileInputHint"
                           />
                         </VCol>
-                        <!-- this is the description holder -->
+                        <!-- this is the phoneNumber holder -->
+                        <VCol cols="6">
+                          <VTextField
+                            v-model="addData.password_show"
+                            label="الرمز"
+                            required
+                          />
+                        </VCol>
+                        <!-- this is the password holder -->
+                        <VCol cols="6">
+                          <VTextField
+                            v-model="addData.email"
+                            label="الحساب"
+                            required
+                          />
+                        </VCol>
+                        <!-- this is the password holder -->
+                        <VCol cols="6">
+                          <VTextField
+                            v-model="addData.address"
+                            label="محل السكن"
+                            required
+                          />
+                        </VCol>
+                        <!-- this is the password holder -->
+                        <VCol cols="4">
+                          <VSelect
+                            v-model="addData.privileges.actions"
+                            :items="['add', 'delete']"
+                            label="الأمكانات"
+                            multiple
+                            chips
+                          />
+                        </VCol>
+                        <!-- this is the type holder -->
                       </VRow>
                     </VContainer>
                   </VCardText>
@@ -328,56 +280,58 @@ export default defineComponent({
                   <VCardText>
                     <VContainer>
                       <VRow>
-                        <VCol cols="12">
-                          <div class="imgContainer personalImg">
-                            <div v-show="onEditAd.image" class="imageDisplay">
-                              <VImg
-                                v-model="onEditAd.image"
-                                class="imgS"
-                                :src="selectedAdImage"
-                              />
-                              <button class="deleteBtn" @click="clearAdImage">
-                                <VIcon class="delete_icon"> mdi-close </VIcon>
-                              </button>
-                            </div>
-                            <div
-                              v-show="!onEditAd.image"
-                              class="imgBox"
-                              @click="openFileSelectionAdlImg"
-                            >
-                              <VFileInput
-                                v-show="false"
-                                ref="ImageRef"
-                                type="file"
-                                accept="image/*"
-                                class="input_style"
-                                @change="adImgChange"
-                              />
-                              <button class="addBtn">+</button>
-                              <h4>صورة الأعلان</h4>
-                            </div>
-                          </div>
-                        </VCol>
-
-                        <!-- this is the image holder -->
-                        <VCol cols="12">
+                        <VCol cols="8">
                           <VTextField
-                            v-model="onEditAd.price"
-                            label="السعر"
+                            v-model="onEditAd.name"
+                            label="الأسم"
                             required
                             :hint="fileInputHint"
                           />
                         </VCol>
-                        <!-- this is the price holder -->
-                        <VCol cols="12">
-                          <VTextarea
-                            v-model="onEditAd.description"
-                            label="وصف العرض"
+                        <!-- this is the title holder -->
+                        <VCol cols="6">
+                          <VTextField
+                            v-model="onEditAd.phone"
+                            label="الرقم"
                             required
-                            rows="3"
+                            :hint="fileInputHint"
                           />
                         </VCol>
-                        <!-- this is the description holder -->
+                        <!-- this is the phoneNumber holder -->
+                        <VCol cols="6">
+                          <VTextField
+                            v-model="onEditAd.password_show"
+                            label="الرمز"
+                            required
+                          />
+                        </VCol>
+                        <!-- this is the password holder -->
+                        <VCol cols="6">
+                          <VTextField
+                            v-model="onEditAd.email"
+                            label="الحساب"
+                            required
+                          />
+                        </VCol>
+                        <!-- this is the password holder -->
+                        <VCol cols="6">
+                          <VTextField
+                            v-model="onEditAd.address"
+                            label="محل السكن"
+                            required
+                          />
+                        </VCol>
+                        <!-- this is the password holder -->
+                        <VCol cols="4">
+                          <VSelect
+                            v-model="onEditAd.privileges.actions"
+                            :items="['add', 'delete']"
+                            label="الأمكانات"
+                            multiple
+                            chips
+                          />
+                        </VCol>
+                        <!-- this is the type holder -->
                       </VRow>
                     </VContainer>
                   </VCardText>
@@ -453,13 +407,6 @@ export default defineComponent({
                   :items-per-page-options="table.itemsPerPageOptions"
                   @update:options="optionsChange($event)"
                 >
-                  <template #[`item.image`]="{ item }">
-                    <VRow>
-                      <VCol>
-                        <VImg :src="content_url + item.image" width="100" />
-                      </VCol>
-                    </VRow>
-                  </template>
                   <template #[`item.actions`]="{ item }">
                     <VIcon
                       size="small"

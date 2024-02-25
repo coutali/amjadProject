@@ -25,9 +25,24 @@ export default [
     icon: { icon: 'mdi-percent-outline' },
   },
   {
+    title: 'البكجات',
+    to: { name: 'packages' },
+    icon: { icon: 'mdi-gift-outline' },
+  },
+  {
     title: 'المنتجات',
     to: { name: 'products' },
     icon: { icon: 'mdi-factory' },
+  },
+  {
+    title: 'المستخدمين',
+    to: { name: 'users' },
+    icon: { icon: 'mdi-account-group-outline' },
+  },
+  {
+    title: 'الوضائف',
+    to: { name: 'Jobs' },
+    icon: { icon: 'mdi-briefcase-edit-outline' },
   },
   {
     title: 'من نحن',

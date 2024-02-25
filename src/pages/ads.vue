@@ -157,7 +157,7 @@ export default defineComponent({
         this.getData();
         this.dialog = false;
         this.finalMessage = result.message;
-        this.addData.selectedAdImage = null;
+        this.selectedAdImage = null;
         Object.keys(this.addData).forEach((key) => (this.addData[key] = null));
       } catch (error) {
         this.finalMessage = result.message;
@@ -189,7 +189,9 @@ export default defineComponent({
         );
         this.addData.image = null;
       } catch (error) {
-        this.finalMessage = result.message;
+        console.log("");
+
+        // this.finalMessage = result.message;
       }
       this.loading = false;
     },
