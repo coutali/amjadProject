@@ -1,103 +1,107 @@
 <template>
-  <VRow>
-    <VCol cols="12" md="6">
-      <template>
-        <div class="text-center">
-          <VDialog v-model="dialog" activator="parent" width="auto">
-            <VCard>
-              <VCardText> {{ finalMessage }}</VCardText>
-              <VCardActions>
-                <VBtn color="primary" block @click="dialog = false"> تم </VBtn>
-              </VCardActions>
-            </VCard>
-          </VDialog>
-        </div>
-      </template>
-      <VTextField
-        v-model="data.address"
-        variant="solo-filled"
-        label="العنوان"
-        :max-width="mdAndUp ? '50%' : '100%'"
-        :loading="loading"
-      />
-    </VCol>
-    <VCol cols="12" md="6">
-      <VTextField
-        v-model="data.phone"
-        variant="solo-filled"
-        label="رقم الهاتف"
-        :loading="loading"
-      />
-    </VCol>
-    <VCol cols="12" md="6">
-      <VTextField
-        v-model="data.email"
-        variant="solo-filled"
-        label="الحساب الألكتروني"
-        :loading="loading"
-      />
-    </VCol>
-    <VCol cols="12" md="6">
-      <VTextField
-        v-model="data.facebook"
-        variant="solo-filled"
-        label="حساب فيسبوك"
-        :loading="loading"
-      />
-    </VCol>
-    <VCol cols="12" md="6">
-      <VTextField
-        v-model="data.instagram"
-        variant="solo-filled"
-        label="حساب انستقرام"
-        :loading="loading"
-      />
-    </VCol>
-    <VCol cols="12" md="6">
-      <VTextField
-        v-model="data.whatsapp"
-        variant="solo-filled"
-        label="رقم الواتساب"
-        :loading="loading"
-      />
-    </VCol>
-    <VCol cols="12" md="6">
-      <VTextField
-        v-model="data.telegram"
-        variant="solo-filled"
-        label="حساب تيليجرام"
-        :loading="loading"
-      />
-    </VCol>
-    <VCol cols="12" md="6">
-      <VTextField
-        v-model="data.location"
-        variant="solo-filled"
-        label="الموقع الحالي"
-        :loading="loading"
-      />
-    </VCol>
-    <VCol cols="12">
-      <VTextarea
-        v-model="data.description"
-        variant="solo-filled"
-        label="الوصف"
-        :loading="loading"
-      />
-    </VCol>
-  </VRow>
-  <VRow>
-    <VCol>
-      <VBtn
-        append-icon="mdi-content-save-all-outline"
-        variant="outlined"
-        block
-        @click="editData"
-      >
-        <h4 class="btn-word" :loading="loading">حفظ</h4>
-      </VBtn>
-    </VCol>
-  </VRow>
+  <div>
+    <VRow>
+      <VCol cols="12" md="6">
+        <template>
+          <div class="text-center">
+            <VDialog v-model="dialog" activator="parent" width="auto">
+              <VCard>
+                <VCardText> {{ finalMessage }}</VCardText>
+                <VCardActions>
+                  <VBtn color="primary" block @click="dialog = false">
+                    تم
+                  </VBtn>
+                </VCardActions>
+              </VCard>
+            </VDialog>
+          </div>
+        </template>
+        <VTextField
+          v-model="data.address"
+          variant="solo-filled"
+          label="العنوان"
+          :max-width="mdAndUp ? '50%' : '100%'"
+          :loading="loading"
+        />
+      </VCol>
+      <VCol cols="12" md="6">
+        <VTextField
+          v-model="data.phone"
+          variant="solo-filled"
+          label="رقم الهاتف"
+          :loading="loading"
+        />
+      </VCol>
+      <VCol cols="12" md="6">
+        <VTextField
+          v-model="data.email"
+          variant="solo-filled"
+          label="الحساب الألكتروني"
+          :loading="loading"
+        />
+      </VCol>
+      <VCol cols="12" md="6">
+        <VTextField
+          v-model="data.facebook"
+          variant="solo-filled"
+          label="حساب فيسبوك"
+          :loading="loading"
+        />
+      </VCol>
+      <VCol cols="12" md="6">
+        <VTextField
+          v-model="data.instagram"
+          variant="solo-filled"
+          label="حساب انستقرام"
+          :loading="loading"
+        />
+      </VCol>
+      <VCol cols="12" md="6">
+        <VTextField
+          v-model="data.whatsapp"
+          variant="solo-filled"
+          label="رقم الواتساب"
+          :loading="loading"
+        />
+      </VCol>
+      <VCol cols="12" md="6">
+        <VTextField
+          v-model="data.telegram"
+          variant="solo-filled"
+          label="حساب تيليجرام"
+          :loading="loading"
+        />
+      </VCol>
+      <VCol cols="12" md="6">
+        <VTextField
+          v-model="data.location"
+          variant="solo-filled"
+          label="الموقع الحالي"
+          :loading="loading"
+        />
+      </VCol>
+      <VCol cols="12">
+        <VTextarea
+          v-model="data.description"
+          variant="solo-filled"
+          label="الوصف"
+          :loading="loading"
+        />
+      </VCol>
+    </VRow>
+    <VRow>
+      <VCol>
+        <VBtn
+          append-icon="mdi-content-save-all-outline"
+          variant="outlined"
+          block
+          @click="editData"
+        >
+          <h4 class="btn-word" :loading="loading">حفظ</h4>
+        </VBtn>
+      </VCol>
+    </VRow>
+  </div>
 </template>
 
 <script>

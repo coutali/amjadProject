@@ -78,27 +78,4 @@ $header: ".layout-navbar";
   }
 
   // !SECTION
-
-  // 👉 Layout footer
-  .layout-footer {
-    $ele-layout-footer: &;
-
-    .footer-content-container {
-      border-radius: variables.$default-layout-with-vertical-nav-navbar-footer-roundness variables.$default-layout-with-vertical-nav-navbar-footer-roundness 0 0;
-
-      // Sticky footer
-      @at-root {
-        // ℹ️ .layout-footer-sticky#{$ele-layout-footer} => .layout-footer-sticky.layout-wrapper.layout-nav-type-vertical .layout-footer
-        .layout-footer-sticky#{$ele-layout-footer} {
-          .footer-content-container {
-            background-color: rgb(var(--v-theme-surface));
-            padding-block: 0;
-            padding-inline: 1.2rem;
-
-            @include mixins.elevation(3);
-          }
-        }
-      }
-    }
-  }
 }

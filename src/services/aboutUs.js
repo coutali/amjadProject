@@ -8,7 +8,6 @@ export const get_aboutUs_service = async () => {
       
     return response.data
   } catch (error) {
-    console.log("error", error)
       
     return error.response.data
   }
@@ -41,7 +40,6 @@ export const edit_aboutUs_service = async ({
   
     return response.data
   } catch (error) {
-    console.log("error", error)
       
     return error.response.data
   }

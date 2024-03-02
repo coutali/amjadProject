@@ -2,6 +2,7 @@
 import {
   add_products_service,
   edit_products_service,
+  get_all_categorys_service,
   get_products_service,
   remove_products_service,
 } from "@/services/products";
@@ -18,12 +19,7 @@ export default defineComponent({
       selectedAdImage: "", // this can by the image of the ad on edit or the new ad
       finalMessage: null,
       toBeDeleted: null,
-      categorys: {
-        val1: "65c3d42bb94626941e6c2abf",
-        val2: "65c3d42bb94626941e6c2abf",
-        val3: "65c3d42bb94626941e6c2abf",
-        val4: "65c3d42bb94626941e6c2abf",
-      },
+      categorys: {},
       addData: {
         title: null,
         description: null,
@@ -86,6 +82,14 @@ export default defineComponent({
     };
   },
   methods: {
+    currencyFormator(number) {
+      let USDollar = new Intl.NumberFormat("en-IQ", {
+        style: "currency",
+        currency: "IQD",
+      });
+
+      return USDollar.format(number);
+    },
     editDialogActions(e) {
       this.onEditAd.id = e["_id"];
       this.onEditAd.title = e.title;
@@ -148,6 +152,14 @@ export default defineComponent({
       this.table.data = response.results.data;
       this.table.total_data = response.results.count;
       this.content_url = response.content_url;
+
+      const categorysData = await get_all_categorys_service();
+
+      for (let cate of categorysData.results) {
+        let [value, key] = Object.values(cate);
+        Object.assign(this.categorys, { [key]: value });
+      }
+
       this.table.loading = false;
     },
     async searchChange() {
@@ -232,7 +244,7 @@ export default defineComponent({
 <template>
   <div>
     <VContainer>
-      <h1 class="text-center mb-5">العروض</h1>
+      <h1 class="text-center mb-5">المنتجات</h1>
       <VCard class="bg-grey-400">
         <div class="d-flex flex-column justify-sm-space-around">
           <VCard class="pa-3">
@@ -247,12 +259,12 @@ export default defineComponent({
                     no-restricted-class
                     class="mt-4 mr-4"
                   >
-                    أضافة عرض جديد
+                    أضافة منتج جديد
                   </VBtn>
                 </template>
                 <VCard>
                   <VCardTitle class="d-flex mt-5 mr-5">
-                    <span v-cloak class="text-h5">أضافة عرض جديد</span>
+                    <span v-cloak class="text-h5">أضافة منتج جديد</span>
                   </VCardTitle>
                   <VCardText>
                     <VContainer>
@@ -285,7 +297,7 @@ export default defineComponent({
                                 @change="adImgChange"
                               />
                               <button class="addBtn">+</button>
-                              <h4>صورة العرض</h4>
+                              <h4>صورة المنتج</h4>
                             </div>
                           </div>
                         </VCol>
@@ -353,7 +365,7 @@ export default defineComponent({
               <VDialog v-model="editDialog" width="1024">
                 <VCard>
                   <VCardTitle class="d-flex mt-5 mr-5">
-                    <span v-cloak class="text-h5">تعديل الأعلان</span>
+                    <span v-cloak class="text-h5">تعديل المنتج</span>
                   </VCardTitle>
                   <VCardText>
                     <VContainer>
@@ -384,7 +396,7 @@ export default defineComponent({
                                 @change="adImgChange"
                               />
                               <button class="addBtn">+</button>
-                              <h4>صورة الأعلان</h4>
+                              <h4>صورة المنتج</h4>
                             </div>
                           </div>
                         </VCol>
@@ -508,6 +520,13 @@ export default defineComponent({
                             (key) => categorys[key] === item.category
                           )
                         }}
+                      </VCol>
+                    </VRow>
+                  </template>
+                  <template #[`item.price`]="{ item }">
+                    <VRow>
+                      <VCol>
+                        {{ currencyFormator(item.price) }}
                       </VCol>
                     </VRow>
                   </template>

@@ -1,6 +1,6 @@
 <template>
   <div>
-    <VBtn class="mb-3" @click="addDialog = true"> أضافة برج جديد </VBtn>
+    <VBtn class="mb-3" @click="addDialog = true"> أضافة مكتب جديد </VBtn>
     <GoogleMap
       :api-key="APIkey"
       style="width: 100%; height: calc(100vh - 125px)"
@@ -14,7 +14,7 @@
         :options="{
           position: { lat: m.location.lat, lng: m.location.lon },
           icon: {
-            url: 'src/assets/radio-tower.svg',
+            url: 'src/assets/office-building-marker-outline.svg',
             scaledSize: { width: 33, height: 33 },
           },
           label: {
@@ -22,68 +22,36 @@
             color: 'red',
           },
         }"
-        @click="towerIconActions(m)"
+        @click="officesIconActions(m)"
       />
     </GoogleMap>
     <VDialog v-model="editDialog" width="1024">
       <VCard>
         <VCardTitle class="d-flex mt-5 mr-5">
-          <span v-cloak class="text-h5">تعديل البرج</span>
+          <span v-cloak class="text-h5">تعديل المكتب</span>
         </VCardTitle>
         <VCardText>
           <VContainer>
             <VRow>
               <VCol cols="6">
                 <VTextField
-                  v-model="onEditTower.name"
-                  label="اسم البرج"
+                  v-model="onEditoffices.name"
+                  label="اسم المكتب"
                   required
                   :hint="fileInputHint"
                 />
               </VCol>
               <!-- this is the title holder -->
               <VCol cols="6">
-                <VTextField v-model="onEditTower.address" label="عنوان البرج" />
+                <VTextField
+                  v-model="onEditoffices.address"
+                  label="عنوان المكتب"
+                />
               </VCol>
               <!-- this is the category holder -->
-              <VCol cols="6">
-                <VTextField
-                  v-model="onEditTower.affiliate"
-                  label="افيلايت"
-                  required
-                  :hint="fileInputHint"
-                />
-              </VCol>
-              <!-- this is the price holder -->
-              <VCol cols="6">
-                <VTextField
-                  v-model="onEditTower.sector_name"
-                  label="اسم السكتر"
-                  required
-                />
-              </VCol>
-              <!-- this is the description holder -->
-              <VCol cols="6">
-                <VTextField
-                  v-model="onEditTower.phone_first"
-                  label="رقم الهاتف الأول"
-                  required
-                  type="number"
-                />
-              </VCol>
-              <!-- this is the description holder -->
-              <VCol cols="6">
-                <VTextField
-                  v-model="onEditTower.phone_second"
-                  label="رقم الهاتف الثاني"
-                  required
-                  type="number"
-                />
-              </VCol>
-              <!-- this is the description holder -->
               <VCol cols="5">
                 <VTextField
-                  v-model="onEditTower.lon"
+                  v-model="onEditoffices.lon"
                   label="خطوط الطول"
                   required
                   disabled
@@ -92,7 +60,7 @@
               <!-- this is the description holder -->
               <VCol cols="5">
                 <VTextField
-                  v-model="onEditTower.lat"
+                  v-model="onEditoffices.lat"
                   label="خطوط العرض"
                   required
                   disabled
@@ -125,7 +93,7 @@
                 variant="text"
                 @click="deleteDialog = true"
               >
-                حذف البرج
+                حذف المكتب
               </VBtn>
             </VCol>
             <VCol cols="6">
@@ -152,8 +120,8 @@
         </VCardActions>
         <VDialog v-model="deleteDialog" width="auto">
           <VCard>
-            <VCardTitle class="text-h5"> حذف البرج </VCardTitle>
-            <VCardText>هل فعلا ترغب بحذف هذا البرج</VCardText>
+            <VCardTitle class="text-h5"> حذف المكتب </VCardTitle>
+            <VCardText>هل فعلا ترغب بحذف هذا المكتب</VCardText>
             <VCardActions>
               <VSpacer />
               <VBtn
@@ -167,7 +135,7 @@
                 :loading="loading"
                 color="green-darken-1"
                 variant="text"
-                @click="towerDelete"
+                @click="officesDelete"
               >
                 نعم
               </VBtn>
@@ -179,62 +147,27 @@
     <VDialog v-model="addDialog" width="1024">
       <VCard>
         <VCardTitle class="d-flex mt-5 mr-5">
-          <span v-cloak class="text-h5">أضافة برج جديد</span>
+          <span v-cloak class="text-h5">أضافة مكتب جديد</span>
         </VCardTitle>
         <VCardText>
           <VContainer>
             <VRow>
               <VCol cols="6">
                 <VTextField
-                  v-model="addTower.name"
-                  label="الأسم"
+                  v-model="addoffices.name"
+                  label="اسم المكتب"
                   required
                   :hint="fileInputHint"
                 />
               </VCol>
               <!-- this is the title holder -->
               <VCol cols="6">
-                <VTextField v-model="addTower.address" label="عنوان البرج" />
+                <VTextField v-model="addoffices.address" label="عنوان المكتب" />
               </VCol>
               <!-- this is the category holder -->
-              <VCol cols="6">
-                <VTextField
-                  v-model="addTower.affiliate"
-                  label="افيلايت"
-                  required
-                  :hint="fileInputHint"
-                />
-              </VCol>
-              <!-- this is the price holder -->
-              <VCol cols="6">
-                <VTextField
-                  v-model="addTower.sector_name"
-                  label="اسم السكتر"
-                  required
-                />
-              </VCol>
-              <!-- this is the description holder -->
-              <VCol cols="6">
-                <VTextField
-                  v-model="addTower.phone_first"
-                  label="رقم الهاتف الأول"
-                  required
-                  type="number"
-                />
-              </VCol>
-              <!-- this is the description holder -->
-              <VCol cols="6">
-                <VTextField
-                  v-model="addTower.phone_second"
-                  label="رقم الهاتف الثاني"
-                  required
-                  type="number"
-                />
-              </VCol>
-              <!-- this is the description holder -->
               <VCol cols="5">
                 <VTextField
-                  v-model="addTower.lon"
+                  v-model="addoffices.lon"
                   label="خطوط العرض"
                   required
                   disabled
@@ -243,7 +176,7 @@
               <!-- this is the description holder -->
               <VCol cols="5">
                 <VTextField
-                  v-model="addTower.lat"
+                  v-model="addoffices.lat"
                   label="خطوط الطول"
                   required
                   disabled
@@ -258,7 +191,7 @@
                   justify-content: center;
                 "
               >
-                <VBtn @click="addChangeBtn"> أختر الموقع </VBtn>
+                <VBtn @click="addChangeBtn"> تغيير الموقع </VBtn>
                 <p style="font-size: 12px" class="pt-2">
                   أختر الموقع على الخريطة
                 </p>
@@ -298,11 +231,11 @@
 
 <script>
 import {
-  add_towers_service,
-  edit_towers_service,
-  get_towers_service,
-  remove_towers_service,
-} from "@/services/towers";
+  add_offices_service,
+  edit_offices_service,
+  get_offices_service,
+  remove_offices_service,
+} from "@/services/offices";
 import { defineComponent } from "vue";
 import { GoogleMap, Marker } from "vue3-google-map";
 
@@ -318,70 +251,54 @@ export default defineComponent({
       MyLng: null,
       MyLat: null,
       data: [],
-      addTower: {
+      addoffices: {
         name: null,
         address: null,
-        affiliate: null,
-        sector_name: null,
-        phone_first: null,
-        phone_second: null,
         lon: null,
         lat: null,
       },
-      onEditTower: {
+      onEditoffices: {
         id: null,
         name: null,
         address: null,
-        affiliate: null,
-        sector_name: null,
-        phone_first: null,
-        phone_second: null,
         lon: null,
         lat: null,
       },
     };
   },
-
   created() {
     this.getData();
-
-    // this.$getLocation()
-    //   .then((coordinates) => {
-    //     this.MyLat = coordinates.lat;
-    //     this.MyLng = coordinates.lng;
-    //   })
-    //   .catch((error) => {
-
-    //   });
+    this.$getLocation()
+      .then((coordinates) => {
+        this.MyLat = coordinates.lat;
+        this.MyLng = coordinates.lng;
+      })
+      .catch((error) => {});
   },
   methods: {
     getGeoPoint(e) {
       if (this.whichDialog === "edit") {
-        this.onEditTower.lon = e.latLng.lng();
-        this.onEditTower.lat = e.latLng.lat();
+        this.onEditoffices.lon = e.latLng.lng();
+        this.onEditoffices.lat = e.latLng.lat();
         this.editDialog = true;
       } else if (this.whichDialog === "add") {
-        this.addTower.lon = e.latLng.lng();
-        this.addTower.lat = e.latLng.lat();
+        this.addoffices.lon = e.latLng.lng();
+        this.addoffices.lat = e.latLng.lat();
         this.addDialog = true;
       }
     },
     async getData() {
-      const response = await get_towers_service();
+      const response = await get_offices_service();
 
       this.data = response.results.data;
     },
-    towerIconActions(m) {
+    officesIconActions(m) {
       this.editDialog = true;
-      this.onEditTower.id = m["_id"];
-      this.onEditTower.name = m.name;
-      this.onEditTower.address = m.address;
-      this.onEditTower.affiliate = m.affiliate;
-      this.onEditTower.sector_name = m.sector_name;
-      this.onEditTower.phone_first = m.phone_first;
-      this.onEditTower.phone_second = m.phone_second;
-      this.onEditTower.lon = m.location.lon;
-      this.onEditTower.lat = m.location.lat;
+      this.onEditoffices.id = m["_id"];
+      this.onEditoffices.name = m.name;
+      this.onEditoffices.address = m.address;
+      this.onEditoffices.lon = m.location.lon;
+      this.onEditoffices.lat = m.location.lat;
     },
     editChangeBtn() {
       this.editDialog = false;
@@ -394,22 +311,20 @@ export default defineComponent({
     async editSaveBtnActions() {
       this.loading = true;
       try {
-        const result = await edit_towers_service({
-          id: this.onEditTower.id,
-          name: this.onEditTower.name,
-          address: this.onEditTower.address,
-          affiliate: this.onEditTower.affiliate,
-          sector_name: this.onEditTower.sector_name,
-          phone_first: this.onEditTower.phone_first,
-          phone_second: this.onEditTower.phone_second,
-          lon: this.onEditTower.lon,
-          lat: this.onEditTower.lat,
+        const result = await edit_offices_service({
+          id: this.onEditoffices.id,
+          name: this.onEditoffices.name,
+          address: this.onEditoffices.address,
+          zone: this.onEditoffices.zone,
+          number: this.onEditoffices.number,
+          lon: this.onEditoffices.lon,
+          lat: this.onEditoffices.lat,
         });
 
         this.getData();
         this.editDialog = false;
-        Object.keys(this.onEditTower).forEach(
-          (key) => (this.onEditTower[key] = null)
+        Object.keys(this.onEditoffices).forEach(
+          (key) => (this.onEditoffices[key] = null)
         );
         this.whichDialog = null;
       } catch (error) {
@@ -420,21 +335,19 @@ export default defineComponent({
     async addSaveBtnActions() {
       this.loading = true;
       try {
-        const result = await add_towers_service({
-          name: this.addTower.name,
-          address: this.addTower.address,
-          affiliate: this.addTower.affiliate,
-          sector_name: this.addTower.sector_name,
-          phone_first: this.addTower.phone_first,
-          phone_second: this.addTower.phone_second,
-          lon: this.addTower.lon,
-          lat: this.addTower.lat,
+        const result = await add_offices_service({
+          name: this.addoffices.name,
+          address: this.addoffices.address,
+          zone: this.addoffices.zone,
+          number: this.addoffices.number,
+          lon: this.addoffices.lon,
+          lat: this.addoffices.lat,
         });
 
         this.getData();
         this.addDialog = false;
-        Object.keys(this.addTower).forEach(
-          (key) => (this.addTower[key] = null)
+        Object.keys(this.addoffices).forEach(
+          (key) => (this.addoffices[key] = null)
         );
         this.whichDialog = null;
       } catch (error) {
@@ -442,9 +355,9 @@ export default defineComponent({
       }
       this.loading = false;
     },
-    async towerDelete() {
+    async officesDelete() {
       try {
-        const result = await remove_towers_service(this.onEditTower.id);
+        const result = await remove_offices_service(this.onEditoffices.id);
 
         this.deleteDialog = false;
         this.editDialog = false;

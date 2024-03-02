@@ -15,6 +15,11 @@ export default [
     icon: { icon: 'mdi-firewire' },
   },
   {
+    title: 'المكاتب',
+    to: { name: 'offices' },
+    icon: { icon: 'mdi-office-building' },
+  },
+  {
     title: 'الأعلانات',
     to: { name: 'ads' },
     icon: { icon: 'mdi-ads' },
@@ -43,6 +48,11 @@ export default [
     title: 'الوضائف',
     to: { name: 'Jobs' },
     icon: { icon: 'mdi-briefcase-edit-outline' },
+  },
+  {
+    title: 'التصنيفات',
+    to: { name: 'category' },
+    icon: { icon: 'mdi-widgets-outline' },
   },
   {
     title: 'من نحن',

@@ -1,6 +1,18 @@
 import axiosIns from "@/plugins/axios"
 
 
+export const get_all_categorys_service = async () => {
+  try {
+    const response =
+      await axiosIns.get(`products_category/all`)
+
+    
+    return response.data
+  } catch (error) {
+    
+    return error.response.data
+  }
+}
 export const get_products_service = async ({
   page,
   limit,
@@ -9,12 +21,9 @@ export const get_products_service = async ({
   try {
     const response =
       await axiosIns.get(`products?page=${page}&limit=${limit}&search=${search}`)
-
     
     return response.data
-  } catch (error) {
-    console.log("error", error)
-    
+  } catch (error) {    
     return error.response.data
   }
 }
@@ -62,9 +71,7 @@ export const edit_products_service = async ({
       })
 
     return response.data
-  } catch (error) {
-    console.log("error", error)
-    
+  } catch (error) {    
     return error.response.data
   }
 }
@@ -76,7 +83,6 @@ export const remove_products_service = async id => {
 
     return response.data
   } catch (error) {
-    console.log("error", error)
     
     return error.response.data
   }

@@ -22,7 +22,7 @@ export const get_users_service = async ({
 export const add_users_service = async ({
   name,
   phone,
-  password_show,
+  password,
   email,
   address,
   privileges,
@@ -32,7 +32,7 @@ export const add_users_service = async ({
       await axiosIns.post("users", {
         name,
         phone,
-        password_show,
+        password,
         email,
         address,
         privileges,
@@ -49,7 +49,7 @@ export const edit_users_service = async ({
   id,
   name,
   phone,
-  password_show,
+  password,
   email,
   address,
   privileges,
@@ -59,7 +59,7 @@ export const edit_users_service = async ({
       await axiosIns.put(`users/${id}`, {
         name,
         phone,
-        password_show,
+        password,
         email,
         address,
         privileges,

@@ -1,10 +1,10 @@
 <script>
 import {
-  add_users_service,
-  edit_users_service,
-  get_users_service,
-  remove_users_service,
-} from "@/services/users";
+  add_products_category_service,
+  edit_products_category_service,
+  get_products_category_service,
+  remove_products_category_service,
+} from "@/services/category";
 import { defineComponent } from "vue";
 
 export default defineComponent({
@@ -19,32 +19,15 @@ export default defineComponent({
       toBeDeleted: null,
       addData: {
         name: null,
-        phone: null,
-        password: null,
-        email: null,
-        privileges: { actions: [] },
       },
       onEditAd: {
         id: null,
         name: null,
-        phone: null,
-        password: null,
-        email: null,
-        privileges: { actions: [] },
-      },
-      privileges: {
-        add: "الأضافة",
-        edit: "التعديل",
-        delete: "الحذف",
       },
       table: {
         loading: false,
         headers: [
-          { title: "الأسم", value: "name" },
-          { title: "الهاتف", value: "phone" },
-          { title: "كلمة السر", value: "password_show" },
-          { title: "الأيميل", value: "email" },
-          { title: "الأمكانات", value: "privileges.actions" },
+          { title: "التصنيف", value: "name" },
           { title: "العمليات", value: "actions" },
         ],
 
@@ -71,19 +54,13 @@ export default defineComponent({
     editDialogActions(e) {
       this.onEditAd.id = e["_id"];
       this.onEditAd.name = e.name;
-      this.onEditAd.phone = e.phone;
-      this.onEditAd.password = e.password_show;
-      this.onEditAd.email = e.email;
       this.editDialog = true;
-      this.onEditAd.privileges.actions = e.privileges.actions.map((ele) => {
-        return this.privileges[ele];
-      });
     },
 
     async getData() {
       this.table.loading = true;
 
-      const response = await get_users_service({
+      const response = await get_products_category_service({
         page: this.table.options.page,
         limit: this.table.options.itemsPerPage,
         search: this.table.search,
@@ -91,6 +68,7 @@ export default defineComponent({
 
       this.table.data = response.results.data;
       this.table.total_data = response.results.count;
+      this.content_url = response.content_url;
       this.table.loading = false;
     },
     async searchChange() {
@@ -106,32 +84,17 @@ export default defineComponent({
     // here were you send new ad to the api and other stuff --Ali--
     async saveBtnActions() {
       this.loading = true;
-      let toBeSentPrivileges = { actions: [] };
-      for (let [key, val] of Object.entries(this.privileges)) {
-        this.addData.privileges.actions.includes(this.privileges[key])
-          ? toBeSentPrivileges.actions.push(key)
-          : "";
-      }
       try {
-        const result = await add_users_service({
+        const result = await add_products_category_service({
           name: this.addData.name,
-          phone: this.addData.phone,
-          password: this.addData.password,
-          email: this.addData.email,
-          privileges: toBeSentPrivileges,
         });
 
         this.getData();
-        toBeSentPrivileges = { actions: [] };
         this.dialog = false;
         this.finalMessage = result.message;
-        Object.keys(this.addData).forEach((key) =>
-          key === "privileges"
-            ? (this.addData[key].actions = [])
-            : (this.addData[key] = null)
-        );
+        Object.keys(this.addData).forEach((key) => (this.addData[key] = null));
       } catch (error) {
-        this.finalMessage = error.message;
+        this.finalMessage = result.message;
       }
       this.loading = false;
     },
@@ -141,39 +104,26 @@ export default defineComponent({
     },
     async editSaveBtnActions() {
       this.loading = true;
-      let toBeSentPrivileges = { actions: [] };
-      for (let [key, val] of Object.entries(this.privileges)) {
-        this.onEditAd.privileges.actions.includes(this.privileges[key])
-          ? toBeSentPrivileges.actions.push(key)
-          : "";
-      }
       try {
-        const result = await edit_users_service({
+        const result = await edit_products_category_service({
           id: this.onEditAd.id,
           name: this.onEditAd.name,
-          phone: this.onEditAd.phone,
-          password: this.onEditAd.password,
-          email: this.onEditAd.email,
-          privileges: toBeSentPrivileges,
         });
 
         this.getData();
         this.editDialog = false;
-        toBeSentPrivileges = { actions: [] };
         this.finalMessage = result.message;
-        Object.keys(this.onEditAd).forEach((key) =>
-          key === "privileges"
-            ? (this.onEditAd[key].actions = [])
-            : (this.onEditAd[key] = null)
+        Object.keys(this.onEditAd).forEach(
+          (key) => (this.onEditAd[key] = null)
         );
       } catch (error) {
-        this.finalMessage = error.message;
+        this.finalMessage = result.message;
       }
       this.loading = false;
     },
     async deletingAd() {
       try {
-        const result = await remove_users_service(this.toBeDeleted);
+        const result = await remove_products_category_service(this.toBeDeleted);
 
         this.deleteDialog = false;
         this.toBeDeleted = null;
@@ -189,7 +139,7 @@ export default defineComponent({
 <template>
   <div>
     <VContainer>
-      <h1 class="text-center mb-5">المستخدمين</h1>
+      <h1 class="text-center mb-5">التصنيفات</h1>
       <VCard class="bg-grey-400">
         <div class="d-flex flex-column justify-sm-space-around">
           <VCard class="pa-3">
@@ -204,60 +154,25 @@ export default defineComponent({
                     no-restricted-class
                     class="mt-4 mr-4"
                   >
-                    أضافة مستخدم جديد
+                    أضافة تصنيف جديد
                   </VBtn>
                 </template>
                 <VCard>
                   <VCardTitle class="d-flex mt-5 mr-5">
-                    <span v-cloak class="text-h5">أضافة عرض جديد</span>
+                    <span v-cloak class="text-h5">أضافة تصنيف جديد</span>
                   </VCardTitle>
                   <VCardText>
                     <VContainer>
                       <VRow class="">
-                        <VCol cols="6">
+                        <VCol cols="12">
                           <VTextField
                             v-model="addData.name"
-                            label="الأسم"
+                            label="أسم التصنيف"
                             required
                             :hint="fileInputHint"
                           />
                         </VCol>
-                        <!-- this is the title holder -->
-                        <VCol cols="6">
-                          <VTextField
-                            v-model="addData.phone"
-                            label="الرقم"
-                            required
-                            :hint="fileInputHint"
-                          />
-                        </VCol>
-                        <!-- this is the phoneNumber holder -->
-                        <VCol cols="6">
-                          <VTextField
-                            v-model="addData.password"
-                            label="الرمز"
-                            required
-                          />
-                        </VCol>
-                        <!-- this is the password holder -->
-                        <VCol cols="6">
-                          <VTextField
-                            v-model="addData.email"
-                            label="الأيميل"
-                            required
-                          />
-                        </VCol>
-                        <!-- this is the password holder -->
-                        <VCol cols="6">
-                          <VSelect
-                            v-model="addData.privileges.actions"
-                            :items="Object.values(privileges)"
-                            label="الأمكانات"
-                            multiple
-                            chips
-                          />
-                        </VCol>
-                        <!-- this is the type holder -->
+                        <!-- this is the price holder -->
                       </VRow>
                     </VContainer>
                   </VCardText>
@@ -285,55 +200,20 @@ export default defineComponent({
               <VDialog v-model="editDialog" width="1024">
                 <VCard>
                   <VCardTitle class="d-flex mt-5 mr-5">
-                    <span v-cloak class="text-h5">تعديل الأعلان</span>
+                    <span v-cloak class="text-h5">تعديل التصنيف</span>
                   </VCardTitle>
                   <VCardText>
                     <VContainer>
                       <VRow>
-                        <VCol cols="6">
+                        <VCol cols="12">
                           <VTextField
                             v-model="onEditAd.name"
-                            label="الأسم"
+                            label="أسم التصنيف"
                             required
                             :hint="fileInputHint"
                           />
                         </VCol>
-                        <!-- this is the title holder -->
-                        <VCol cols="6">
-                          <VTextField
-                            v-model="onEditAd.phone"
-                            label="الرقم"
-                            required
-                            :hint="fileInputHint"
-                          />
-                        </VCol>
-                        <!-- this is the phoneNumber holder -->
-                        <VCol cols="6">
-                          <VTextField
-                            v-model="onEditAd.password"
-                            label="الرمز"
-                            required
-                          />
-                        </VCol>
-                        <!-- this is the password holder -->
-                        <VCol cols="6">
-                          <VTextField
-                            v-model="onEditAd.email"
-                            label="الأيميل"
-                            required
-                          />
-                        </VCol>
-                        <!-- this is the password holder -->
-                        <VCol cols="6">
-                          <VSelect
-                            v-model="onEditAd.privileges.actions"
-                            :items="Object.values(privileges)"
-                            label="الأمكانات"
-                            multiple
-                            chips
-                          />
-                        </VCol>
-                        <!-- this is the type holder -->
+                        <!-- this is the price holder -->
                       </VRow>
                     </VContainer>
                   </VCardText>
@@ -410,26 +290,12 @@ export default defineComponent({
                   @update:options="optionsChange($event)"
                 >
                   <template #[`item.actions`]="{ item }">
-                    <VIcon
-                      size="small"
-                      class="me-2"
-                      @click="editDialogActions(item)"
-                    >
+                    <VIcon size="large" @click="editDialogActions(item)">
                       mdi-pencil
                     </VIcon>
-                    <VIcon size="small" @click="deleteIconActions(item)">
+                    <VIcon size="large" @click="deleteIconActions(item)">
                       mdi-delete
                     </VIcon>
-                  </template>
-                  <template #[`item.privileges.actions`]="{ item }">
-                    {{
-                      item.privileges.actions
-                        .map((ele) => {
-                          return privileges[ele];
-                        })
-                        .sort()
-                        .join(" | ")
-                    }}
                   </template>
                 </VDataTableServer>
               </VCol>
@@ -440,79 +306,3 @@ export default defineComponent({
     </VContainer>
   </div>
 </template>
-
-<style lang="scss">
-@import "../styles/mixins";
-@import "../styles/vars";
-@import "../styles/placeholders";
-
-// * {
-//   border: 1px solid red;
-// }
-.v-table {
-  block-size: 105%;
-}
-
-.v-card {
-  overflow: visible;
-}
-
-.imgContainer {
-  block-size: 200px;
-  cursor: pointer;
-  inline-size: 100%;
-
-  .imageDisplay {
-    position: relative;
-    block-size: 100%;
-    inline-size: 100%;
-
-    .imgS {
-      block-size: 100%;
-      inline-size: 100%;
-      object-fit: contain;
-    }
-
-    .deleteBtn {
-      @extend %centering;
-
-      position: absolute;
-      border: solid 1px $mainColor;
-      border-radius: 50%;
-      background-color: $mainColor;
-      color: $mainColor;
-      cursor: pointer;
-      inset-block-start: 0;
-      inset-inline-end: 15%;
-
-      &:hover {
-        background-color: $accColor;
-      }
-
-      .delete_icon {
-        color: #fff;
-        font-size: 1.5rem;
-      }
-
-      @include maxQuery(1900px) {
-        inset-inline-end: 0;
-      }
-    }
-  }
-
-  .imgBox {
-    @extend %centering;
-
-    display: relative;
-    border: dashed 3px $mainColor;
-    border-radius: 16px;
-    block-size: 100%;
-    inline-size: 100%;
-  }
-
-  .addBtn {
-    color: $mainColor;
-    font-size: 3rem;
-  }
-}
-</style>

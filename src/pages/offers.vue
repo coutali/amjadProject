@@ -35,7 +35,6 @@ export default defineComponent({
       table: {
         loading: false,
         headers: [
-          { title: "العنوان", value: "title" },
           { title: "الوصف", value: "description" },
           { title: "الصورة", value: "image" },
           { title: "السعر", value: "price" },
@@ -77,6 +76,14 @@ export default defineComponent({
     };
   },
   methods: {
+    currencyFormator(number) {
+      let USDollar = new Intl.NumberFormat("en-IQ", {
+        style: "currency",
+        currency: "IQD",
+      });
+
+      return USDollar.format(number);
+    },
     editDialogActions(e) {
       this.onEditAd.id = e["_id"];
       this.onEditAd.title = e.title;
@@ -85,7 +92,6 @@ export default defineComponent({
       this.onEditAd.price = e.price;
       this.selectedAdImage = this.content_url + this.onEditAd.image;
       this.editDialog = true;
-      console.log(e);
     },
     clearAdImage() {
       this.addData.image = null;
@@ -165,7 +171,6 @@ export default defineComponent({
         this.finalMessage = result.message;
         this.selectedAdImage = null;
         Object.keys(this.addData).forEach((key) => (this.addData[key] = null));
-        console.log("result", result);
       } catch (error) {
         this.finalMessage = result.message;
       }
@@ -323,7 +328,7 @@ export default defineComponent({
               <VDialog v-model="editDialog" width="1024">
                 <VCard>
                   <VCardTitle class="d-flex mt-5 mr-5">
-                    <span v-cloak class="text-h5">تعديل الأعلان</span>
+                    <span v-cloak class="text-h5">تعديل العرض</span>
                   </VCardTitle>
                   <VCardText>
                     <VContainer>
@@ -354,7 +359,7 @@ export default defineComponent({
                                 @change="adImgChange"
                               />
                               <button class="addBtn">+</button>
-                              <h4>صورة الأعلان</h4>
+                              <h4>صورة العرض</h4>
                             </div>
                           </div>
                         </VCol>
@@ -453,6 +458,13 @@ export default defineComponent({
                   :items-per-page-options="table.itemsPerPageOptions"
                   @update:options="optionsChange($event)"
                 >
+                  <template #[`item.price`]="{ item }">
+                    <VRow>
+                      <VCol>
+                        {{ currencyFormator(item.price) }}
+                      </VCol>
+                    </VRow>
+                  </template>
                   <template #[`item.image`]="{ item }">
                     <VRow>
                       <VCol>

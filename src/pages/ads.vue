@@ -189,9 +189,7 @@ export default defineComponent({
         );
         this.addData.image = null;
       } catch (error) {
-        console.log("");
-
-        // this.finalMessage = result.message;
+        console.log(error);
       }
       this.loading = false;
     },

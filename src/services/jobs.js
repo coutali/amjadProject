@@ -12,9 +12,7 @@ export const get_jobs_service = async ({
 
     
     return response.data
-  } catch (error) {
-    console.log("error", error)
-    
+  } catch (error) {    
     return error.response.data
   }
 }
@@ -35,9 +33,7 @@ export const add_jobs_service = async ({
       })
 
     return response.data
-  } catch (error) {
-    console.log("error", error)
-    
+  } catch (error) {    
     return error.response.data
   }
 }
@@ -58,9 +54,7 @@ export const edit_jobs_service = async ({
       })
 
     return response.data
-  } catch (error) {
-    console.log("error", error)
-    
+  } catch (error) {    
     return error.response.data
   }
 }
@@ -71,9 +65,7 @@ export const remove_jobs_service = async id => {
       await axiosIns.delete(`jobs/${id}`)
 
     return response.data
-  } catch (error) {
-    console.log("error", error)
-    
+  } catch (error) {    
     return error.response.data
   }
 }

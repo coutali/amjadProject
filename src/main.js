@@ -13,6 +13,7 @@ import {
 import {
   createApp,
 } from 'vue'
+import Vue3Geolocation from 'vue3-geolocation'
 
 loadFonts()
 
@@ -26,7 +27,9 @@ app.use(vuetify)
 app.use(createPinia())
 app.use(router)
 app.use(layoutsPlugin) 
+app.use(Vue3Geolocation) 
 
 
 // Mount vue app
 app.mount('#app')
+ 

@@ -12,9 +12,7 @@ export const get_packages_service = async ({
 
     
     return response.data
-  } catch (error) {
-    console.log("error", error)
-    
+  } catch (error) {    
     return error.response.data
   }
 }
@@ -37,9 +35,7 @@ export const add_packages_service = async ({
       })
 
     return response.data
-  } catch (error) {
-    console.log("error", error)
-    
+  } catch (error) {    
     return error.response.data
   }
 }
@@ -62,9 +58,7 @@ export const edit_packages_service = async ({
       })
 
     return response.data
-  } catch (error) {
-    console.log("error", error)
-    
+  } catch (error) {    
     return error.response.data
   }
 }
@@ -75,9 +69,7 @@ export const remove_packages_service = async id => {
       await axiosIns.delete(`packages/${id}`)
 
     return response.data
-  } catch (error) {
-    console.log("error", error)
-    
+  } catch (error) {    
     return error.response.data
   }
 }

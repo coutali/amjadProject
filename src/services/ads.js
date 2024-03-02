@@ -13,7 +13,6 @@ export const get_ads_service = async ({
     
     return response.data
   } catch (error) {
-    console.log("error", error)
     
     return error.response.data
   }
@@ -34,7 +33,6 @@ export const add_ads_service = async ({
 
     return response.data
   } catch (error) {
-    console.log("error", error)
     
     return error.response.data
   }
@@ -54,9 +52,7 @@ export const edit_ads_service = async ({
       })
 
     return response.data
-  } catch (error) {
-    console.log("error", error)
-    
+  } catch (error) {    
     return error.response.data
   }
 }
@@ -68,7 +64,6 @@ export const remove_ads_service = async id => {
 
     return response.data
   } catch (error) {
-    console.log("error", error)
     
     return error.response.data
   }

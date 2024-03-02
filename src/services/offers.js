@@ -13,7 +13,6 @@ export const get_offers_service = async ({
     
     return response.data
   } catch (error) {
-    console.log("error", error)
     
     return error.response.data
   }
@@ -36,7 +35,6 @@ export const add_offers_service = async ({
 
     return response.data
   } catch (error) {
-    console.log("error", error)
     
     return error.response.data
   }
@@ -59,7 +57,6 @@ export const edit_offers_service = async ({
 
     return response.data
   } catch (error) {
-    console.log("error", error)
     
     return error.response.data
   }
@@ -72,7 +69,6 @@ export const remove_offers_service = async id => {
 
     return response.data
   } catch (error) {
-    console.log("error", error)
     
     return error.response.data
   }
