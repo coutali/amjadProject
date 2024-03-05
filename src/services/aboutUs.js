@@ -37,10 +37,13 @@ export const edit_aboutUs_service = async ({
           telegram,
           description,
         })
-  
+
+    console.log(response)
+    
     return response.data
   } catch (error) {
-      
+    console.log(error)
+    
     return error.response.data
   }
 }

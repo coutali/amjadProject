@@ -20,17 +20,17 @@ export const get_packages_service = async ({
 export const add_packages_service = async ({
   title,
   image,
-  discount,
-  price,
+  has_discount,
+  details,
   type,
 }) => {
   try {
     const response =
       await axiosIns.post("packages", {
         title,
-        discount,
+        has_discount,
         image,
-        price,
+        details,
         type,
       })
 
@@ -43,20 +43,25 @@ export const edit_packages_service = async ({
   id,
   title,
   image,
-  discount,
-  price,
+  has_discount,
+  details,
   type,
 }) => {
   try {
+    console.log('id', id)
+    console.log(title, image, has_discount, details, type)
+
     const response =
       await axiosIns.put(`packages/${id}`, {
         title,
         image,
-        discount,
-        price,
+        has_discount,
+        details,
         type,
       })
 
+    console.log('response', response)
+    
     return response.data
   } catch (error) {    
     return error.response.data

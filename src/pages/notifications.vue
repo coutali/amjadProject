@@ -1,10 +1,9 @@
 <script>
 import {
-  add_packages_service,
-  edit_packages_service,
-  get_packages_service,
-  remove_packages_service,
-} from "@/services/packages";
+  add_notifications_service,
+  get_notifications_service,
+  remove_notifications_service,
+} from "@/services/notifications";
 import { defineComponent, onMounted, ref } from "vue";
 
 export default defineComponent({
@@ -15,7 +14,8 @@ export default defineComponent({
         idNumberRules: [(v) => !!v || "الحقل مطلوب"],
       },
       dialog: false,
-      editDialog: false,
+
+      // editDialog: false,
       deleteDialog: false,
       loading: false,
       content_url: "",
@@ -29,22 +29,21 @@ export default defineComponent({
         image: null,
         details: null,
       },
-      onEditAd: {
-        id: null,
-        title: null,
-        type: null,
-        has_discount: false,
-        image: null,
-        details: null,
-        toBeSentImage: null,
-      },
+
+      // onEditAd: {
+      //   id: null,
+      //   title: null,
+      //   type: null,
+      //   has_discount: false,
+      //   image: null,
+      //   details: null,
+      //   toBeSentImage: null,
+      // },
       table: {
         loading: false,
         headers: [
           { title: "العنوان", value: "title" },
-          { title: "النوع", value: "type" },
-          { title: "التفاصيل", value: "details" },
-          { title: "يحتوي تخفيض", value: "has_discount" },
+          { title: "الوصف", value: "body" },
           { title: "الصورة", value: "image" },
           { title: "العمليات", value: "actions" },
         ],
@@ -84,22 +83,18 @@ export default defineComponent({
     };
   },
   methods: {
-    removeChip(item) {
-      this.addData.details.splice(this.addData.tags.indexOf(item), 1);
-    },
-    editDialogActions(e) {
-      this.onEditAd.id = e["_id"];
-      this.onEditAd.title = e.title;
-      this.onEditAd.type = e.type;
-      this.onEditAd.image = e.image;
-      this.onEditAd.details = e.details;
-      this.onEditAd.has_discount = e.has_discount;
-      this.selectedAdImage = this.content_url + this.onEditAd.image;
-      this.editDialog = true;
-    },
+    // editDialogActions(e) {
+    //   this.onEditAd.id = e["_id"];
+    //   this.onEditAd.title = e.title;
+    //   this.onEditAd.body = e.body;
+    //   this.onEditAd.image = e.image;
+    //   this.selectedAdImage = this.content_url + this.onEditAd.image;
+    //   this.editDialog = true;
+    // },
     clearAdImage() {
       this.addData.image = null;
-      this.onEditAd.image = null;
+
+      // this.onEditAd.image = null;
       this.selectedAdImage = null;
     },
 
@@ -127,8 +122,9 @@ export default defineComponent({
           this.selectedAdImage = await this.imageToBase64(files[0]);
         }
         this.addData.image = file;
-        this.onEditAd.image = file;
-        this.onEditAd.toBeSentImage = this.selectedAdImage;
+
+        // this.onEditAd.image = file;
+        // this.onEditAd.toBeSentImage = this.selectedAdImage;
       } else {
         this.addData.image = null;
         this.selectedAdImage = null;
@@ -138,7 +134,7 @@ export default defineComponent({
     async getData() {
       this.table.loading = true;
 
-      const response = await get_packages_service({
+      const response = await get_notifications_service({
         page: this.table.options.page,
         limit: this.table.options.itemsPerPage,
         search: this.table.search,
@@ -163,12 +159,10 @@ export default defineComponent({
     async saveBtnActions() {
       this.loading = true;
       try {
-        const result = await add_packages_service({
+        const result = await add_notifications_service({
           title: this.addData.title,
-          type: this.addData.type,
-          has_discount: this.addData.has_discount,
+          body: this.addData.body,
           image: this.selectedAdImage,
-          details: this.addData.details,
         });
 
         this.getData();
@@ -185,36 +179,37 @@ export default defineComponent({
       this.deleteDialog = true;
       this.toBeDeleted = e["_id"];
     },
-    async editSaveBtnActions() {
-      this.loading = true;
-      try {
-        const result = await edit_packages_service({
-          id: this.onEditAd.id,
-          title: this.onEditAd.title,
-          type: this.onEditAd.type,
-          has_discount: this.onEditAd.has_discount,
-          image: this.onEditAd.toBeSentImage
-            ? this.onEditAd.toBeSentImage
-            : this.onEditAd.image,
-          details: this.onEditAd.details,
-        });
 
-        this.getData();
-        this.editDialog = false;
-        this.finalMessage = result.message;
-        this.selectedAdImage = null;
-        Object.keys(this.onEditAd).forEach(
-          (key) => (this.onEditAd[key] = null)
-        );
-        this.addData.image = null;
-      } catch (error) {
-        console.log(error);
-      }
-      this.loading = false;
-    },
+    // async editSaveBtnActions() {
+    //   this.loading = true;
+    //   try {
+    //     const result = await edit_notifications_service({
+    //       id: this.onEditAd.id,
+    //       title: this.onEditAd.title,
+    //       type: this.onEditAd.type,
+    //       has_discount: this.onEditAd.has_discount,
+    //       image: this.onEditAd.toBeSentImage
+    //         ? this.onEditAd.toBeSentImage
+    //         : this.onEditAd.image,
+    //       details: this.onEditAd.details,
+    //     });
+
+    //     this.getData();
+    //     this.editDialog = false;
+    //     this.finalMessage = result.message;
+    //     this.selectedAdImage = null;
+    //     Object.keys(this.onEditAd).forEach(
+    //       (key) => (this.onEditAd[key] = null)
+    //     );
+    //     this.addData.image = null;
+    //   } catch (error) {
+    //     console.log(error);
+    //   }
+    //   this.loading = false;
+    // },
     async deletingAd() {
       try {
-        const result = await remove_packages_service(this.toBeDeleted);
+        const result = await remove_notifications_service(this.toBeDeleted);
 
         this.deleteDialog = false;
         this.toBeDeleted = null;
@@ -230,7 +225,7 @@ export default defineComponent({
 <template>
   <div>
     <VContainer>
-      <h1 class="text-center mb-5">الأشتراكات</h1>
+      <h1 class="text-center mb-5">الأشعارات</h1>
       <VCard class="bg-grey-400">
         <div class="d-flex flex-column justify-sm-space-around">
           <VCard class="pa-3">
@@ -246,16 +241,16 @@ export default defineComponent({
                       no-restricted-class
                       class="mt-4 mr-4"
                     >
-                      أضافة أشتراك جديد
+                      أضافة أشعار جديد
                     </VBtn>
                   </template>
                   <VCard>
                     <VCardTitle class="d-flex mt-5 mr-5">
-                      <span v-cloak class="text-h5">أضافة أشتراك جديد</span>
+                      <span v-cloak class="text-h5">أضافة أشعار جديد</span>
                     </VCardTitle>
                     <VCardText>
                       <VContainer>
-                        <VRow class="">
+                        <VRow>
                           <VCol cols="12">
                             <div
                               class="imgContainer personalImg d-flex align-center"
@@ -265,6 +260,7 @@ export default defineComponent({
                                   v-model="addData.image"
                                   class="imgS"
                                   :src="selectedAdImage"
+                                  hint="صورة الأشعار"
                                 />
                                 <button class="deleteBtn" @click="clearAdImage">
                                   <VIcon class="delete_icon"> mdi-close </VIcon>
@@ -284,13 +280,13 @@ export default defineComponent({
                                   @change="adImgChange"
                                 />
                                 <button class="addBtn">+</button>
-                                <h4>صورة الأشتراك</h4>
+                                <h4>صورة الأشعار</h4>
                               </div>
                             </div>
                           </VCol>
 
                           <!-- this is the image holder -->
-                          <VCol cols="8">
+                          <VCol cols="12">
                             <VTextField
                               v-model="addData.title"
                               :rules="rules.idNumberRules"
@@ -299,55 +295,15 @@ export default defineComponent({
                               :hint="fileInputHint"
                             />
                           </VCol>
-                          <!-- this is the title holder -->
-                          <VCol cols="4">
-                            <VSelect
-                              v-model="addData.type"
+                          <!-- this is the has_discount holder -->
+                          <VCol cols="12">
+                            <VTextarea
+                              v-model="addData.body"
                               :rules="rules.idNumberRules"
-                              :items="['ضوئي', 'هوائي']"
-                              label="النوع"
-                            />
-                          </VCol>
-                          <!-- this is the type holder -->
-                          <VCol cols="8">
-                            <VCombobox
-                              v-model="addData.details"
-                              chips
-                              clearable
-                              label="التفاصيل"
-                              multiple
-                              outlined
-                              closable-chips
-                              persistent-hint
-                              hint=" أضف التفاصيل ثم اضغط على Enter"
-                            >
-                              <template
-                                #selection="{ attrs, item, select, selected }"
-                              >
-                                <VChip
-                                  :input-value="selected"
-                                  @click="select"
-                                  @click:close="removeChip(item)"
-                                >
-                                  <strong>{{ item }}</strong>
-                                </VChip>
-                              </template>
-                            </VCombobox>
-                          </VCol>
-                          <!-- this is the details holder -->
-                          <VCol
-                            cols="4"
-                            style="
-                              display: flex;
-                              align-items: center;
-                              justify-content: center;
-                            "
-                          >
-                            <VCheckbox
-                              v-model="addData.has_discount"
-                              label="يوجد خصم"
+                              label="الوصف"
                               required
-                              rows="3"
+                              :hint="fileInputHint"
+                              rows="2"
                             />
                           </VCol>
                           <!-- this is the has_discount holder -->
@@ -376,136 +332,6 @@ export default defineComponent({
                   </VCard>
                 </VDialog>
               </VForm>
-              <!-- editing dialog under this comment -->
-              <VForm v-model="formValid">
-                <VDialog v-model="editDialog" width="1024">
-                  <VCard>
-                    <VCardTitle class="d-flex mt-5 mr-5">
-                      <span v-cloak class="text-h5">تعديل الأشتراك</span>
-                    </VCardTitle>
-                    <VCardText>
-                      <VContainer>
-                        <VRow>
-                          <VCol cols="12">
-                            <div class="imgContainer personalImg">
-                              <div v-show="onEditAd.image" class="imageDisplay">
-                                <VImg
-                                  v-model="onEditAd.image"
-                                  class="imgS"
-                                  :src="selectedAdImage"
-                                />
-                                <button class="deleteBtn" @click="clearAdImage">
-                                  <VIcon class="delete_icon"> mdi-close </VIcon>
-                                </button>
-                              </div>
-                              <div
-                                v-show="!onEditAd.image"
-                                class="imgBox"
-                                @click="openFileSelectionAdlImg"
-                              >
-                                <VFileInput
-                                  v-show="false"
-                                  ref="ImageRef"
-                                  type="file"
-                                  accept="image/*"
-                                  class="input_style"
-                                  @change="adImgChange"
-                                />
-                                <button class="addBtn">+</button>
-                                <h4>صورة البكج</h4>
-                              </div>
-                            </div>
-                          </VCol>
-
-                          <!-- this is the image holder -->
-                          <VCol cols="8">
-                            <VTextField
-                              v-model="onEditAd.title"
-                              :rules="rules.idNumberRules"
-                              label="العنوان"
-                              required
-                              :hint="fileInputHint"
-                            />
-                          </VCol>
-                          <!-- this is the title holder -->
-                          <VCol cols="4">
-                            <VSelect
-                              v-model="onEditAd.type"
-                              :rules="rules.idNumberRules"
-                              :items="['ضوئي', 'هوائي']"
-                              label="النوع"
-                            />
-                          </VCol>
-                          <!-- this is the type holder -->
-                          <VCol cols="8">
-                            <VCombobox
-                              v-model="onEditAd.details"
-                              chips
-                              clearable
-                              label="التفاصيل"
-                              multiple
-                              outlined
-                              closable-chips
-                              persistent-hint
-                              hint=" أضف التفاصيل ثم اضغط على Enter"
-                            >
-                              <template
-                                #selection="{ attrs, item, select, selected }"
-                              >
-                                <VChip
-                                  :input-value="selected"
-                                  @click="select"
-                                  @click:close="removeChip(item)"
-                                >
-                                  <strong>{{ item }}</strong>
-                                </VChip>
-                              </template>
-                            </VCombobox>
-                          </VCol>
-                          <!-- this is the details holder -->
-                          <VCol
-                            cols="4"
-                            style="
-                              display: flex;
-                              align-items: center;
-                              justify-content: center;
-                            "
-                          >
-                            <VCheckbox
-                              v-model="onEditAd.has_discount"
-                              :rules="rules.idNumberRules"
-                              label="يوجد خصم"
-                              required
-                              rows="3"
-                            />
-                          </VCol>
-                          <!-- this is the has_discount holder -->
-                        </VRow>
-                      </VContainer>
-                    </VCardText>
-                    <VCardActions>
-                      <VSpacer />
-                      <VBtn
-                        color="blue-darken-1"
-                        variant="text"
-                        @click="editDialog = false"
-                      >
-                        ألغاء
-                      </VBtn>
-                      <VBtn
-                        :disabled="!formValid"
-                        :loading="loading"
-                        color="blue-darken-1"
-                        variant="text"
-                        @click="editSaveBtnActions"
-                      >
-                        موافق
-                      </VBtn>
-                    </VCardActions>
-                  </VCard>
-                </VDialog>
-              </VForm>
-              <!-- this is delete dialog -->
               <VDialog v-model="deleteDialog" width="auto">
                 <VCard>
                   <VCardTitle class="text-h5"> حذف العنصر </VCardTitle>
@@ -557,21 +383,6 @@ export default defineComponent({
                   :items-per-page-options="table.itemsPerPageOptions"
                   @update:options="optionsChange($event)"
                 >
-                  <template #[`item.details`]="{ item }">
-                    <VRow>
-                      <VCol>
-                        <ul>
-                          <li
-                            v-for="oneItem in item.details"
-                            :key="oneItem"
-                            style="list-style-type: circle"
-                          >
-                            {{ oneItem }}
-                          </li>
-                        </ul>
-                      </VCol>
-                    </VRow>
-                  </template>
                   <template #[`item.image`]="{ item }">
                     <VRow>
                       <VCol>
@@ -580,13 +391,6 @@ export default defineComponent({
                     </VRow>
                   </template>
                   <template #[`item.actions`]="{ item }">
-                    <VIcon
-                      size="small"
-                      class="me-2"
-                      @click="editDialogActions(item)"
-                    >
-                      mdi-pencil
-                    </VIcon>
                     <VIcon size="small" @click="deleteIconActions(item)">
                       mdi-delete
                     </VIcon>

@@ -3,12 +3,12 @@ import {
 } from 'virtual:generated-layouts'
 import {
   createRouter,
-  createWebHistory,
+  createWebHashHistory,
 } from 'vue-router'
 import routes from '~pages'
 
 const router = createRouter({
-  history: createWebHistory(
+  history: createWebHashHistory(
     import.meta.env.BASE_URL),
   routes: [
     ...setupLayouts(routes),

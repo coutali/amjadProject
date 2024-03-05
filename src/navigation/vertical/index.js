@@ -55,6 +55,11 @@ export default [
     icon: { icon: 'mdi-widgets-outline' },
   },
   {
+    title: 'الأشعارات',
+    to: { name: 'notifications' },
+    icon: { icon: 'mdi-message' },
+  },
+  {
     title: 'من نحن',
     to: { name: 'aboutUs' },
     icon: { icon: 'mdi-account' },
