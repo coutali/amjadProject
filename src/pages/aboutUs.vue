@@ -139,7 +139,7 @@ export default {
 
         this.finalMessage = response.message;
       } catch (error) {
-        this.finalMessage = response.message;
+        console.log(error);
       }
       this.dialog = true;
       this.getData();

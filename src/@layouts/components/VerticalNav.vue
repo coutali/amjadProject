@@ -1,23 +1,20 @@
 <script setup>
-import { PerfectScrollbar } from 'vue3-perfect-scrollbar'
-import { VNodeRenderer } from './VNodeRenderer'
-import { useLayouts } from '@layouts'
+import { useLayouts } from "@layouts";
 import {
   VerticalNavGroup,
   VerticalNavLink,
   VerticalNavSectionTitle,
-} from '@layouts/components'
-import { config } from '@layouts/config'
-import { injectionKeyIsVerticalNavHovered } from '@layouts/symbols'
+} from "@layouts/components";
+import { config } from "@layouts/config";
+import { injectionKeyIsVerticalNavHovered } from "@layouts/symbols";
+import { PerfectScrollbar } from "vue3-perfect-scrollbar";
+import { VNodeRenderer } from "./VNodeRenderer";
 
 const props = defineProps({
   tag: {
-    type: [
-      String,
-      null,
-    ],
+    type: [String, null],
     required: false,
-    default: 'aside',
+    default: "aside",
   },
   navItems: {
     type: null,
@@ -31,44 +28,46 @@ const props = defineProps({
     type: Function,
     required: true,
   },
-})
+});
 
-const refNav = ref()
-const { width: windowWidth } = useWindowSize()
-const isHovered = useElementHover(refNav)
+const refNav = ref();
+const { width: windowWidth } = useWindowSize();
+const isHovered = useElementHover(refNav);
 
-provide(injectionKeyIsVerticalNavHovered, isHovered)
+provide(injectionKeyIsVerticalNavHovered, isHovered);
 
 const {
   isVerticalNavCollapsed: isCollapsed,
   isLessThanOverlayNavBreakpoint,
   isVerticalNavMini,
   isAppRtl,
-} = useLayouts()
+} = useLayouts();
 
-const hideTitleAndIcon = isVerticalNavMini(windowWidth, isHovered)
+const hideTitleAndIcon = isVerticalNavMini(windowWidth, isHovered);
 
-const resolveNavItemComponent = item => {
-  if ('heading' in item)
-    return VerticalNavSectionTitle
-  if ('children' in item)
-    return VerticalNavGroup
-  
-  return VerticalNavLink
-}
+const resolveNavItemComponent = (item) => {
+  if ("heading" in item) return VerticalNavSectionTitle;
+  if ("children" in item) return VerticalNavGroup;
 
-const route = useRoute()
+  return VerticalNavLink;
+};
 
-watch(() => route.name, () => {
-  props.toggleIsOverlayNavActive(false)
-})
+const route = useRoute();
 
-const isVerticalNavScrolled = ref(false)
-const updateIsVerticalNavScrolled = val => isVerticalNavScrolled.value = val
+watch(
+  () => route.name,
+  () => {
+    props.toggleIsOverlayNavActive(false);
+  }
+);
 
-const handleNavScroll = evt => {
-  isVerticalNavScrolled.value = evt.target.scrollTop > 0
-}
+const isVerticalNavScrolled = ref(false);
+const updateIsVerticalNavScrolled = (val) =>
+  (isVerticalNavScrolled.value = val);
+
+const handleNavScroll = (evt) => {
+  isVerticalNavScrolled.value = evt.target.scrollTop > 0;
+};
 </script>
 
 <template>
@@ -79,9 +78,9 @@ const handleNavScroll = evt => {
     :class="[
       {
         'overlay-nav': isLessThanOverlayNavBreakpoint(windowWidth),
-        'hovered': isHovered,
-        'visible': isOverlayNavActive,
-        'scrolled': isVerticalNavScrolled,
+        hovered: isHovered,
+        visible: isOverlayNavActive,
+        scrolled: isVerticalNavScrolled,
       },
     ]"
   >
@@ -170,7 +169,8 @@ const handleNavScroll = evt => {
   inline-size: variables.$layout-vertical-nav-width;
   inset-block-start: 0;
   inset-inline-start: 0;
-  transition: transform 0.25s ease-in-out, inline-size 0.25s ease-in-out, box-shadow 0.25s ease-in-out;
+  transition: transform 0.25s ease-in-out, inline-size 0.25s ease-in-out,
+    box-shadow 0.25s ease-in-out;
   will-change: transform, inline-size;
 
   .nav-header {

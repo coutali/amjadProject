@@ -1,12 +1,14 @@
-import { breakpointsVuetify } from '@vueuse/core'
+import logo from '@/assets/logo.png'
 import { AppContentLayoutNav, ContentWidth, FooterType, NavbarType } from '@layouts/enums'
+import { breakpointsVuetify } from '@vueuse/core'
 
 export const config = {
   app: {
     title: 'title',
-    logo: h('img', { src: '/src/assets/logo.svg' }),
 
-    // logo: () => h('img', { src: 'assets/colored-logo.png' }, null),
+    // logo: h('img', { src: '/src/assets/logo.svg' }),
+
+    logo: h('img', { src: logo, alt: 'app-logo' }),
     contentWidth: ref(ContentWidth.Boxed),
     contentLayoutNav: ref(AppContentLayoutNav.Vertical),
     overlayNavFromBreakpoint: breakpointsVuetify.md,
