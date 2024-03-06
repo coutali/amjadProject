@@ -22,6 +22,7 @@ export const add_notifications_service = async ({
   title,
   body,
   image,
+  link,
 }) => {
   try {
     const response =
@@ -29,6 +30,7 @@ export const add_notifications_service = async ({
         title,
         body,
         image,
+        link,
       })
 
     return response.data

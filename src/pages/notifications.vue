@@ -44,6 +44,7 @@ export default defineComponent({
         headers: [
           { title: "العنوان", value: "title" },
           { title: "الوصف", value: "body" },
+          { title: "الوصف", value: "link" },
           { title: "الصورة", value: "image" },
           { title: "العمليات", value: "actions" },
         ],
@@ -162,6 +163,7 @@ export default defineComponent({
         const result = await add_notifications_service({
           title: this.addData.title,
           body: this.addData.body,
+          link: this.addData.link,
           image: this.selectedAdImage,
         });
 
@@ -272,17 +274,21 @@ export default defineComponent({
                                 @click="openFileSelectionAdlImg"
                               >
                                 <VFileInput
-                                  v-show="false"
+                                  v-show="true"
                                   ref="ImageRef"
+                                  v-model="addData.image"
                                   type="file"
                                   accept="image/*"
                                   class="input_style"
+                                  required
+                                  :rules="rules.idNumberRules"
                                   @change="adImgChange"
                                 />
                                 <button class="addBtn">+</button>
                                 <h4>صورة الأشعار</h4>
                               </div>
                             </div>
+                            <h5 :hidden="!formValid" class="mr-2">hello</h5>
                           </VCol>
 
                           <!-- this is the image holder -->
@@ -291,6 +297,16 @@ export default defineComponent({
                               v-model="addData.title"
                               :rules="rules.idNumberRules"
                               label="العنوان"
+                              required
+                              :hint="fileInputHint"
+                            />
+                          </VCol>
+                          <!-- this is the has_discount holder -->
+                          <VCol cols="12">
+                            <VTextField
+                              v-model="addData.link"
+                              :rules="rules.idNumberRules"
+                              label="الرابط"
                               required
                               :hint="fileInputHint"
                             />
@@ -383,6 +399,13 @@ export default defineComponent({
                   :items-per-page-options="table.itemsPerPageOptions"
                   @update:options="optionsChange($event)"
                 >
+                  <template #[`item.link`]="{ item }">
+                    <VRow>
+                      <VCol>
+                        <a :href="item.link" target="_blank">{{ item.link }}</a>
+                      </VCol>
+                    </VRow>
+                  </template>
                   <template #[`item.image`]="{ item }">
                     <VRow>
                       <VCol>
