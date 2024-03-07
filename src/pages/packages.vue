@@ -10,6 +10,7 @@ import { defineComponent, onMounted, ref } from "vue";
 export default defineComponent({
   data() {
     return {
+      imageRequired: false,
       formValid: false,
       rules: {
         idNumberRules: [(v) => !!v || "الحقل مطلوب"],
@@ -96,11 +97,13 @@ export default defineComponent({
       this.onEditAd.has_discount = e.has_discount;
       this.selectedAdImage = this.content_url + this.onEditAd.image;
       this.editDialog = true;
+      this.imageRequired = true;
     },
     clearAdImage() {
       this.addData.image = null;
       this.onEditAd.image = null;
       this.selectedAdImage = null;
+      this.imageRequired = false;
     },
 
     openFileSelectionAdlImg() {
@@ -129,6 +132,7 @@ export default defineComponent({
         this.addData.image = file;
         this.onEditAd.image = file;
         this.onEditAd.toBeSentImage = this.selectedAdImage;
+        this.imageRequired = true;
       } else {
         this.addData.image = null;
         this.selectedAdImage = null;
@@ -287,8 +291,10 @@ export default defineComponent({
                                 <h4>صورة الأشتراك</h4>
                               </div>
                             </div>
+                            <h5 :hidden="imageRequired" class="mt-3 mr-2">
+                              الصورة مطلوبه
+                            </h5>
                           </VCol>
-
                           <!-- this is the image holder -->
                           <VCol cols="8">
                             <VTextField
@@ -364,7 +370,7 @@ export default defineComponent({
                         ألغاء
                       </VBtn>
                       <VBtn
-                        :disabled="!formValid"
+                        :disabled="!formValid || !imageRequired"
                         :loading="loading"
                         color="blue-darken-1"
                         variant="text"
@@ -412,9 +418,12 @@ export default defineComponent({
                                   @change="adImgChange"
                                 />
                                 <button class="addBtn">+</button>
-                                <h4>صورة البكج</h4>
+                                <h4>صورة الأشتراك</h4>
                               </div>
                             </div>
+                            <h5 :hidden="imageRequired" class="mt-3 mr-2">
+                              الصورة مطلوبه
+                            </h5>
                           </VCol>
 
                           <!-- this is the image holder -->
@@ -493,7 +502,7 @@ export default defineComponent({
                         ألغاء
                       </VBtn>
                       <VBtn
-                        :disabled="!formValid"
+                        :disabled="!formValid || !imageRequired"
                         :loading="loading"
                         color="blue-darken-1"
                         variant="text"

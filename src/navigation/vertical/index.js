@@ -30,7 +30,7 @@ export default [
     icon: { icon: 'mdi-percent-outline' },
   },
   {
-    title: 'البكجات',
+    title: 'الأشتراكات',
     to: { name: 'packages' },
     icon: { icon: 'mdi-gift-outline' },
   },

@@ -44,7 +44,7 @@ export default defineComponent({
         headers: [
           { title: "العنوان", value: "title" },
           { title: "الوصف", value: "body" },
-          { title: "الوصف", value: "link" },
+          { title: "الرابط", value: "link" },
           { title: "الصورة", value: "image" },
           { title: "العمليات", value: "actions" },
         ],
@@ -274,21 +274,19 @@ export default defineComponent({
                                 @click="openFileSelectionAdlImg"
                               >
                                 <VFileInput
-                                  v-show="true"
+                                  v-show="false"
                                   ref="ImageRef"
                                   v-model="addData.image"
                                   type="file"
                                   accept="image/*"
                                   class="input_style"
                                   required
-                                  :rules="rules.idNumberRules"
                                   @change="adImgChange"
                                 />
                                 <button class="addBtn">+</button>
                                 <h4>صورة الأشعار</h4>
                               </div>
                             </div>
-                            <h5 :hidden="!formValid" class="mr-2">hello</h5>
                           </VCol>
 
                           <!-- this is the image holder -->

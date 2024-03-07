@@ -66,9 +66,7 @@ export const edit_towers_service = async ({
       })
 
     return response.data
-  } catch (error) {
-    console.log("error", error)
-    
+  } catch (error) {    
     return error.response.data
   }
 }

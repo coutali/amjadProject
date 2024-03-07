@@ -46,7 +46,6 @@ export default defineComponent({
 
       this.data = response.results;
       this.paths = Object.keys(response.results);
-      console.log(this.data);
     },
     moveTo(i) {
       this.paths[i] === "jobs"

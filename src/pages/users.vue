@@ -10,6 +10,10 @@ import { defineComponent } from "vue";
 export default defineComponent({
   data() {
     return {
+      formValid: false,
+      rules: {
+        idNumberRules: [(v) => (!!v && v.length > 0) || "الحقل مطلوب"],
+      },
       dialog: false,
       editDialog: false,
       deleteDialog: false,
@@ -195,168 +199,184 @@ export default defineComponent({
           <VCard class="pa-3">
             <VRow align="center">
               <!-- add dialog under this comment -->
-              <VDialog v-model="dialog" width="1024">
-                <template #activator="{ props }">
-                  <VBtn
-                    color="primary"
-                    v-bind="props"
-                    append-icon="mdi-add"
-                    no-restricted-class
-                    class="mt-4 mr-4"
-                  >
-                    أضافة مستخدم جديد
-                  </VBtn>
-                </template>
-                <VCard>
-                  <VCardTitle class="d-flex mt-5 mr-5">
-                    <span v-cloak class="text-h5">أضافة عرض جديد</span>
-                  </VCardTitle>
-                  <VCardText>
-                    <VContainer>
-                      <VRow class="">
-                        <VCol cols="6">
-                          <VTextField
-                            v-model="addData.name"
-                            label="الأسم"
-                            required
-                            :hint="fileInputHint"
-                          />
-                        </VCol>
-                        <!-- this is the title holder -->
-                        <VCol cols="6">
-                          <VTextField
-                            v-model="addData.phone"
-                            label="الرقم"
-                            required
-                            :hint="fileInputHint"
-                          />
-                        </VCol>
-                        <!-- this is the phoneNumber holder -->
-                        <VCol cols="6">
-                          <VTextField
-                            v-model="addData.password"
-                            label="الرمز"
-                            required
-                          />
-                        </VCol>
-                        <!-- this is the password holder -->
-                        <VCol cols="6">
-                          <VTextField
-                            v-model="addData.email"
-                            label="الأيميل"
-                            required
-                          />
-                        </VCol>
-                        <!-- this is the password holder -->
-                        <VCol cols="6">
-                          <VSelect
-                            v-model="addData.privileges.actions"
-                            :items="Object.values(privileges)"
-                            label="الأمكانات"
-                            multiple
-                            chips
-                          />
-                        </VCol>
-                        <!-- this is the type holder -->
-                      </VRow>
-                    </VContainer>
-                  </VCardText>
-                  <VCardActions>
-                    <VSpacer />
+              <VForm v-model="formValid">
+                <VDialog v-model="dialog" width="1024">
+                  <template #activator="{ props }">
                     <VBtn
-                      color="blue-darken-1"
-                      variant="text"
-                      @click="dialog = false"
+                      color="primary"
+                      v-bind="props"
+                      append-icon="mdi-add"
+                      no-restricted-class
+                      class="mt-4 mr-4"
                     >
-                      ألغاء
+                      أضافة مستخدم جديد
                     </VBtn>
-                    <VBtn
-                      :loading="loading"
-                      color="blue-darken-1"
-                      variant="text"
-                      @click="saveBtnActions"
-                    >
-                      موافق
-                    </VBtn>
-                  </VCardActions>
-                </VCard>
-              </VDialog>
+                  </template>
+                  <VCard>
+                    <VCardTitle class="d-flex mt-5 mr-5">
+                      <span v-cloak class="text-h5">أضافة عرض جديد</span>
+                    </VCardTitle>
+                    <VCardText>
+                      <VContainer>
+                        <VRow class="">
+                          <VCol cols="6">
+                            <VTextField
+                              v-model="addData.name"
+                              label="الأسم"
+                              required
+                              :hint="fileInputHint"
+                              :rules="rules.idNumberRules"
+                            />
+                          </VCol>
+                          <!-- this is the title holder -->
+                          <VCol cols="6">
+                            <VTextField
+                              v-model="addData.phone"
+                              label="الرقم"
+                              required
+                              :hint="fileInputHint"
+                            />
+                          </VCol>
+                          <!-- this is the phoneNumber holder -->
+                          <VCol cols="6">
+                            <VTextField
+                              v-model="addData.password"
+                              label="الرمز"
+                              required
+                              :rules="rules.idNumberRules"
+                            />
+                          </VCol>
+                          <!-- this is the password holder -->
+                          <VCol cols="6">
+                            <VTextField
+                              v-model="addData.email"
+                              label="الأيميل"
+                              required
+                              :rules="rules.idNumberRules"
+                            />
+                          </VCol>
+                          <!-- this is the password holder -->
+                          <VCol cols="6">
+                            <VSelect
+                              v-model="addData.privileges.actions"
+                              :items="Object.values(privileges)"
+                              label="الأمكانات"
+                              multiple
+                              chips
+                              :rules="rules.idNumberRules"
+                            />
+                          </VCol>
+                          <!-- this is the type holder -->
+                        </VRow>
+                      </VContainer>
+                    </VCardText>
+                    <VCardActions>
+                      <VSpacer />
+                      <VBtn
+                        color="blue-darken-1"
+                        variant="text"
+                        @click="dialog = false"
+                      >
+                        ألغاء
+                      </VBtn>
+                      <VBtn
+                        :loading="loading"
+                        color="blue-darken-1"
+                        variant="text"
+                        :disabled="!formValid"
+                        @click="saveBtnActions"
+                      >
+                        موافق
+                      </VBtn>
+                    </VCardActions>
+                  </VCard>
+                </VDialog>
+              </VForm>
+
               <!-- editing dialog under this comment -->
-              <VDialog v-model="editDialog" width="1024">
-                <VCard>
-                  <VCardTitle class="d-flex mt-5 mr-5">
-                    <span v-cloak class="text-h5">تعديل الأعلان</span>
-                  </VCardTitle>
-                  <VCardText>
-                    <VContainer>
-                      <VRow>
-                        <VCol cols="6">
-                          <VTextField
-                            v-model="onEditAd.name"
-                            label="الأسم"
-                            required
-                            :hint="fileInputHint"
-                          />
-                        </VCol>
-                        <!-- this is the title holder -->
-                        <VCol cols="6">
-                          <VTextField
-                            v-model="onEditAd.phone"
-                            label="الرقم"
-                            required
-                            :hint="fileInputHint"
-                          />
-                        </VCol>
-                        <!-- this is the phoneNumber holder -->
-                        <VCol cols="6">
-                          <VTextField
-                            v-model="onEditAd.password"
-                            label="الرمز"
-                            required
-                          />
-                        </VCol>
-                        <!-- this is the password holder -->
-                        <VCol cols="6">
-                          <VTextField
-                            v-model="onEditAd.email"
-                            label="الأيميل"
-                            required
-                          />
-                        </VCol>
-                        <!-- this is the password holder -->
-                        <VCol cols="6">
-                          <VSelect
-                            v-model="onEditAd.privileges.actions"
-                            :items="Object.values(privileges)"
-                            label="الأمكانات"
-                            multiple
-                            chips
-                          />
-                        </VCol>
-                        <!-- this is the type holder -->
-                      </VRow>
-                    </VContainer>
-                  </VCardText>
-                  <VCardActions>
-                    <VSpacer />
-                    <VBtn
-                      color="blue-darken-1"
-                      variant="text"
-                      @click="editDialog = false"
-                    >
-                      ألغاء
-                    </VBtn>
-                    <VBtn
-                      :loading="loading"
-                      color="blue-darken-1"
-                      variant="text"
-                      @click="editSaveBtnActions"
-                    >
-                      موافق
-                    </VBtn>
-                  </VCardActions>
-                </VCard>
-              </VDialog>
+              <VForm v-model="formValid">
+                <VDialog v-model="editDialog" width="1024">
+                  <VCard>
+                    <VCardTitle class="d-flex mt-5 mr-5">
+                      <span v-cloak class="text-h5">تعديل الأعلان</span>
+                    </VCardTitle>
+                    <VCardText>
+                      <VContainer>
+                        <VRow>
+                          <VCol cols="6">
+                            <VTextField
+                              v-model="onEditAd.name"
+                              label="الأسم"
+                              required
+                              :hint="fileInputHint"
+                              :rules="rules.idNumberRules"
+                            />
+                          </VCol>
+                          <!-- this is the title holder -->
+                          <VCol cols="6">
+                            <VTextField
+                              v-model="onEditAd.phone"
+                              label="الرقم"
+                              required
+                              :hint="fileInputHint"
+                            />
+                          </VCol>
+                          <!-- this is the phoneNumber holder -->
+                          <VCol cols="6">
+                            <VTextField
+                              v-model="onEditAd.password"
+                              label="الرمز"
+                              required
+                              :rules="rules.idNumberRules"
+                            />
+                          </VCol>
+                          <!-- this is the password holder -->
+                          <VCol cols="6">
+                            <VTextField
+                              v-model="onEditAd.email"
+                              label="الأيميل"
+                              required
+                              :rules="rules.idNumberRules"
+                            />
+                          </VCol>
+                          <!-- this is the password holder -->
+                          <VCol cols="6">
+                            <VSelect
+                              v-model="onEditAd.privileges.actions"
+                              :items="Object.values(privileges)"
+                              label="الأمكانات"
+                              multiple
+                              chips
+                              :rules="rules.idNumberRules"
+                            />
+                          </VCol>
+                          <!-- this is the type holder -->
+                        </VRow>
+                      </VContainer>
+                    </VCardText>
+                    <VCardActions>
+                      <VSpacer />
+                      <VBtn
+                        color="blue-darken-1"
+                        variant="text"
+                        @click="editDialog = false"
+                      >
+                        ألغاء
+                      </VBtn>
+                      <VBtn
+                        :loading="loading"
+                        color="blue-darken-1"
+                        variant="text"
+                        :disabled="!formValid"
+                        @click="editSaveBtnActions"
+                      >
+                        موافق
+                      </VBtn>
+                    </VCardActions>
+                  </VCard>
+                </VDialog>
+              </VForm>
+
               <!-- this is delete dialog -->
               <VDialog v-model="deleteDialog" width="auto">
                 <VCard>

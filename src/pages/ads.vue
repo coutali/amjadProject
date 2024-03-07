@@ -10,6 +10,7 @@ import { defineComponent, onMounted, ref } from "vue";
 export default defineComponent({
   data() {
     return {
+      imageRequired: false,
       dialog: false,
       editDialog: false,
       deleteDialog: false,
@@ -81,11 +82,13 @@ export default defineComponent({
       this.onEditAd.image = e.image;
       this.selectedAdImage = this.content_url + this.onEditAd.image;
       this.editDialog = true;
+      this.imageRequired = true;
     },
     clearAdImage() {
       this.addData.image = null;
       this.onEditAd.image = null;
       this.selectedAdImage = null;
+      this.imageRequired = false;
     },
 
     openFileSelectionAdlImg() {
@@ -114,6 +117,7 @@ export default defineComponent({
         this.addData.image = file;
         this.onEditAd.image = file;
         this.onEditAd.toBeSentImage = this.selectedAdImage;
+        this.imageRequired = true;
       } else {
         this.addData.image = null;
         this.selectedAdImage = null;
@@ -268,7 +272,9 @@ export default defineComponent({
                             </div>
                           </div>
                         </VCol>
-
+                        <h5 :hidden="imageRequired" class="mr-6">
+                          الصورة مطلوبه
+                        </h5>
                         <!-- this is the image holder -->
                         <VCol cols="12">
                           <VTextField
@@ -301,6 +307,7 @@ export default defineComponent({
                       ألغاء
                     </VBtn>
                     <VBtn
+                      :disabled="!imageRequired"
                       :loading="loading"
                       color="blue-darken-1"
                       variant="text"
@@ -350,7 +357,9 @@ export default defineComponent({
                             </div>
                           </div>
                         </VCol>
-
+                        <h5 :hidden="imageRequired" class="mr-6">
+                          الصورة مطلوبه
+                        </h5>
                         <!-- this is the image holder -->
                         <VCol cols="12">
                           <VTextField
@@ -386,6 +395,7 @@ export default defineComponent({
                       :loading="loading"
                       color="blue-darken-1"
                       variant="text"
+                      :disabled="!imageRequired"
                       @click="editSaveBtnActions"
                     >
                       موافق

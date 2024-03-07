@@ -19,274 +19,295 @@
         @click="towerIconActions(m)"
       />
     </GoogleMap>
-    <VDialog v-model="editDialog" width="1024">
-      <VCard>
-        <VCardTitle class="d-flex mt-5 mr-5">
-          <span v-cloak class="text-h5">تعديل البرج</span>
-        </VCardTitle>
-        <VCardText>
-          <VContainer>
+    <VForm v-model="formValid">
+      <VDialog v-model="editDialog" width="1024">
+        <VCard>
+          <VCardTitle class="d-flex mt-5 mr-5">
+            <span v-cloak class="text-h5">تعديل البرج</span>
+          </VCardTitle>
+          <VCardText>
+            <VContainer>
+              <VRow>
+                <VCol cols="6">
+                  <VTextField
+                    v-model="onEditTower.name"
+                    label="اسم البرج"
+                    required
+                    :hint="fileInputHint"
+                    :rules="rules.idNumberRules"
+                  />
+                </VCol>
+                <!-- this is the title holder -->
+                <VCol cols="6">
+                  <VTextField
+                    v-model="onEditTower.address"
+                    label="عنوان البرج"
+                    :rules="rules.idNumberRules"
+                  />
+                </VCol>
+                <!-- this is the category holder -->
+                <VCol cols="6">
+                  <VTextField
+                    v-model="onEditTower.affiliate"
+                    label="افيلايت"
+                    required
+                    :hint="fileInputHint"
+                    :rules="rules.idNumberRules"
+                  />
+                </VCol>
+                <!-- this is the price holder -->
+                <VCol cols="6">
+                  <VTextField
+                    v-model="onEditTower.sector_name"
+                    label="اسم السكتر"
+                    required
+                  />
+                </VCol>
+                <!-- this is the description holder -->
+                <VCol cols="6">
+                  <VTextField
+                    v-model="onEditTower.phone_first"
+                    label="رقم الهاتف الأول"
+                    required
+                    type="number"
+                    :rules="rules.idNumberRules"
+                  />
+                </VCol>
+                <!-- this is the description holder -->
+                <VCol cols="6">
+                  <VTextField
+                    v-model="onEditTower.phone_second"
+                    label="رقم الهاتف الثاني"
+                    required
+                    type="number"
+                  />
+                </VCol>
+                <!-- this is the description holder -->
+                <VCol cols="5">
+                  <VTextField
+                    v-model="onEditTower.lon"
+                    label="خطوط الطول"
+                    required
+                    disabled
+                    :rules="rules.idNumberRules"
+                  />
+                </VCol>
+                <!-- this is the description holder -->
+                <VCol cols="5">
+                  <VTextField
+                    v-model="onEditTower.lat"
+                    label="خطوط العرض"
+                    required
+                    disabled
+                    :rules="rules.idNumberRules"
+                  />
+                </VCol>
+                <VCol
+                  style="
+                    display: flex;
+                    height: 100%;
+                    flex-direction: column;
+                    align-items: center;
+                    justify-content: center;
+                  "
+                >
+                  <VBtn @click="editChangeBtn"> تغيير الموقع </VBtn>
+                  <p style="font-size: 12px" class="pt-2">
+                    أختر الموقع على الخريطة
+                  </p>
+                </VCol>
+                <!-- this is the description holder -->
+              </VRow>
+            </VContainer>
+          </VCardText>
+          <VCardActions>
             <VRow>
+              <VCol cols="3" align="center">
+                <VBtn
+                  class="bg-red pr-5 pl-5"
+                  color="wight-darken-1"
+                  variant="text"
+                  @click="deleteDialog = true"
+                >
+                  حذف البرج
+                </VBtn>
+              </VCol>
               <VCol cols="6">
-                <VTextField
-                  v-model="onEditTower.name"
-                  label="اسم البرج"
-                  required
-                  :hint="fileInputHint"
-                />
+                <VSpacer />
               </VCol>
-              <!-- this is the title holder -->
-              <VCol cols="6">
-                <VTextField v-model="onEditTower.address" label="عنوان البرج" />
+              <VCol cols="3" align="center">
+                <VBtn
+                  color="blue-darken-1"
+                  variant="text"
+                  @click="editDialog = false"
+                >
+                  ألغاء التعديل
+                </VBtn>
+                <VBtn
+                  :loading="loading"
+                  color="blue-darken-1"
+                  variant="text"
+                  :disabled="!formValid"
+                  @click="editSaveBtnActions"
+                >
+                  تعديل
+                </VBtn>
               </VCol>
-              <!-- this is the category holder -->
-              <VCol cols="6">
-                <VTextField
-                  v-model="onEditTower.affiliate"
-                  label="افيلايت"
-                  required
-                  :hint="fileInputHint"
-                />
-              </VCol>
-              <!-- this is the price holder -->
-              <VCol cols="6">
-                <VTextField
-                  v-model="onEditTower.sector_name"
-                  label="اسم السكتر"
-                  required
-                />
-              </VCol>
-              <!-- this is the description holder -->
-              <VCol cols="6">
-                <VTextField
-                  v-model="onEditTower.phone_first"
-                  label="رقم الهاتف الأول"
-                  required
-                  type="number"
-                />
-              </VCol>
-              <!-- this is the description holder -->
-              <VCol cols="6">
-                <VTextField
-                  v-model="onEditTower.phone_second"
-                  label="رقم الهاتف الثاني"
-                  required
-                  type="number"
-                />
-              </VCol>
-              <!-- this is the description holder -->
-              <VCol cols="5">
-                <VTextField
-                  v-model="onEditTower.lon"
-                  label="خطوط الطول"
-                  required
-                  disabled
-                />
-              </VCol>
-              <!-- this is the description holder -->
-              <VCol cols="5">
-                <VTextField
-                  v-model="onEditTower.lat"
-                  label="خطوط العرض"
-                  required
-                  disabled
-                />
-              </VCol>
-              <VCol
-                style="
-                  display: flex;
-                  height: 100%;
-                  flex-direction: column;
-                  align-items: center;
-                  justify-content: center;
-                "
-              >
-                <VBtn @click="editChangeBtn"> تغيير الموقع </VBtn>
-                <p style="font-size: 12px" class="pt-2">
-                  أختر الموقع على الخريطة
-                </p>
-              </VCol>
-              <!-- this is the description holder -->
             </VRow>
-          </VContainer>
-        </VCardText>
-        <VCardActions>
-          <VRow>
-            <VCol cols="3" align="center">
-              <VBtn
-                class="bg-red pr-5 pl-5"
-                color="wight-darken-1"
-                variant="text"
-                @click="deleteDialog = true"
-              >
-                حذف البرج
-              </VBtn>
-            </VCol>
-            <VCol cols="6">
-              <VSpacer />
-            </VCol>
-            <VCol cols="3" align="center">
-              <VBtn
-                color="blue-darken-1"
-                variant="text"
-                @click="editDialog = false"
-              >
-                ألغاء التعديل
-              </VBtn>
-              <VBtn
-                :loading="loading"
-                color="blue-darken-1"
-                variant="text"
-                @click="editSaveBtnActions"
-              >
-                تعديل
-              </VBtn>
-            </VCol>
-          </VRow>
-        </VCardActions>
-        <VDialog v-model="deleteDialog" width="auto">
-          <VCard>
-            <VCardTitle class="text-h5"> حذف البرج </VCardTitle>
-            <VCardText>هل فعلا ترغب بحذف هذا البرج</VCardText>
-            <VCardActions>
-              <VSpacer />
-              <VBtn
-                color="green-darken-1"
-                variant="text"
-                @click="deleteDialog = false"
-              >
-                كلا
-              </VBtn>
-              <VBtn
-                :loading="loading"
-                color="green-darken-1"
-                variant="text"
-                @click="towerDelete"
-              >
-                نعم
-              </VBtn>
-            </VCardActions>
-          </VCard>
-        </VDialog>
-      </VCard>
-    </VDialog>
-    <VDialog v-model="addDialog" width="1024">
-      <VCard>
-        <VCardTitle class="d-flex mt-5 mr-5">
-          <span v-cloak class="text-h5">أضافة برج جديد</span>
-        </VCardTitle>
-        <VCardText>
-          <VContainer>
+          </VCardActions>
+          <VDialog v-model="deleteDialog" width="auto">
+            <VCard>
+              <VCardTitle class="text-h5"> حذف البرج </VCardTitle>
+              <VCardText>هل فعلا ترغب بحذف هذا البرج</VCardText>
+              <VCardActions>
+                <VSpacer />
+                <VBtn
+                  color="green-darken-1"
+                  variant="text"
+                  @click="deleteDialog = false"
+                >
+                  كلا
+                </VBtn>
+                <VBtn
+                  :loading="loading"
+                  color="green-darken-1"
+                  variant="text"
+                  @click="towerDelete"
+                >
+                  نعم
+                </VBtn>
+              </VCardActions>
+            </VCard>
+          </VDialog>
+        </VCard>
+      </VDialog>
+    </VForm>
+
+    <VForm v-model="formValid">
+      <VDialog v-model="addDialog" width="1024">
+        <VCard>
+          <VCardTitle class="d-flex mt-5 mr-5">
+            <span v-cloak class="text-h5">أضافة برج جديد</span>
+          </VCardTitle>
+          <VCardText>
+            <VContainer>
+              <VRow>
+                <VCol cols="6">
+                  <VTextField
+                    v-model="addTower.name"
+                    label="أسم البرج"
+                    required
+                    :hint="fileInputHint"
+                    :rules="rules.idNumberRules"
+                  />
+                </VCol>
+                <!-- this is the title holder -->
+                <VCol cols="6">
+                  <VTextField
+                    v-model="addTower.address"
+                    label="عنوان البرج"
+                    :rules="rules.idNumberRules"
+                  />
+                </VCol>
+                <!-- this is the category holder -->
+                <VCol cols="6">
+                  <VTextField
+                    v-model="addTower.affiliate"
+                    label="افيلايت"
+                    required
+                    :hint="fileInputHint"
+                    :rules="rules.idNumberRules"
+                  />
+                </VCol>
+                <!-- this is the price holder -->
+                <VCol cols="6">
+                  <VTextField
+                    v-model="addTower.sector_name"
+                    label="اسم السكتر"
+                    required
+                  />
+                </VCol>
+                <!-- this is the description holder -->
+                <VCol cols="6">
+                  <VTextField
+                    v-model="addTower.phone_first"
+                    label="رقم الهاتف الأول"
+                    required
+                    type="number"
+                    :rules="rules.idNumberRules"
+                  />
+                </VCol>
+                <!-- this is the description holder -->
+                <VCol cols="6">
+                  <VTextField
+                    v-model="addTower.phone_second"
+                    label="رقم الهاتف الثاني"
+                    required
+                    type="number"
+                  />
+                </VCol>
+                <!-- this is the description holder -->
+                <VCol cols="5">
+                  <VTextField
+                    v-model="addTower.lon"
+                    label="خطوط العرض"
+                    required
+                    disabled
+                    :rules="rules.idNumberRules"
+                  />
+                </VCol>
+                <!-- this is the description holder -->
+                <VCol cols="5">
+                  <VTextField
+                    v-model="addTower.lat"
+                    label="خطوط الطول"
+                    required
+                    disabled
+                    :rules="rules.idNumberRules"
+                  />
+                </VCol>
+                <VCol
+                  style="
+                    display: flex;
+                    height: 100%;
+                    flex-direction: column;
+                    align-items: center;
+                    justify-content: center;
+                  "
+                >
+                  <VBtn @click="addChangeBtn"> أختر الموقع </VBtn>
+                  <p style="font-size: 12px" class="pt-2">
+                    أختر الموقع على الخريطة
+                  </p>
+                </VCol>
+                <!-- this is the description holder -->
+              </VRow>
+            </VContainer>
+          </VCardText>
+          <VCardActions>
             <VRow>
-              <VCol cols="6">
-                <VTextField
-                  v-model="addTower.name"
-                  label="الأسم"
-                  required
-                  :hint="fileInputHint"
-                />
+              <VCol cols="9">
+                <VSpacer />
               </VCol>
-              <!-- this is the title holder -->
-              <VCol cols="6">
-                <VTextField v-model="addTower.address" label="عنوان البرج" />
+              <VCol cols="3" align="center">
+                <VBtn color="blue-darken-1" variant="text" @click="undo">
+                  ألغاء
+                </VBtn>
+                <VBtn
+                  :loading="loading"
+                  color="blue-darken-1"
+                  variant="text"
+                  :disabled="!formValid"
+                  @click="addSaveBtnActions"
+                >
+                  أضافة
+                </VBtn>
               </VCol>
-              <!-- this is the category holder -->
-              <VCol cols="6">
-                <VTextField
-                  v-model="addTower.affiliate"
-                  label="افيلايت"
-                  required
-                  :hint="fileInputHint"
-                />
-              </VCol>
-              <!-- this is the price holder -->
-              <VCol cols="6">
-                <VTextField
-                  v-model="addTower.sector_name"
-                  label="اسم السكتر"
-                  required
-                />
-              </VCol>
-              <!-- this is the description holder -->
-              <VCol cols="6">
-                <VTextField
-                  v-model="addTower.phone_first"
-                  label="رقم الهاتف الأول"
-                  required
-                  type="number"
-                />
-              </VCol>
-              <!-- this is the description holder -->
-              <VCol cols="6">
-                <VTextField
-                  v-model="addTower.phone_second"
-                  label="رقم الهاتف الثاني"
-                  required
-                  type="number"
-                />
-              </VCol>
-              <!-- this is the description holder -->
-              <VCol cols="5">
-                <VTextField
-                  v-model="addTower.lon"
-                  label="خطوط العرض"
-                  required
-                  disabled
-                />
-              </VCol>
-              <!-- this is the description holder -->
-              <VCol cols="5">
-                <VTextField
-                  v-model="addTower.lat"
-                  label="خطوط الطول"
-                  required
-                  disabled
-                />
-              </VCol>
-              <VCol
-                style="
-                  display: flex;
-                  height: 100%;
-                  flex-direction: column;
-                  align-items: center;
-                  justify-content: center;
-                "
-              >
-                <VBtn @click="addChangeBtn"> أختر الموقع </VBtn>
-                <p style="font-size: 12px" class="pt-2">
-                  أختر الموقع على الخريطة
-                </p>
-              </VCol>
-              <!-- this is the description holder -->
             </VRow>
-          </VContainer>
-        </VCardText>
-        <VCardActions>
-          <VRow>
-            <VCol cols="9">
-              <VSpacer />
-            </VCol>
-            <VCol cols="3" align="center">
-              <VBtn
-                color="blue-darken-1"
-                variant="text"
-                @click="addDialog = false"
-              >
-                ألغاء
-              </VBtn>
-              <VBtn
-                :loading="loading"
-                color="blue-darken-1"
-                variant="text"
-                @click="addSaveBtnActions"
-              >
-                أضافة
-              </VBtn>
-            </VCol>
-          </VRow>
-        </VCardActions>
-      </VCard>
-    </VDialog>
+          </VCardActions>
+        </VCard>
+      </VDialog>
+    </VForm>
   </div>
 </template>
 
@@ -304,6 +325,10 @@ export default defineComponent({
   components: { GoogleMap, Marker },
   data() {
     return {
+      formValid: false,
+      rules: {
+        idNumberRules: [(v) => (!!v && v.value !== null) || "الحقل مطلوب"],
+      },
       whichDialog: null,
       editDialog: false,
       addDialog: false,
@@ -367,6 +392,11 @@ export default defineComponent({
         this.addTower.lat = e.latLng.lat();
         this.addDialog = true;
       }
+    },
+    undo() {
+      this.addDialog = false;
+      Object.keys(this.addTower).forEach((key) => (this.addTower[key] = null));
+      this.whichDialog = null;
     },
     async getData() {
       const response = await get_towers_service();

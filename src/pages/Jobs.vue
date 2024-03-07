@@ -10,6 +10,11 @@ import { defineComponent, onMounted, ref } from "vue";
 export default defineComponent({
   data() {
     return {
+      formValid: false,
+      rules: {
+        idNumberRules: [(v) => !!v || "الحقل مطلوب"],
+      },
+      imageRequired: false,
       dialog: false,
       editDialog: false,
       deleteDialog: false,
@@ -93,11 +98,13 @@ export default defineComponent({
       this.onEditAd.salary = e.salary;
       this.selectedAdImage = this.content_url + this.onEditAd.image;
       this.editDialog = true;
+      this.imageRequired = true;
     },
     clearAdImage() {
       this.addData.image = null;
       this.onEditAd.image = null;
       this.selectedAdImage = null;
+      this.imageRequired = false;
     },
 
     openFileSelectionAdlImg() {
@@ -126,6 +133,7 @@ export default defineComponent({
         this.addData.image = file;
         this.onEditAd.image = file;
         this.onEditAd.toBeSentImage = this.selectedAdImage;
+        this.imageRequired = true;
       } else {
         this.addData.image = null;
         this.selectedAdImage = null;
@@ -231,200 +239,218 @@ export default defineComponent({
           <VCard class="pa-3">
             <VRow align="center">
               <!-- add dialog under this comment -->
-              <VDialog v-model="dialog" width="1024">
-                <template #activator="{ props }">
-                  <VBtn
-                    color="primary"
-                    v-bind="props"
-                    append-icon="mdi-add"
-                    no-restricted-class
-                    class="mt-4 mr-4"
-                  >
-                    أضافة وضيفة جديد
-                  </VBtn>
-                </template>
-                <VCard>
-                  <VCardTitle class="d-flex mt-5 mr-5">
-                    <span v-cloak class="text-h5">أضافة عرض جديد</span>
-                  </VCardTitle>
-                  <VCardText>
-                    <VContainer>
-                      <VRow class="">
-                        <VCol cols="12">
-                          <div
-                            class="imgContainer personalImg d-flex align-center"
-                          >
-                            <div v-show="addData.image" class="imageDisplay">
-                              <VImg
-                                v-model="addData.image"
-                                class="imgS"
-                                :src="selectedAdImage"
-                              />
-                              <button class="deleteBtn" @click="clearAdImage">
-                                <VIcon class="delete_icon"> mdi-close </VIcon>
-                              </button>
-                            </div>
+              <VForm v-model="formValid">
+                <VDialog v-model="dialog" width="1024">
+                  <template #activator="{ props }">
+                    <VBtn
+                      color="primary"
+                      v-bind="props"
+                      append-icon="mdi-add"
+                      no-restricted-class
+                      class="mt-4 mr-4"
+                    >
+                      أضافة وضيفة جديده
+                    </VBtn>
+                  </template>
+                  <VCard>
+                    <VCardTitle class="d-flex mt-5 mr-5">
+                      <span v-cloak class="text-h5">أضافة وظيفه جديده</span>
+                    </VCardTitle>
+                    <VCardText>
+                      <VContainer>
+                        <VRow class="">
+                          <VCol cols="12">
                             <div
-                              v-show="!addData.image"
-                              class="imgBox"
-                              @click="openFileSelectionAdlImg"
+                              class="imgContainer personalImg d-flex align-center"
                             >
-                              <VFileInput
-                                v-show="false"
-                                ref="ImageRef"
-                                type="file"
-                                accept="image/*"
-                                class="input_style"
-                                @change="adImgChange"
-                              />
-                              <button class="addBtn">+</button>
-                              <h4>صورة</h4>
+                              <div v-show="addData.image" class="imageDisplay">
+                                <VImg
+                                  v-model="addData.image"
+                                  class="imgS"
+                                  :src="selectedAdImage"
+                                />
+                                <button class="deleteBtn" @click="clearAdImage">
+                                  <VIcon class="delete_icon"> mdi-close </VIcon>
+                                </button>
+                              </div>
+                              <div
+                                v-show="!addData.image"
+                                class="imgBox"
+                                @click="openFileSelectionAdlImg"
+                              >
+                                <VFileInput
+                                  v-show="false"
+                                  ref="ImageRef"
+                                  type="file"
+                                  accept="image/*"
+                                  class="input_style"
+                                  @change="adImgChange"
+                                />
+                                <button class="addBtn">+</button>
+                                <h4>صورة</h4>
+                              </div>
                             </div>
-                          </div>
-                        </VCol>
+                            <h5 :hidden="imageRequired" class="mr-2 mt-3">
+                              الصورة مطلوبه
+                            </h5>
+                          </VCol>
 
-                        <!-- this is the image holder -->
-                        <VCol cols="8">
-                          <VTextField
-                            v-model="addData.title"
-                            label="عنوان الوضيفة"
-                            required
-                            :hint="fileInputHint"
-                          />
-                        </VCol>
-                        <!-- this is the salary holder -->
-                        <VCol cols="4">
-                          <VTextField
-                            v-model="addData.salary"
-                            label="الراتب"
-                            required
-                            :hint="fileInputHint"
-                          />
-                        </VCol>
-                        <!-- this is the salary holder -->
-                        <VCol cols="12">
-                          <VTextarea
-                            v-model="addData.description"
-                            label="وصف العرض"
-                            required
-                            rows="3"
-                          />
-                        </VCol>
-                        <!-- this is the description holder -->
-                      </VRow>
-                    </VContainer>
-                  </VCardText>
-                  <VCardActions>
-                    <VSpacer />
-                    <VBtn
-                      color="blue-darken-1"
-                      variant="text"
-                      @click="dialog = false"
-                    >
-                      ألغاء
-                    </VBtn>
-                    <VBtn
-                      :loading="loading"
-                      color="blue-darken-1"
-                      variant="text"
-                      @click="saveBtnActions"
-                    >
-                      موافق
-                    </VBtn>
-                  </VCardActions>
-                </VCard>
-              </VDialog>
+                          <!-- this is the image holder -->
+                          <VCol cols="8">
+                            <VTextField
+                              v-model="addData.title"
+                              label="عنوان الوضيفة"
+                              required
+                              :hint="fileInputHint"
+                              :rules="rules.idNumberRules"
+                            />
+                          </VCol>
+                          <!-- this is the salary holder -->
+                          <VCol cols="4">
+                            <VTextField
+                              v-model="addData.salary"
+                              label="الراتب"
+                              required
+                              :hint="fileInputHint"
+                            />
+                          </VCol>
+                          <!-- this is the salary holder -->
+                          <VCol cols="12">
+                            <VTextarea
+                              v-model="addData.description"
+                              label="وصف الوظيفة"
+                              required
+                              rows="3"
+                              :rules="rules.idNumberRules"
+                            />
+                          </VCol>
+                          <!-- this is the description holder -->
+                        </VRow>
+                      </VContainer>
+                    </VCardText>
+                    <VCardActions>
+                      <VSpacer />
+                      <VBtn
+                        color="blue-darken-1"
+                        variant="text"
+                        @click="dialog = false"
+                      >
+                        ألغاء
+                      </VBtn>
+                      <VBtn
+                        :disabled="!formValid || !imageRequired"
+                        :loading="loading"
+                        color="blue-darken-1"
+                        variant="text"
+                        @click="saveBtnActions"
+                      >
+                        موافق
+                      </VBtn>
+                    </VCardActions>
+                  </VCard>
+                </VDialog>
+              </VForm>
+
               <!-- editing dialog under this comment -->
-              <VDialog v-model="editDialog" width="1024">
-                <VCard>
-                  <VCardTitle class="d-flex mt-5 mr-5">
-                    <span v-cloak class="text-h5">تعديل الأعلان</span>
-                  </VCardTitle>
-                  <VCardText>
-                    <VContainer>
-                      <VRow>
-                        <VCol cols="12">
-                          <div class="imgContainer personalImg">
-                            <div v-show="onEditAd.image" class="imageDisplay">
-                              <VImg
-                                v-model="onEditAd.image"
-                                class="imgS"
-                                :src="selectedAdImage"
-                              />
-                              <button class="deleteBtn" @click="clearAdImage">
-                                <VIcon class="delete_icon"> mdi-close </VIcon>
-                              </button>
+              <VForm v-model="formValid">
+                <VDialog v-model="editDialog" width="1024">
+                  <VCard>
+                    <VCardTitle class="d-flex mt-5 mr-5">
+                      <span v-cloak class="text-h5">تعديل الوظيفه</span>
+                    </VCardTitle>
+                    <VCardText>
+                      <VContainer>
+                        <VRow>
+                          <VCol cols="12">
+                            <div class="imgContainer personalImg">
+                              <div v-show="onEditAd.image" class="imageDisplay">
+                                <VImg
+                                  v-model="onEditAd.image"
+                                  class="imgS"
+                                  :src="selectedAdImage"
+                                />
+                                <button class="deleteBtn" @click="clearAdImage">
+                                  <VIcon class="delete_icon"> mdi-close </VIcon>
+                                </button>
+                              </div>
+                              <div
+                                v-show="!onEditAd.image"
+                                class="imgBox"
+                                @click="openFileSelectionAdlImg"
+                              >
+                                <VFileInput
+                                  v-show="false"
+                                  ref="ImageRef"
+                                  type="file"
+                                  accept="image/*"
+                                  class="input_style"
+                                  @change="adImgChange"
+                                />
+                                <button class="addBtn">+</button>
+                                <h4>صورة</h4>
+                              </div>
                             </div>
-                            <div
-                              v-show="!onEditAd.image"
-                              class="imgBox"
-                              @click="openFileSelectionAdlImg"
-                            >
-                              <VFileInput
-                                v-show="false"
-                                ref="ImageRef"
-                                type="file"
-                                accept="image/*"
-                                class="input_style"
-                                @change="adImgChange"
-                              />
-                              <button class="addBtn">+</button>
-                              <h4>صورة</h4>
-                            </div>
-                          </div>
-                        </VCol>
+                            <h5 :hidden="imageRequired" class="mr-2 mt-3">
+                              الصورة مطلوبه
+                            </h5>
+                          </VCol>
 
-                        <!-- this is the image holder -->
-                        <VCol cols="8">
-                          <VTextField
-                            v-model="onEditAd.title"
-                            label="عنوان الوضيفة"
-                            required
-                            :hint="fileInputHint"
-                          />
-                        </VCol>
-                        <!-- this is the salary holder -->
-                        <VCol cols="4">
-                          <VTextField
-                            v-model="onEditAd.salary"
-                            label="الراتب"
-                            required
-                            :hint="fileInputHint"
-                          />
-                        </VCol>
-                        <!-- this is the salary holder -->
-                        <VCol cols="12">
-                          <VTextarea
-                            v-model="onEditAd.description"
-                            label="وصف العرض"
-                            required
-                            rows="3"
-                          />
-                        </VCol>
-                        <!-- this is the description holder -->
-                      </VRow>
-                    </VContainer>
-                  </VCardText>
-                  <VCardActions>
-                    <VSpacer />
-                    <VBtn
-                      color="blue-darken-1"
-                      variant="text"
-                      @click="editDialog = false"
-                    >
-                      ألغاء
-                    </VBtn>
-                    <VBtn
-                      :loading="loading"
-                      color="blue-darken-1"
-                      variant="text"
-                      @click="editSaveBtnActions"
-                    >
-                      موافق
-                    </VBtn>
-                  </VCardActions>
-                </VCard>
-              </VDialog>
+                          <!-- this is the image holder -->
+                          <VCol cols="8">
+                            <VTextField
+                              v-model="onEditAd.title"
+                              label="عنوان الوضيفة"
+                              required
+                              :hint="fileInputHint"
+                              :rules="rules.idNumberRules"
+                            />
+                          </VCol>
+                          <!-- this is the salary holder -->
+                          <VCol cols="4">
+                            <VTextField
+                              v-model="onEditAd.salary"
+                              label="الراتب"
+                              required
+                              :hint="fileInputHint"
+                            />
+                          </VCol>
+                          <!-- this is the salary holder -->
+                          <VCol cols="12">
+                            <VTextarea
+                              v-model="onEditAd.description"
+                              label="وصف الوظيفة"
+                              required
+                              rows="3"
+                              :rules="rules.idNumberRules"
+                            />
+                          </VCol>
+                          <!-- this is the description holder -->
+                        </VRow>
+                      </VContainer>
+                    </VCardText>
+                    <VCardActions>
+                      <VSpacer />
+                      <VBtn
+                        color="blue-darken-1"
+                        variant="text"
+                        @click="editDialog = false"
+                      >
+                        ألغاء
+                      </VBtn>
+                      <VBtn
+                        :disabled="!formValid || !imageRequired"
+                        :loading="loading"
+                        color="blue-darken-1"
+                        variant="text"
+                        @click="editSaveBtnActions"
+                      >
+                        موافق
+                      </VBtn>
+                    </VCardActions>
+                  </VCard>
+                </VDialog>
+              </VForm>
+
               <!-- this is delete dialog -->
               <VDialog v-model="deleteDialog" width="auto">
                 <VCard>
