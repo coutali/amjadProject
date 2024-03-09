@@ -581,6 +581,9 @@ export default defineComponent({
                       </VCol>
                     </VRow>
                   </template>
+                  <template #[`item.has_discount`]="{ item }">
+                    {{ item.has_discount ? "نعم" : "لا" }}
+                  </template>
                   <template #[`item.image`]="{ item }">
                     <VRow>
                       <VCol>

@@ -4,7 +4,7 @@ import {
   edit_ads_service,
   get_ads_service,
   remove_ads_service,
-} from "@/services/ads";
+} from "@/services/postings";
 import { defineComponent, onMounted, ref } from "vue";
 
 export default defineComponent({
