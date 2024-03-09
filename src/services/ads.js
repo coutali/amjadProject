@@ -8,7 +8,7 @@ export const get_ads_service = async ({
 }) => {
   try {
     const response =
-      await axiosIns.get(`ads?page=${page}&limit=${limit}&search=${search}`)
+      await axiosIns.get(`postings?page=${page}&limit=${limit}&search=${search}`)
 
     
     return response.data
@@ -25,7 +25,7 @@ export const add_ads_service = async ({
 }) => {
   try {
     const response =
-      await axiosIns.post("ads", {
+      await axiosIns.post("postings", {
         title,
         description,
         image,
@@ -45,7 +45,7 @@ export const edit_ads_service = async ({
 }) => {
   try {
     const response =
-      await axiosIns.put(`ads/${id}`, {
+      await axiosIns.put(`postings/${id}`, {
         title,
         description,
         image,
@@ -60,7 +60,7 @@ export const edit_ads_service = async ({
 export const remove_ads_service = async id => {
   try {
     const response =
-      await axiosIns.delete(`ads/${id}`)
+      await axiosIns.delete(`postings/${id}`)
 
     return response.data
   } catch (error) {

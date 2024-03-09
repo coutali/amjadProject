@@ -13,14 +13,8 @@
         :key="index"
         :options="{
           position: { lat: m.location.lat, lng: m.location.lon },
-          icon: {
-            url: 'src/assets/rss-box.svg',
-            scaledSize: { width: 33, height: 33 },
-          },
-          label: {
-            text: `${m.name}`,
-            color: 'red',
-          },
+          icon: icon,
+          label: m.name,
         }"
         @click="fiberIconActions(m)"
       />
@@ -325,6 +319,12 @@ export default defineComponent({
         number: null,
         lon: null,
         lat: null,
+      },
+      icon: {
+        path: "m11.95 38.39 3.67 5.43A2.023 2.023 0 0 1 16 45v13a1 1 0 0 1-1 1h-2a1 1 0 0 1-1-1V46.259a2 2 0 0 0-.34-1.115L8.71 40.75zM16.95 19.39l6.67 9.43A2.023 2.023 0 0 1 24 30v28a1 1 0 0 1-1 1h-2a1 1 0 0 1-1-1V31.285a2 2 0 0 0-.367-1.154L13.71 21.75zM51.29 40.75l-2.95 4.394a2 2 0 0 0-.34 1.115V58a1 1 0 0 1-1 1h-2a1 1 0 0 1-1-1V45a2.023 2.023 0 0 1 .38-1.18l3.67-5.43zM46.29 21.75l-5.923 8.381A2 2 0 0 0 40 31.285V58a1 1 0 0 1-1 1h-2a1 1 0 0 1-1-1V30a2.023 2.023 0 0 1 .38-1.18l6.67-9.43zM32 12.65V58a1 1 0 0 1-1 1h-2a1 1 0 0 1-1-1V12.65z",
+        fillColor: "#9d1ae5",
+        fillOpacity: 1,
+        strokeWeight: 0,
       },
     };
   },

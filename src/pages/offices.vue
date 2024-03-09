@@ -13,14 +13,8 @@
         :key="index"
         :options="{
           position: { lat: m.location.lat, lng: m.location.lon },
-          icon: {
-            url: 'src/assets/office-building-marker-outline.svg',
-            scaledSize: { width: 33, height: 33 },
-          },
-          label: {
-            text: `${m.name}`,
-            color: 'red',
-          },
+          icon: icon,
+          label: m.name,
         }"
         @click="officesIconActions(m)"
       />
@@ -269,6 +263,14 @@ export default defineComponent({
       MyLng: null,
       MyLat: null,
       data: [],
+      icon: {
+        path: "M241.7 3.4c9-4.5 19.6-4.5 28.6 0l160 80c15.8 7.9 22.2 27.1 14.3 42.9C439 137.5 427.7 144 416 144v80c0 17.7-14.3 32-32 32h-4.9l32 192H480c17.7 0 32 14.3 32 32s-14.3 32-32 32H384.5c-.4 0-.8 0-1.1 0H128.6c-.4 0-.8 0-1.1 0H32c-17.7 0-32-14.3-32-32s14.3-32 32-32h68.9l32-192H128c-17.7 0-32-14.3-32-32V144c-11.7 0-23-6.5-28.6-17.7c-7.9-15.8-1.5-35 14.3-42.9l160-80zM314.5 448L256 399.2 197.5 448h117zM197.8 256l-4.7 28.3L256 336.8l62.9-52.5L314.2 256H197.8zm-13.9 83.2l-11.2 67L218.5 368l-34.6-28.8zM293.5 368l45.8 38.1-11.2-67L293.5 368zM176 128c-8.8 0-16 7.2-16 16s7.2 16 16 16H336c8.8 0 16-7.2 16-16s-7.2-16-16-16H176",
+        fillColor: "#9d1ae5",
+        fillOpacity: 1,
+        strokeWeight: 0,
+        scale: 0.059,
+        className: "marker",
+      },
       addoffices: {
         name: null,
         address: null,

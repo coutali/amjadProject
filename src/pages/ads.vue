@@ -164,7 +164,7 @@ export default defineComponent({
         this.selectedAdImage = null;
         Object.keys(this.addData).forEach((key) => (this.addData[key] = null));
       } catch (error) {
-        this.finalMessage = result.message;
+        console.log(error);
       }
       this.loading = false;
     },
