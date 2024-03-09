@@ -303,7 +303,6 @@ export default defineComponent({
                           <VCol cols="12">
                             <VTextField
                               v-model="addData.link"
-                              :rules="rules.idNumberRules"
                               label="الرابط"
                               required
                               :hint="fileInputHint"
