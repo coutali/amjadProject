@@ -1,9 +1,9 @@
 <template>
   <div>
     <VRow>
-      <VCol v-for="(count, name, i) of data" cols="4">
+      <VCol v-for="(count, name, i) of data" cols="6" sm="4">
         <VCard style="cursor: pointer" class="cardHolder" @click="moveTo(i)">
-          <VCardText class="card" style="font-size: 1.2rem">
+          <VCardText class="card title" style="font-size: 1.2rem">
             {{ titles[i] }}
           </VCardText>
           <VCardText class="card">
@@ -71,6 +71,18 @@ export default defineComponent({
     align-items: center;
     justify-content: center;
     font-size: 1rem;
+
+    @media (max-width: 600px) {
+      font-size: 0.75rem;
+    }
+  }
+
+  .title {
+    @media (max-width: 600px) {
+      font-size: 0.75rem !important;
+      inline-size: 100% !important;
+      text-align: center !important;
+    }
   }
 }
 </style>
