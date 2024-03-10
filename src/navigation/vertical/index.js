@@ -1,118 +1,117 @@
 export default [{
-    title: 'الرئيسية',
-    to: {
-      name: 'index'
-    },
-    icon: {
-      icon: 'mdi-home-outline'
-    },
+  title: 'الرئيسية',
+  to: {
+    name: 'index',
   },
-  {
-    title: 'الأبراج',
-    to: {
-      name: 'towers'
-    },
-    icon: {
-      icon: 'mdi-radio-tower'
-    },
+  icon: {
+    icon: 'mdi-home-outline',
   },
-  {
-    title: 'الضوئي',
-    to: {
-      name: 'fiber'
-    },
-    icon: {
-      icon: 'mdi-firewire'
-    },
+},
+{
+  title: 'الأبراج',
+  to: {
+    name: 'towers',
   },
-  {
-    title: 'المكاتب',
-    to: {
-      name: 'offices'
-    },
-    icon: {
-      icon: 'mdi-office-building'
-    },
+  icon: {
+    icon: 'mdi-radio-tower',
   },
-  {
-    title: 'الأعلانات',
-    to: {
-      name: 'postings'
-    },
-    icon: {
-      icon: 'mdi-ads'
-    },
+},
+{
+  title: 'الضوئي',
+  to: {
+    name: 'fiber',
   },
-  {
-    title: 'العروض',
-    to: {
-      name: 'offers'
-    },
-    icon: {
-      icon: 'mdi-percent-outline'
-    },
+  icon: {
+    icon: 'mdi-firewire',
   },
-  {
-    title: 'الأشتراكات',
-    to: {
-      name: 'packages'
-    },
-    icon: {
-      icon: 'mdi-gift-outline'
-    },
+},
+{
+  title: 'المكاتب',
+  to: {
+    name: 'offices',
   },
-  {
-    title: 'المنتجات',
-    to: {
-      name: 'products'
-    },
-    icon: {
-      icon: 'mdi-factory'
-    },
+  icon: {
+    icon: 'mdi-office-building',
   },
-  {
-    title: 'المستخدمين',
-    to: {
-      name: 'users'
-    },
-    icon: {
-      icon: 'mdi-account-group-outline'
-    },
+},
+{
+  title: 'الأعلانات',
+  to: {
+    name: 'postings',
   },
-  {
-    title: 'الوضائف',
-    to: {
-      name: 'Jobs'
-    },
-    icon: {
-      icon: 'mdi-briefcase-edit-outline'
-    },
+  icon: {
+    icon: 'mdi-ads',
   },
-  {
-    title: 'التصنيفات',
-    to: {
-      name: 'category'
-    },
-    icon: {
-      icon: 'mdi-widgets-outline'
-    },
+},
+{
+  title: 'العروض',
+  to: {
+    name: 'offers',
   },
-  {
-    title: 'الأشعارات',
-    to: {
-      name: 'notifications'
-    },
-    icon: {
-      icon: 'mdi-message'
-    },
+  icon: {
+    icon: 'mdi-percent-outline',
   },
-  {
-    title: 'من نحن',
-    to: {
-      name: 'aboutUs'
-    },
-    icon: {
-      icon: 'mdi-account'
-    },
+},
+{
+  title: 'الأشتراكات',
+  to: {
+    name: 'packages',
   },
-]
+  icon: {
+    icon: 'mdi-gift-outline',
+  },
+},
+{
+  title: 'المنتجات',
+  to: {
+    name: 'products',
+  },
+  icon: {
+    icon: 'mdi-factory',
+  },
+},
+{
+  title: 'المستخدمين',
+  to: {
+    name: 'users',
+  },
+  icon: {
+    icon: 'mdi-account-group-outline',
+  },
+},
+{
+  title: 'الوضائف',
+  to: {
+    name: 'jobs',
+  },
+  icon: {
+    icon: 'mdi-briefcase-edit-outline',
+  },
+},
+{
+  title: 'التصنيفات',
+  to: {
+    name: 'category',
+  },
+  icon: {
+    icon: 'mdi-widgets-outline',
+  },
+},
+{
+  title: 'الأشعارات',
+  to: {
+    name: 'notifications',
+  },
+  icon: {
+    icon: 'mdi-message',
+  },
+},
+{
+  title: 'من نحن',
+  to: {
+    name: 'aboutUs',
+  },
+  icon: {
+    icon: 'mdi-account',
+  },
+}]

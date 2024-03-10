@@ -4,7 +4,7 @@
       <VCol v-for="(count, name, i) of data" cols="6" sm="4">
         <VCard style="cursor: pointer" class="cardHolder" @click="moveTo(i)">
           <VCardText class="card title" style="font-size: 1.2rem">
-            {{ titles[i] }}
+            {{ titles[name] }}
           </VCardText>
           <VCardText class="card">
             {{ count }}
@@ -22,37 +22,34 @@ export default defineComponent({
   data() {
     return {
       data: [],
-      titles: [
-        "الأعلانات",
-        "الوضائف",
-        "العروض",
-        "الأشتراكات",
-        "الأبراج",
-        "الضوئي",
-        "المستخدمين",
-        "المنتجات",
-        "تصنيف المنتجات",
-        "المكاتب",
-      ],
       paths: [],
+      titles: {
+        jobs: "الوظائف",
+        offers: "العروض",
+        packages: "الاشتراكات",
+        towers: "الابراج",
+        fiber: "الضوئي",
+        users: "المستخدمين",
+        products: "المنتجات",
+        category: "التصنيفات",
+        offices: "المكاتب",
+        notifications: "الاشعارات",
+        postings: "الاعلانات",
+      },
     };
   },
   mounted() {
     this.getData();
   },
   methods: {
+    moveTo(i) {
+      this.$router.push({ name: this.paths[i] });
+    },
     async getData() {
       const response = await get_analyze_service();
 
       this.data = response.results;
       this.paths = Object.keys(response.results);
-    },
-    moveTo(i) {
-      this.paths[i] === "jobs"
-        ? this.$router.replace({ name: "Jobs" })
-        : this.paths[i] === "products_category"
-        ? this.$router.replace({ name: "category" })
-        : this.$router.replace({ name: this.paths[i] });
     },
   },
 });

@@ -6,6 +6,7 @@ import {
   get_products_service,
   remove_products_service,
 } from "@/services/products";
+
 import { defineComponent, onMounted, ref } from "vue";
 
 export default defineComponent({
@@ -58,8 +59,9 @@ export default defineComponent({
 
         itemsPerPageOptions: [
           { title: "10", value: 10 },
-          { title: "20", value: 20 },
           { title: "50", value: 50 },
+          { title: "100", value: 100 },
+          { title: "200", value: 200 },
         ],
 
         options: {
@@ -96,7 +98,6 @@ export default defineComponent({
 
       return Number.parseFloat(x).toFixed(2);
     },
-
     editDialogActions(e) {
       this.onEditAd.id = e["_id"];
       this.onEditAd.title = e.title;

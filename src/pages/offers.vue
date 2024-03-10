@@ -5,6 +5,7 @@ import {
   get_offers_service,
   remove_offers_service,
 } from "@/services/offers";
+
 import { defineComponent, onMounted, ref } from "vue";
 
 export default defineComponent({
@@ -52,8 +53,9 @@ export default defineComponent({
 
         itemsPerPageOptions: [
           { title: "10", value: 10 },
-          { title: "20", value: 20 },
           { title: "50", value: 50 },
+          { title: "100", value: 100 },
+          { title: "200", value: 200 },
         ],
 
         options: {
@@ -82,12 +84,13 @@ export default defineComponent({
   },
   methods: {
     currencyFormator(number) {
-      let USDollar = new Intl.NumberFormat("en-IQ", {
-        style: "currency",
-        currency: "IQD",
-      });
+      return Number(this.financial(number)).toLocaleString("en-US");
+    },
 
-      return USDollar.format(number);
+    financial(x) {
+      if (x === null || x === undefined) return 0;
+
+      return Number.parseFloat(x).toFixed(2);
     },
     editDialogActions(e) {
       this.onEditAd.id = e["_id"];
