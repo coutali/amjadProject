@@ -88,13 +88,15 @@ export default defineComponent({
   },
   methods: {
     currencyFormator(number) {
-      let USDollar = new Intl.NumberFormat("en-IQ", {
-        style: "currency",
-        currency: "IQD",
-      });
-
-      return USDollar.format(number);
+      return Number(this.financial(number)).toLocaleString("en-US");
     },
+
+    financial(x) {
+      if (x === null || x === undefined) return 0;
+
+      return Number.parseFloat(x).toFixed(2);
+    },
+
     editDialogActions(e) {
       this.onEditAd.id = e["_id"];
       this.onEditAd.title = e.title;
