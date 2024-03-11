@@ -101,6 +101,8 @@ export default defineComponent({
       this.imageRequired = true;
     },
     clearAdImage() {
+      this.$refs.ImageRef.$el.lastElementChild.firstElementChild.childNodes[3].childNodes[4].value =
+        "";
       this.addData.image = null;
       this.onEditAd.image = null;
       this.selectedAdImage = null;
