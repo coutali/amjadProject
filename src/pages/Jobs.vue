@@ -614,4 +614,3 @@ export default defineComponent({
   }
 }
 </style>
-./jobs.vue
