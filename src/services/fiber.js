@@ -3,20 +3,18 @@ import axiosIns from "@/plugins/axios"
 export const add_fiber_service = async ({
   name,
   address,
+  location,
   zone,
-  number,
-  lon,
-  lat,
+  columns,
 }) => {
   try {
     const response =
       await axiosIns.post("fiber", {
         name,
         address,
+        location,
         zone,
-        number,
-        lon,
-        lat,
+        columns,
       })
 
     return response.data
@@ -42,9 +40,8 @@ export const edit_fiber_service = async ({
   name,
   address,
   zone,
-  number,
-  lon,
-  lat,
+  location,
+  columns,
 }) => {
   try {
     const response =
@@ -52,9 +49,8 @@ export const edit_fiber_service = async ({
         name,
         address,
         zone,
-        number,
-        lon,
-        lat,
+        location,
+        columns,
       })
 
     return response.data
