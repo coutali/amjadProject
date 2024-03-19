@@ -10,6 +10,11 @@ import { defineComponent, onMounted, ref } from "vue";
 export default defineComponent({
   data() {
     return {
+      privileges: {
+        add: false,
+        edit: false,
+        delete: false,
+      },
       imageRequired: false,
       dialog: false,
       editDialog: false,
@@ -128,6 +133,9 @@ export default defineComponent({
     },
 
     async getData() {
+      JSON.parse(localStorage.getItem("results")).privileges.actions.map(
+        (e) => (this.privileges[e] = true)
+      );
       this.table.loading = true;
 
       const response = await get_ads_service({
@@ -232,6 +240,7 @@ export default defineComponent({
                     append-icon="mdi-add"
                     no-restricted-class
                     class="mt-4 mr-4"
+                    :disabled="!privileges.add"
                   >
                     أضافة اعلان جديد
                   </VBtn>
@@ -469,11 +478,16 @@ export default defineComponent({
                     <VIcon
                       size="small"
                       class="me-2"
-                      @click="editDialogActions(item)"
+                      @click="privileges.edit ? editDialogActions(item) : null"
                     >
                       mdi-pencil
                     </VIcon>
-                    <VIcon size="small" @click="deleteIconActions(item)">
+                    <VIcon
+                      size="small"
+                      @click="
+                        privileges.delete ? deleteIconActions(item) : null
+                      "
+                    >
                       mdi-delete
                     </VIcon>
                   </template>

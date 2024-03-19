@@ -11,6 +11,11 @@ import { defineComponent, onMounted, ref } from "vue";
 export default defineComponent({
   data() {
     return {
+      privileges: {
+        add: false,
+        edit: false,
+        delete: false,
+      },
       formValid: false,
       rules: {
         idNumberRules: [(v) => !!v || "الحقل مطلوب"],
@@ -41,6 +46,7 @@ export default defineComponent({
       table: {
         loading: false,
         headers: [
+          { title: "العنوان", value: "title" },
           { title: "الوصف", value: "description" },
           { title: "الصورة", value: "image" },
           { title: "السعر", value: "price" },
@@ -179,12 +185,14 @@ export default defineComponent({
           price: this.addData.price,
         });
 
+        console.log(result);
         this.getData();
         this.dialog = false;
         this.finalMessage = result.message;
         this.selectedAdImage = null;
         Object.keys(this.addData).forEach((key) => (this.addData[key] = null));
       } catch (error) {
+        console.log(error);
         this.finalMessage = result.message;
       }
       this.loading = false;
@@ -252,6 +260,7 @@ export default defineComponent({
                       append-icon="mdi-add"
                       no-restricted-class
                       class="mt-4 mr-4"
+                      :disabled="!privileges.add"
                     >
                       أضافة عرض جديد
                     </VBtn>
@@ -297,7 +306,17 @@ export default defineComponent({
                           </VCol>
 
                           <!-- this is the image holder -->
-                          <VCol cols="12">
+                          <VCol cols="6">
+                            <VTextField
+                              v-model="addData.title"
+                              :rules="rules.idNumberRules"
+                              label="العنوان"
+                              required
+                              :hint="fileInputHint"
+                            />
+                          </VCol>
+                          <!-- this is the price holder -->
+                          <VCol cols="6">
                             <VTextField
                               v-model="addData.price"
                               :rules="rules.idNumberRules"
@@ -386,7 +405,17 @@ export default defineComponent({
                           </VCol>
 
                           <!-- this is the image holder -->
-                          <VCol cols="12">
+                          <VCol cols="6">
+                            <VTextField
+                              v-model="onEditAd.title"
+                              :rules="rules.idNumberRules"
+                              label="العنوان"
+                              required
+                              :hint="fileInputHint"
+                            />
+                          </VCol>
+                          <!-- this is the price holder -->
+                          <VCol cols="6">
                             <VTextField
                               v-model="onEditAd.price"
                               :rules="rules.idNumberRules"
@@ -503,11 +532,16 @@ export default defineComponent({
                     <VIcon
                       size="small"
                       class="me-2"
-                      @click="editDialogActions(item)"
+                      @click="privileges.edit ? editDialogActions(item) : null"
                     >
                       mdi-pencil
                     </VIcon>
-                    <VIcon size="small" @click="deleteIconActions(item)">
+                    <VIcon
+                      size="small"
+                      @click="
+                        privileges.delete ? deleteIconActions(item) : null
+                      "
+                    >
                       mdi-delete
                     </VIcon>
                   </template>

@@ -24,6 +24,7 @@
             label="العنوان"
             :max-width="mdAndUp ? '50%' : '100%'"
             :loading="loading"
+            :disabled="!privileges.edit"
           />
         </VCol>
         <VCol cols="12" md="6">
@@ -33,6 +34,7 @@
             variant="solo-filled"
             label="رقم الهاتف"
             :loading="loading"
+            :disabled="!privileges.edit"
           />
         </VCol>
         <VCol cols="12" md="6">
@@ -42,6 +44,7 @@
             variant="solo-filled"
             label="الحساب الألكتروني"
             :loading="loading"
+            :disabled="!privileges.edit"
           />
         </VCol>
         <VCol cols="12" md="6">
@@ -51,6 +54,7 @@
             variant="solo-filled"
             label="حساب فيسبوك"
             :loading="loading"
+            :disabled="!privileges.edit"
           />
         </VCol>
         <VCol cols="12" md="6">
@@ -60,6 +64,7 @@
             variant="solo-filled"
             label="حساب انستقرام"
             :loading="loading"
+            :disabled="!privileges.edit"
           />
         </VCol>
         <VCol cols="12" md="6">
@@ -69,6 +74,7 @@
             variant="solo-filled"
             label="رقم الواتساب"
             :loading="loading"
+            :disabled="!privileges.edit"
           />
         </VCol>
         <VCol cols="12" md="6">
@@ -78,6 +84,7 @@
             variant="solo-filled"
             label="حساب تيليجرام"
             :loading="loading"
+            :disabled="!privileges.edit"
           />
         </VCol>
         <VCol cols="12" md="6">
@@ -87,6 +94,7 @@
             variant="solo-filled"
             label="الموقع الحالي"
             :loading="loading"
+            :disabled="!privileges.edit"
           />
         </VCol>
         <VCol cols="12">
@@ -97,6 +105,7 @@
             variant="solo-filled"
             label="الوصف"
             :loading="loading"
+            :disabled="!privileges.edit"
           />
         </VCol>
       </VRow>
@@ -106,7 +115,7 @@
             append-icon="mdi-content-save-all-outline"
             variant="outlined"
             block
-            :disabled="!formValid"
+            :disabled="!formValid || !privileges.edit"
             @click="editData"
           >
             <h4 class="btn-word" :loading="loading">حفظ</h4>
@@ -123,6 +132,11 @@ import { edit_aboutUs_service, get_aboutUs_service } from "@/services/aboutUs";
 export default {
   data() {
     return {
+      privileges: {
+        add: false,
+        edit: false,
+        delete: false,
+      },
       formValid: false,
       rules: {
         idNumberRules: [(v) => !!v || "الحقل مطلوب"],
@@ -170,6 +184,9 @@ export default {
       this.content_url = response.content_url;
 
       this.loading = false;
+      JSON.parse(localStorage.getItem("results")).privileges.actions.map(
+        (e) => (this.privileges[e] = true)
+      );
     },
   },
 };

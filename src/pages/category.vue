@@ -10,6 +10,11 @@ import { defineComponent } from "vue";
 export default defineComponent({
   data() {
     return {
+      privileges: {
+        add: false,
+        edit: false,
+        delete: false,
+      },
       formValid: false,
       rules: {
         idNumberRules: [(v) => !!v || "الحقل مطلوب"],
@@ -63,6 +68,11 @@ export default defineComponent({
     },
 
     async getData() {
+      JSON.parse(localStorage.getItem("results")).privileges.actions.map(
+        (e) => (this.privileges[e] = true)
+      );
+      console.log(this.privileges);
+
       this.table.loading = true;
 
       const response = await get_products_category_service({
@@ -159,6 +169,7 @@ export default defineComponent({
                       append-icon="mdi-add"
                       no-restricted-class
                       class="mt-4 mr-4"
+                      :disabled="!privileges.add"
                     >
                       أضافة تصنيف جديد
                     </VBtn>
@@ -305,10 +316,21 @@ export default defineComponent({
                   @update:options="optionsChange($event)"
                 >
                   <template #[`item.actions`]="{ item }">
-                    <VIcon size="large" @click="editDialogActions(item)">
+                    <VIcon
+                      disabled
+                      size="large"
+                      @click="privileges.edit ? editDialogActions(item) : null"
+                    >
                       mdi-pencil
                     </VIcon>
-                    <VIcon size="large" @click="deleteIconActions(item)">
+                    <VIcon
+                      :clickable="false"
+                      :aria-disabled="privileges.delete"
+                      size="large"
+                      @click="
+                        privileges.delete ? deleteIconActions(item) : null
+                      "
+                    >
                       mdi-delete
                     </VIcon>
                   </template>

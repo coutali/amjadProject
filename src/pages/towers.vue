@@ -1,6 +1,8 @@
 <template>
   <div>
-    <VBtn class="mb-3" @click="addDialog = true"> أضافة برج جديد </VBtn>
+    <VBtn :disabled="!privileges.add" class="mb-3" @click="addDialog = true">
+      أضافة برج جديد
+    </VBtn>
     <GoogleMap
       :api-key="APIkey"
       style="width: 100%; height: calc(100vh - 125px)"
@@ -23,7 +25,10 @@
       <VDialog v-model="editDialog" width="1024">
         <VCard>
           <VCardTitle class="d-flex mt-5 mr-5">
-            <span v-cloak class="text-h5">تعديل البرج</span>
+            <span v-if="privileges.edit" v-cloak class="text-h5"
+              >تعديل البرج</span
+            >
+            <span v-else v-cloak class="text-h5">ليس لديك امكانية تعديل</span>
           </VCardTitle>
           <VCardText>
             <VContainer>
@@ -35,6 +40,7 @@
                     required
                     :hint="fileInputHint"
                     :rules="rules.idNumberRules"
+                    :disabled="!privileges.edit"
                   />
                 </VCol>
                 <!-- this is the title holder -->
@@ -43,6 +49,7 @@
                     v-model="onEditTower.address"
                     label="عنوان البرج"
                     :rules="rules.idNumberRules"
+                    :disabled="!privileges.edit"
                   />
                 </VCol>
                 <!-- this is the category holder -->
@@ -53,6 +60,7 @@
                     required
                     :hint="fileInputHint"
                     :rules="rules.idNumberRules"
+                    :disabled="!privileges.edit"
                   />
                 </VCol>
                 <!-- this is the price holder -->
@@ -61,6 +69,7 @@
                     v-model="onEditTower.sector_name"
                     label="اسم السكتر"
                     required
+                    :disabled="!privileges.edit"
                   />
                 </VCol>
                 <!-- this is the description holder -->
@@ -71,6 +80,7 @@
                     required
                     type="number"
                     :rules="rules.idNumberRules"
+                    :disabled="!privileges.edit"
                   />
                 </VCol>
                 <!-- this is the description holder -->
@@ -80,6 +90,7 @@
                     label="رقم الهاتف الثاني"
                     required
                     type="number"
+                    :disabled="!privileges.edit"
                   />
                 </VCol>
                 <!-- this is the description holder -->
@@ -111,7 +122,9 @@
                     justify-content: center;
                   "
                 >
-                  <VBtn @click="editChangeBtn"> تغيير الموقع </VBtn>
+                  <VBtn :disabled="!privileges.edit" @click="editChangeBtn">
+                    تغيير الموقع
+                  </VBtn>
                   <p style="font-size: 12px" class="pt-2">
                     أختر الموقع على الخريطة
                   </p>
@@ -127,6 +140,7 @@
                   class="bg-red pr-5 pl-5"
                   color="wight-darken-1"
                   variant="text"
+                  :disabled="!privileges.delete"
                   @click="deleteDialog = true"
                 >
                   حذف البرج
@@ -139,6 +153,7 @@
                 <VBtn
                   color="blue-darken-1"
                   variant="text"
+                  :disabled="!privileges.edit"
                   @click="editDialog = false"
                 >
                   ألغاء التعديل
@@ -147,7 +162,7 @@
                   :loading="loading"
                   color="blue-darken-1"
                   variant="text"
-                  :disabled="!formValid"
+                  :disabled="!formValid || !privileges.edit"
                   @click="editSaveBtnActions"
                 >
                   تعديل
@@ -325,6 +340,11 @@ export default defineComponent({
   components: { GoogleMap, Marker },
   data() {
     return {
+      privileges: {
+        add: false,
+        edit: false,
+        delete: false,
+      },
       formValid: false,
       rules: {
         idNumberRules: [(v) => (!!v && v.value !== null) || "الحقل مطلوب"],
@@ -371,15 +391,6 @@ export default defineComponent({
 
   created() {
     this.getData();
-
-    // this.$getLocation()
-    //   .then((coordinates) => {
-    //     this.MyLat = coordinates.lat;
-    //     this.MyLng = coordinates.lng;
-    //   })
-    //   .catch((error) => {
-
-    //   });
   },
   methods: {
     getGeoPoint(e) {
@@ -402,6 +413,9 @@ export default defineComponent({
       const response = await get_towers_service();
 
       this.data = response.results.data;
+      JSON.parse(localStorage.getItem("results")).privileges.actions.map(
+        (e) => (this.privileges[e] = true)
+      );
     },
     towerIconActions(m) {
       this.editDialog = true;
