@@ -163,6 +163,10 @@ export default defineComponent({
       this.table.total_data = response.results.count;
       this.content_url = response.content_url;
       this.table.loading = false;
+
+      JSON.parse(localStorage.getItem("results")).privileges.actions.map(
+        (e) => (this.privileges[e] = true)
+      );
     },
     async searchChange() {
       this.table.options.page = 1;
@@ -185,14 +189,12 @@ export default defineComponent({
           price: this.addData.price,
         });
 
-        console.log(result);
         this.getData();
         this.dialog = false;
         this.finalMessage = result.message;
         this.selectedAdImage = null;
         Object.keys(this.addData).forEach((key) => (this.addData[key] = null));
       } catch (error) {
-        console.log(error);
         this.finalMessage = result.message;
       }
       this.loading = false;
@@ -306,7 +308,7 @@ export default defineComponent({
                           </VCol>
 
                           <!-- this is the image holder -->
-                          <VCol cols="6">
+                          <VCol cols="12" sm="6">
                             <VTextField
                               v-model="addData.title"
                               :rules="rules.idNumberRules"
@@ -316,7 +318,7 @@ export default defineComponent({
                             />
                           </VCol>
                           <!-- this is the price holder -->
-                          <VCol cols="6">
+                          <VCol cols="12" sm="6">
                             <VTextField
                               v-model="addData.price"
                               :rules="rules.idNumberRules"
@@ -405,7 +407,7 @@ export default defineComponent({
                           </VCol>
 
                           <!-- this is the image holder -->
-                          <VCol cols="6">
+                          <VCol cols="12" sm="6">
                             <VTextField
                               v-model="onEditAd.title"
                               :rules="rules.idNumberRules"
@@ -415,7 +417,7 @@ export default defineComponent({
                             />
                           </VCol>
                           <!-- this is the price holder -->
-                          <VCol cols="6">
+                          <VCol cols="12" sm="6">
                             <VTextField
                               v-model="onEditAd.price"
                               :rules="rules.idNumberRules"

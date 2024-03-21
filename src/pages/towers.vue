@@ -33,7 +33,7 @@
           <VCardText>
             <VContainer>
               <VRow>
-                <VCol cols="6">
+                <VCol cols="12" sm="6">
                   <VTextField
                     v-model="onEditTower.name"
                     label="اسم البرج"
@@ -44,7 +44,7 @@
                   />
                 </VCol>
                 <!-- this is the title holder -->
-                <VCol cols="6">
+                <VCol cols="12" sm="6">
                   <VTextField
                     v-model="onEditTower.address"
                     label="عنوان البرج"
@@ -53,7 +53,7 @@
                   />
                 </VCol>
                 <!-- this is the category holder -->
-                <VCol cols="6">
+                <VCol cols="12" sm="6">
                   <VTextField
                     v-model="onEditTower.affiliate"
                     label="افيلايت"
@@ -64,7 +64,7 @@
                   />
                 </VCol>
                 <!-- this is the price holder -->
-                <VCol cols="6">
+                <VCol cols="12" sm="6">
                   <VTextField
                     v-model="onEditTower.sector_name"
                     label="اسم السكتر"
@@ -73,7 +73,7 @@
                   />
                 </VCol>
                 <!-- this is the description holder -->
-                <VCol cols="6">
+                <VCol cols="12" sm="6">
                   <VTextField
                     v-model="onEditTower.phone_first"
                     label="رقم الهاتف الأول"
@@ -84,7 +84,7 @@
                   />
                 </VCol>
                 <!-- this is the description holder -->
-                <VCol cols="6">
+                <VCol cols="12" sm="6">
                   <VTextField
                     v-model="onEditTower.phone_second"
                     label="رقم الهاتف الثاني"
@@ -94,7 +94,7 @@
                   />
                 </VCol>
                 <!-- this is the description holder -->
-                <VCol cols="5">
+                <VCol cols="12" sm="5">
                   <VTextField
                     v-model="onEditTower.lon"
                     label="خطوط الطول"
@@ -104,7 +104,7 @@
                   />
                 </VCol>
                 <!-- this is the description holder -->
-                <VCol cols="5">
+                <VCol cols="12" sm="5">
                   <VTextField
                     v-model="onEditTower.lat"
                     label="خطوط العرض"
@@ -114,6 +114,8 @@
                   />
                 </VCol>
                 <VCol
+                  cols="12"
+                  sm="2"
                   style="
                     display: flex;
                     height: 100%;
@@ -135,7 +137,7 @@
           </VCardText>
           <VCardActions>
             <VRow>
-              <VCol cols="3" align="center">
+              <VCol cols="12" sm="3" align="center">
                 <VBtn
                   class="bg-red pr-5 pl-5"
                   color="wight-darken-1"
@@ -146,10 +148,10 @@
                   حذف البرج
                 </VBtn>
               </VCol>
-              <VCol cols="6">
+              <VCol xl="none" sm="6">
                 <VSpacer />
               </VCol>
-              <VCol cols="3" align="center">
+              <VCol cols="12" sm="3" align="center">
                 <VBtn
                   color="blue-darken-1"
                   variant="text"
@@ -207,7 +209,7 @@
           <VCardText>
             <VContainer>
               <VRow>
-                <VCol cols="6">
+                <VCol cols="12" sm="6">
                   <VTextField
                     v-model="addTower.name"
                     label="أسم البرج"
@@ -217,7 +219,7 @@
                   />
                 </VCol>
                 <!-- this is the title holder -->
-                <VCol cols="6">
+                <VCol cols="12" sm="6">
                   <VTextField
                     v-model="addTower.address"
                     label="عنوان البرج"
@@ -225,7 +227,7 @@
                   />
                 </VCol>
                 <!-- this is the category holder -->
-                <VCol cols="6">
+                <VCol cols="12" sm="6">
                   <VTextField
                     v-model="addTower.affiliate"
                     label="افيلايت"
@@ -235,7 +237,7 @@
                   />
                 </VCol>
                 <!-- this is the price holder -->
-                <VCol cols="6">
+                <VCol cols="12" sm="6">
                   <VTextField
                     v-model="addTower.sector_name"
                     label="اسم السكتر"
@@ -243,7 +245,7 @@
                   />
                 </VCol>
                 <!-- this is the description holder -->
-                <VCol cols="6">
+                <VCol cols="12" sm="6">
                   <VTextField
                     v-model="addTower.phone_first"
                     label="رقم الهاتف الأول"
@@ -253,7 +255,7 @@
                   />
                 </VCol>
                 <!-- this is the description holder -->
-                <VCol cols="6">
+                <VCol cols="12" sm="6">
                   <VTextField
                     v-model="addTower.phone_second"
                     label="رقم الهاتف الثاني"
@@ -262,7 +264,7 @@
                   />
                 </VCol>
                 <!-- this is the description holder -->
-                <VCol cols="5">
+                <VCol cols="12" sm="5">
                   <VTextField
                     v-model="addTower.lon"
                     label="خطوط العرض"
@@ -272,7 +274,7 @@
                   />
                 </VCol>
                 <!-- this is the description holder -->
-                <VCol cols="5">
+                <VCol cols="12" sm="5">
                   <VTextField
                     v-model="addTower.lat"
                     label="خطوط الطول"
@@ -282,6 +284,8 @@
                   />
                 </VCol>
                 <VCol
+                  cols="12"
+                  sm="2"
                   style="
                     display: flex;
                     height: 100%;
@@ -301,10 +305,10 @@
           </VCardText>
           <VCardActions>
             <VRow>
-              <VCol cols="9">
+              <VCol xl="none" cols="9">
                 <VSpacer />
               </VCol>
-              <VCol cols="3" align="center">
+              <VCol cols="12" sm="3" align="center">
                 <VBtn color="blue-darken-1" variant="text" @click="undo">
                   ألغاء
                 </VBtn>

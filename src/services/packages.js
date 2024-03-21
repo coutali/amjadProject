@@ -10,9 +10,9 @@ export const get_packages_service = async ({
     const response =
       await axiosIns.get(`packages?page=${page}&limit=${limit}&search=${search}`)
 
-    
+
     return response.data
-  } catch (error) {    
+  } catch (error) {
     return error.response.data
   }
 }
@@ -35,7 +35,7 @@ export const add_packages_service = async ({
       })
 
     return response.data
-  } catch (error) {    
+  } catch (error) {
     return error.response.data
   }
 }
@@ -48,8 +48,6 @@ export const edit_packages_service = async ({
   type,
 }) => {
   try {
-    console.log('id', id)
-    console.log(title, image, has_discount, details, type)
 
     const response =
       await axiosIns.put(`packages/${id}`, {
@@ -60,10 +58,9 @@ export const edit_packages_service = async ({
         type,
       })
 
-    console.log('response', response)
-    
+
     return response.data
-  } catch (error) {    
+  } catch (error) {
     return error.response.data
   }
 }
@@ -74,7 +71,7 @@ export const remove_packages_service = async id => {
       await axiosIns.delete(`packages/${id}`)
 
     return response.data
-  } catch (error) {    
+  } catch (error) {
     return error.response.data
   }
 }

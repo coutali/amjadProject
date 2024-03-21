@@ -1,7 +1,7 @@
 <template>
   <div>
     <VRow>
-      <VCol v-for="(count, name, i) of data" cols="6" sm="4">
+      <VCol v-for="(count, name, i) of data" cols="6" sm="4" :key="i">
         <VCard style="cursor: pointer" class="cardHolder" @click="moveTo(i)">
           <VCardText class="card title" style="font-size: 1.2rem">
             {{ titles[name] }}
@@ -23,6 +23,7 @@ export default defineComponent({
     return {
       data: [],
       paths: [],
+      is_admin: false,
       titles: {
         jobs: "الوظائف",
         offers: "العروض",
@@ -41,6 +42,7 @@ export default defineComponent({
   mounted() {
     this.getData();
   },
+
   methods: {
     moveTo(i) {
       this.$router.push({ name: this.paths[i] });

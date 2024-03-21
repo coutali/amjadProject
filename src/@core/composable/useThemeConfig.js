@@ -1,6 +1,12 @@
-import { useTheme } from 'vuetify'
-import { useLayouts } from '@layouts'
-import { themeConfig } from '@themeConfig'
+import {
+  useLayouts
+} from '@layouts'
+import {
+  themeConfig
+} from '@themeConfig'
+import {
+  useTheme
+} from 'vuetify'
 
 export const isDarkPreferred = usePreferredDark()
 export const useThemeConfig = () => {
@@ -32,13 +38,20 @@ export const useThemeConfig = () => {
     const vuetifyTheme = useTheme()
 
     watch([theme, isDarkPreferred], ([val, _]) => {
-      vuetifyTheme.global.name.value = val === 'system'
-        ? isDarkPreferred.value
-          ? 'dark'
-          : 'light'
-        : val
+      vuetifyTheme.global.name.value = val === 'system' ?
+        isDarkPreferred.value ?
+        'dark' :
+        'light' :
+        val
     })
   }
+
+  // watch the change in results.type in local storage
+  const results = JSON.parse(localStorage.getItem("results") || "[]");
+
+  const isAdmin = computed(() => {
+    return results.type === "admin";
+  });
 
 
   /*
@@ -72,7 +85,9 @@ export const useThemeConfig = () => {
   })
 
   const handleSkinChanges = () => {
-    const { themes } = useTheme()
+    const {
+      themes
+    } = useTheme()
 
 
     // Create skin default color so that we can revert back to original (default skin) color when switch to default skin from bordered skin
@@ -85,7 +100,9 @@ export const useThemeConfig = () => {
         t.colors.background = t.colors[`skin-${val}-background`]
         t.colors.surface = t.colors[`skin-${val}-surface`]
       })
-    }, { immediate: true })
+    }, {
+      immediate: true
+    })
   }
 
   const appRouteTransition = computed({
@@ -100,7 +117,18 @@ export const useThemeConfig = () => {
 
 
   // `@layouts` exports
-  const { navbarType, isNavbarBlurEnabled, footerType, isVerticalNavCollapsed, appContentWidth, appContentLayoutNav, horizontalNavType, isLessThanOverlayNavBreakpoint, isAppRtl, switchToVerticalNavOnLtOverlayNavBreakpoint } = useLayouts()
+  const {
+    navbarType,
+    isNavbarBlurEnabled,
+    footerType,
+    isVerticalNavCollapsed,
+    appContentWidth,
+    appContentLayoutNav,
+    horizontalNavType,
+    isLessThanOverlayNavBreakpoint,
+    isAppRtl,
+    switchToVerticalNavOnLtOverlayNavBreakpoint
+  } = useLayouts()
 
   // const syncRtlWithRtlLang = (rtlLangs: string[], rtlDefaultLocale: string, ltrDefaultLocale: string) => {
   // const { locale } = useI18n({ useScope: 'global' })
@@ -150,6 +178,7 @@ export const useThemeConfig = () => {
     horizontalNavType,
     isLessThanOverlayNavBreakpoint,
     isAppRtl,
+    isAdmin,
     switchToVerticalNavOnLtOverlayNavBreakpoint,
 
     // syncRtlWithRtlLang,

@@ -71,7 +71,6 @@ export default defineComponent({
       JSON.parse(localStorage.getItem("results")).privileges.actions.map(
         (e) => (this.privileges[e] = true)
       );
-      console.log(this.privileges);
 
       this.table.loading = true;
 

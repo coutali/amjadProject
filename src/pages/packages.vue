@@ -224,7 +224,7 @@ export default defineComponent({
         );
         this.addData.image = null;
       } catch (error) {
-        console.log(error);
+        this.finalMessage = result.message;
       }
       this.loading = false;
     },
@@ -309,7 +309,7 @@ export default defineComponent({
                             </h5>
                           </VCol>
                           <!-- this is the image holder -->
-                          <VCol cols="8">
+                          <VCol cols="12" sm="8">
                             <VTextField
                               v-model="addData.title"
                               :rules="rules.idNumberRules"
@@ -319,7 +319,7 @@ export default defineComponent({
                             />
                           </VCol>
                           <!-- this is the title holder -->
-                          <VCol cols="4">
+                          <VCol cols="12" sm="4">
                             <VSelect
                               v-model="addData.type"
                               :rules="rules.idNumberRules"
@@ -328,7 +328,7 @@ export default defineComponent({
                             />
                           </VCol>
                           <!-- this is the type holder -->
-                          <VCol cols="8">
+                          <VCol cols="12" sm="8">
                             <VCombobox
                               v-model="addData.details"
                               chips
@@ -355,7 +355,8 @@ export default defineComponent({
                           </VCol>
                           <!-- this is the details holder -->
                           <VCol
-                            cols="4"
+                            cols="12"
+                            sm="4"
                             style="
                               display: flex;
                               align-items: center;
@@ -440,7 +441,7 @@ export default defineComponent({
                           </VCol>
 
                           <!-- this is the image holder -->
-                          <VCol cols="8">
+                          <VCol cols="12" sm="8">
                             <VTextField
                               v-model="onEditAd.title"
                               :rules="rules.idNumberRules"
@@ -450,7 +451,7 @@ export default defineComponent({
                             />
                           </VCol>
                           <!-- this is the title holder -->
-                          <VCol cols="4">
+                          <VCol cols="12" sm="4">
                             <VSelect
                               v-model="onEditAd.type"
                               :rules="rules.idNumberRules"
@@ -459,7 +460,7 @@ export default defineComponent({
                             />
                           </VCol>
                           <!-- this is the type holder -->
-                          <VCol cols="8">
+                          <VCol cols="12" sm="8">
                             <VCombobox
                               v-model="onEditAd.details"
                               chips
@@ -486,7 +487,8 @@ export default defineComponent({
                           </VCol>
                           <!-- this is the details holder -->
                           <VCol
-                            cols="4"
+                            cols="12"
+                            sm="4"
                             style="
                               display: flex;
                               align-items: center;

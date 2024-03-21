@@ -67,7 +67,7 @@
                     </div>
                   </div>
                 </VCol>
-                <VCol cols="6">
+                <VCol cols="12" sm="6">
                   <VTextField
                     v-model="onEditoffices.name"
                     label="اسم المكتب"
@@ -78,7 +78,7 @@
                   />
                 </VCol>
                 <!-- this is the title holder -->
-                <VCol cols="6">
+                <VCol cols="12" sm="6">
                   <VTextField
                     v-model="onEditoffices.address"
                     label="عنوان المكتب"
@@ -87,7 +87,7 @@
                   />
                 </VCol>
                 <!-- this is the category holder -->
-                <VCol cols="5">
+                <VCol cols="12" sm="5">
                   <VTextField
                     v-model="onEditoffices.lon"
                     label="خطوط الطول"
@@ -97,7 +97,7 @@
                   />
                 </VCol>
                 <!-- this is the description holder -->
-                <VCol cols="5">
+                <VCol cols="12" sm="5">
                   <VTextField
                     v-model="onEditoffices.lat"
                     label="خطوط العرض"
@@ -107,6 +107,8 @@
                   />
                 </VCol>
                 <VCol
+                  cols="12"
+                  sm="2"
                   style="
                     display: flex;
                     height: 100%;
@@ -128,7 +130,7 @@
           </VCardText>
           <VCardActions>
             <VRow>
-              <VCol cols="3" align="center">
+              <VCol sm="3" cols="12" align="center">
                 <VBtn
                   class="bg-red pr-5 pl-5"
                   color="wight-darken-1"
@@ -139,10 +141,10 @@
                   حذف المكتب
                 </VBtn>
               </VCol>
-              <VCol cols="6">
+              <VCol xl="none" sm="6">
                 <VSpacer />
               </VCol>
-              <VCol cols="3" align="center">
+              <VCol sm="3" cols="12" align="center">
                 <VBtn
                   color="blue-darken-1"
                   variant="text"
@@ -234,7 +236,7 @@
                     </div>
                   </div>
                 </VCol>
-                <VCol cols="6">
+                <VCol cols="12" sm="6">
                   <VTextField
                     v-model="addoffices.name"
                     label="اسم المكتب"
@@ -244,7 +246,7 @@
                   />
                 </VCol>
                 <!-- this is the title holder -->
-                <VCol cols="6">
+                <VCol cols="12" sm="6">
                   <VTextField
                     v-model="addoffices.address"
                     label="عنوان المكتب"
@@ -252,7 +254,7 @@
                   />
                 </VCol>
                 <!-- this is the category holder -->
-                <VCol cols="5">
+                <VCol cols="12" sm="5">
                   <VTextField
                     v-model="addoffices.lon"
                     label="خطوط العرض"
@@ -262,7 +264,7 @@
                   />
                 </VCol>
                 <!-- this is the description holder -->
-                <VCol cols="5">
+                <VCol cols="12" sm="5">
                   <VTextField
                     v-model="addoffices.lat"
                     label="خطوط الطول"
@@ -272,6 +274,8 @@
                   />
                 </VCol>
                 <VCol
+                  cols="12"
+                  sm="2"
                   style="
                     display: flex;
                     height: 100%;
@@ -291,10 +295,10 @@
           </VCardText>
           <VCardActions>
             <VRow>
-              <VCol cols="9">
+              <VCol xl="none" sm="9">
                 <VSpacer />
               </VCol>
-              <VCol cols="3" align="center">
+              <VCol cols="12" sm="3" align="center">
                 <VBtn color="blue-darken-1" variant="text" @click="undo">
                   ألغاء
                 </VBtn>
@@ -496,7 +500,6 @@ export default defineComponent({
         this.selectedAdImage = null;
         this.whichDialog = null;
       } catch (error) {
-        console.log(error);
         this.whichDialog = null;
       }
       this.loading = false;

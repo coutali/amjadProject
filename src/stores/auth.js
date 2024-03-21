@@ -33,7 +33,6 @@ export const useAuthStore = defineStore("auth", {
         password,
       });
 
-      console.log("response", response.error);
       if (response.error === false) {
         localStorage.setItem("accessToken", response.results.token);
         localStorage.setItem("results", JSON.stringify(response.results));

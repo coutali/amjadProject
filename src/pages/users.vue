@@ -220,7 +220,7 @@ export default defineComponent({
                     <VCardText>
                       <VContainer>
                         <VRow class="">
-                          <VCol cols="6">
+                          <VCol cols="12" sm="6">
                             <VTextField
                               v-model="addData.name"
                               label="الأسم"
@@ -230,7 +230,7 @@ export default defineComponent({
                             />
                           </VCol>
                           <!-- this is the title holder -->
-                          <VCol cols="6">
+                          <VCol cols="12" sm="6">
                             <VTextField
                               v-model="addData.phone"
                               label="الرقم"
@@ -239,7 +239,7 @@ export default defineComponent({
                             />
                           </VCol>
                           <!-- this is the phoneNumber holder -->
-                          <VCol cols="6">
+                          <VCol cols="12" sm="6">
                             <VTextField
                               v-model="addData.password"
                               label="الرمز"
@@ -248,7 +248,7 @@ export default defineComponent({
                             />
                           </VCol>
                           <!-- this is the password holder -->
-                          <VCol cols="6">
+                          <VCol cols="12" sm="6">
                             <VTextField
                               v-model="addData.email"
                               label="الأيميل"
@@ -257,7 +257,7 @@ export default defineComponent({
                             />
                           </VCol>
                           <!-- this is the password holder -->
-                          <VCol cols="6">
+                          <VCol cols="12" sm="6">
                             <VSelect
                               v-model="addData.privileges.actions"
                               :items="Object.values(privileges)"
@@ -304,7 +304,7 @@ export default defineComponent({
                     <VCardText>
                       <VContainer>
                         <VRow>
-                          <VCol cols="6">
+                          <VCol cols="12" sm="6">
                             <VTextField
                               v-model="onEditAd.name"
                               label="الأسم"
@@ -314,7 +314,7 @@ export default defineComponent({
                             />
                           </VCol>
                           <!-- this is the title holder -->
-                          <VCol cols="6">
+                          <VCol cols="12" sm="6">
                             <VTextField
                               v-model="onEditAd.phone"
                               label="الرقم"
@@ -323,7 +323,7 @@ export default defineComponent({
                             />
                           </VCol>
                           <!-- this is the phoneNumber holder -->
-                          <VCol cols="6">
+                          <VCol cols="12" sm="6">
                             <VTextField
                               v-model="onEditAd.password"
                               label="الرمز"
@@ -332,7 +332,7 @@ export default defineComponent({
                             />
                           </VCol>
                           <!-- this is the password holder -->
-                          <VCol cols="6">
+                          <VCol cols="12" sm="6">
                             <VTextField
                               v-model="onEditAd.email"
                               label="الأيميل"
@@ -341,7 +341,7 @@ export default defineComponent({
                             />
                           </VCol>
                           <!-- this is the password holder -->
-                          <VCol cols="6">
+                          <VCol cols="12" sm="6">
                             <VSelect
                               v-model="onEditAd.privileges.actions"
                               :items="Object.values(privileges)"

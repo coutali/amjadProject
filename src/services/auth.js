@@ -16,7 +16,6 @@ export const login_service = async ({
 
     return response.data;
   } catch (error) {
-    console.log("error", error);
     return error.response.data;
   }
 };

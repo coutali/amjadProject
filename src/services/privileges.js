@@ -5,8 +5,3 @@ const privileges = JSON.parse(localStorage.getItem('privileges'))
 const results = privileges.results
 const privilegesList = privileges.privileges
 const actions = privileges.actions
-
-// Use the retrieved data as needed
-console.log('Results:', results)
-console.log('Privileges:', privilegesList)
-console.log('Actions:', actions)

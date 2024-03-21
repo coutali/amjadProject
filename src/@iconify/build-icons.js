@@ -1,5 +1,7 @@
 "use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
 /**
  * This is an advanced example for creating icon bundles for Iconify SVG Framework.
  *
@@ -18,8 +20,7 @@ const node_path_1 = require("node:path");
 const tools_1 = require("@iconify/tools");
 const utils_1 = require("@iconify/utils");
 const sources = {
-    svg: [
-        {
+    svg: [{
             dir: 'src/assets/images/iconify-svg',
             monotone: true,
             prefix: 'custom',
@@ -31,12 +32,12 @@ const sources = {
         // },
     ],
     icons: [
-    // 'mdi:home',
-    // 'mdi:account',
-    // 'mdi:login',
-    // 'mdi:logout',
-    // 'octicon:book-24',
-    // 'octicon:code-square-24',
+        // 'mdi:home',
+        // 'mdi:account',
+        // 'mdi:login',
+        // 'mdi:logout',
+        // 'octicon:book-24',
+        // 'octicon:code-square-24',
     ],
     json: [
         // Custom JSON file
@@ -68,17 +69,16 @@ const target = (0, node_path_1.join)(__dirname, 'icons-bundle.js');
  */
 // eslint-disable-next-line sonarjs/cognitive-complexity
 (async function () {
-    let bundle = commonJS
-        ? `const { addCollection } = require('${component}');\n\n`
-        : `import { addCollection } from '${component}';\n\n`;
+    let bundle = commonJS ?
+        `const { addCollection } = require('${component}');\n\n` :
+        `import { addCollection } from '${component}';\n\n`;
     // Create directory for output if missing
     const dir = (0, node_path_1.dirname)(target);
     try {
         await node_fs_1.promises.mkdir(dir, {
             recursive: true,
         });
-    }
-    catch (err) {
+    } catch (err) {
         //
     }
     /**
@@ -116,7 +116,6 @@ const target = (0, node_path_1.join)(__dirname, 'icons-bundle.js');
             removeMetaData(content);
             (0, utils_1.minifyIconSet)(content);
             bundle += `addCollection(${JSON.stringify(content)});\n`;
-            console.log(`Bundled icons from ${filename}`);
         }
     }
     /**
@@ -150,16 +149,15 @@ const target = (0, node_path_1.join)(__dirname, 'icons-bundle.js');
                         await (0, tools_1.parseColors)(svg, {
                             defaultColor: 'currentColor',
                             callback: (attr, colorStr, color) => {
-                                return (!color || (0, tools_1.isEmptyColor)(color))
-                                    ? colorStr
-                                    : 'currentColor';
+                                return (!color || (0, tools_1.isEmptyColor)(color)) ?
+                                    colorStr :
+                                    'currentColor';
                             },
                         });
                     }
                     // Optimise
                     await (0, tools_1.runSVGO)(svg);
-                }
-                catch (err) {
+                } catch (err) {
                     // Invalid icon
                     console.error(`Error parsing ${name} from ${source.dir}:`, err);
                     iconSet.remove(name);
@@ -168,7 +166,6 @@ const target = (0, node_path_1.join)(__dirname, 'icons-bundle.js');
                 // Update icon from SVG instance
                 iconSet.fromSVG(name, svg);
             });
-            console.log(`Bundled ${iconSet.count()} icons from ${source.dir}`);
             // Export to JSON
             const content = iconSet.export();
             bundle += `addCollection(${JSON.stringify(content)});\n`;
@@ -176,7 +173,6 @@ const target = (0, node_path_1.join)(__dirname, 'icons-bundle.js');
     }
     // Save to file
     await node_fs_1.promises.writeFile(target, bundle, 'utf8');
-    console.log(`Saved ${target} (${bundle.length} bytes)`);
 })().catch(err => {
     console.error(err);
 });
@@ -206,9 +202,9 @@ function organizeIconsList(icons) {
         if (!item)
             return;
         const prefix = item.prefix;
-        const prefixList = sorted[prefix]
-            ? sorted[prefix]
-            : (sorted[prefix] = []);
+        const prefixList = sorted[prefix] ?
+            sorted[prefix] :
+            (sorted[prefix] = []);
         const name = item.name;
         if (!prefixList.includes(name))
             prefixList.push(name);

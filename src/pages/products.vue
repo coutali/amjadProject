@@ -339,7 +339,7 @@ export default defineComponent({
                             />
                           </VCol>
                           <!-- this is the title holder -->
-                          <VCol cols="6">
+                          <VCol cols="12" sm="6">
                             <VSelect
                               v-model="addData.category"
                               :items="Object.keys(categorys)"
@@ -348,7 +348,7 @@ export default defineComponent({
                             />
                           </VCol>
                           <!-- this is the category holder -->
-                          <VCol cols="6">
+                          <VCol cols="12" sm="6">
                             <VTextField
                               v-model="addData.price"
                               label="السعر"
@@ -447,7 +447,7 @@ export default defineComponent({
                             />
                           </VCol>
                           <!-- this is the title holder -->
-                          <VCol cols="6">
+                          <VCol cols="12" sm="6">
                             <VSelect
                               v-model="onEditAd.category"
                               :items="Object.keys(categorys)"
@@ -456,7 +456,7 @@ export default defineComponent({
                             />
                           </VCol>
                           <!-- this is the category holder -->
-                          <VCol cols="6">
+                          <VCol cols="12" sm="6">
                             <VTextField
                               v-model="onEditAd.price"
                               label="السعر"

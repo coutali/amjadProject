@@ -10,11 +10,10 @@ export const get_users_service = async ({
     const response =
       await axiosIns.get(`users?page=${page}&limit=${limit}&search=${search}`)
 
-    
+
     return response.data
   } catch (error) {
-    console.log("error", error)
-    
+
     return error.response.data
   }
 }
@@ -40,8 +39,7 @@ export const add_users_service = async ({
 
     return response.data
   } catch (error) {
-    console.log("error", error)
-    
+
     return error.response
   }
 }
@@ -67,8 +65,7 @@ export const edit_users_service = async ({
 
     return response.data
   } catch (error) {
-    console.log("error", error)
-    
+
     return error.response
   }
 }
@@ -80,8 +77,7 @@ export const remove_users_service = async id => {
 
     return response.data
   } catch (error) {
-    console.log("error", error)
-    
+
     return error.response.data
   }
 }

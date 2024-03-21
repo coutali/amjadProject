@@ -194,7 +194,7 @@ export default defineComponent({
         this.selectedAdImage = null;
         Object.keys(this.addData).forEach((key) => (this.addData[key] = null));
       } catch (error) {
-        console.log(error);
+        this.finalMessage = result.message;
       }
       this.loading = false;
     },
@@ -310,7 +310,7 @@ export default defineComponent({
                           </VCol>
 
                           <!-- this is the image holder -->
-                          <VCol cols="8">
+                          <VCol cols="12" sm="8">
                             <VTextField
                               v-model="addData.title"
                               label="عنوان الوضيفة"
@@ -320,7 +320,7 @@ export default defineComponent({
                             />
                           </VCol>
                           <!-- this is the salary holder -->
-                          <VCol cols="4">
+                          <VCol cols="12" sm="4">
                             <VTextField
                               v-model="addData.salary"
                               label="الراتب"
@@ -410,7 +410,7 @@ export default defineComponent({
                           </VCol>
 
                           <!-- this is the image holder -->
-                          <VCol cols="8">
+                          <VCol cols="12" sm="8">
                             <VTextField
                               v-model="onEditAd.title"
                               label="عنوان الوضيفة"
@@ -420,7 +420,7 @@ export default defineComponent({
                             />
                           </VCol>
                           <!-- this is the salary holder -->
-                          <VCol cols="4">
+                          <VCol cols="12" sm="4">
                             <VTextField
                               v-model="onEditAd.salary"
                               label="الراتب"
