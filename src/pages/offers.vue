@@ -89,6 +89,13 @@ export default defineComponent({
     };
   },
   methods: {
+    clearAllData() {
+      this.dialog = false;
+      this.editDialog = false;
+      this.selectedAdImage = null;
+      this.onEditAd.toBeSentImage = null;
+      Object.keys(this.addData).forEach((key) => (this.addData[key] = null));
+    },
     currencyFormator(number) {
       return Number(this.financial(number)).toLocaleString("en-US");
     },
@@ -347,7 +354,7 @@ export default defineComponent({
                       <VBtn
                         color="blue-darken-1"
                         variant="text"
-                        @click="dialog = false"
+                        @click="clearAllData"
                       >
                         ألغاء
                       </VBtn>
@@ -446,7 +453,7 @@ export default defineComponent({
                       <VBtn
                         color="blue-darken-1"
                         variant="text"
-                        @click="editDialog = false"
+                        @click="clearAllData"
                       >
                         ألغاء
                       </VBtn>

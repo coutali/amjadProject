@@ -91,6 +91,18 @@ export default defineComponent({
     };
   },
   methods: {
+    clearAllData() {
+      this.dialog = false;
+      this.editDialog = false;
+      this.onEditAd.toBeSentImage = null;
+      this.selectedAdImage = null;
+      Object.keys(this.addData).forEach((key) =>
+        key === "has_discount"
+          ? (this.addData[key] = false)
+          : (this.addData[key] = null)
+      );
+      this.dialog = false;
+    },
     removeChip(item) {
       this.addData.details.splice(this.addData.tags.indexOf(item), 1);
     },
@@ -379,7 +391,7 @@ export default defineComponent({
                       <VBtn
                         color="blue-darken-1"
                         variant="text"
-                        @click="dialog = false"
+                        @click="clearAllData"
                       >
                         ألغاء
                       </VBtn>
@@ -512,7 +524,7 @@ export default defineComponent({
                       <VBtn
                         color="blue-darken-1"
                         variant="text"
-                        @click="editDialog = false"
+                        @click="clearAllData"
                       >
                         ألغاء
                       </VBtn>

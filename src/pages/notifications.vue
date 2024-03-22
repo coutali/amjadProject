@@ -90,6 +90,16 @@ export default defineComponent({
     };
   },
   methods: {
+    clearAllData() {
+      this.dialog = false;
+      this.selectedAdImage = null;
+      Object.keys(this.addData).forEach((key) =>
+        key === "has_discount"
+          ? (this.addData[key] = false)
+          : (this.addData[key] = null)
+      );
+      this.dialog = false;
+    },
     // editDialogActions(e) {
     //   this.onEditAd.id = e["_id"];
     //   this.onEditAd.title = e.title;
@@ -340,7 +350,7 @@ export default defineComponent({
                       <VBtn
                         color="blue-darken-1"
                         variant="text"
-                        @click="dialog = false"
+                        @click="clearAllData"
                       >
                         ألغاء
                       </VBtn>

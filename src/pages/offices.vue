@@ -442,6 +442,7 @@ export default defineComponent({
       }
     },
     undo() {
+      this.onEditoffices.toBeSentImage = null;
       this.addDialog = false;
       Object.keys(this.addoffices).forEach(
         (key) => (this.addoffices[key] = null)
