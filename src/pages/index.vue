@@ -1,7 +1,7 @@
 <template>
   <div>
     <VRow>
-      <VCol v-for="(count, name, i) of data" cols="6" sm="4" :key="i">
+      <VCol v-for="(count, name, i) of data" :key="i" cols="6" sm="4">
         <VCard style="cursor: pointer" class="cardHolder" @click="moveTo(i)">
           <VCardText class="card title" style="font-size: 1.2rem">
             {{ titles[name] }}

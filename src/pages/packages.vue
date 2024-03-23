@@ -18,7 +18,7 @@ export default defineComponent({
       imageRequired: false,
       formValid: false,
       rules: {
-        idNumberRules: [(v) => !!v || "الحقل مطلوب"],
+        idNumberRules: [(v) => (!!v && v.length > 0) || "الحقل مطلوب"],
       },
       dialog: false,
       editDialog: false,
@@ -33,7 +33,7 @@ export default defineComponent({
         type: null,
         has_discount: false,
         image: null,
-        details: null,
+        details: [],
       },
       onEditAd: {
         id: null,
@@ -41,7 +41,7 @@ export default defineComponent({
         type: null,
         has_discount: false,
         image: null,
-        details: null,
+        details: [],
         toBeSentImage: null,
       },
       table: {
@@ -199,13 +199,20 @@ export default defineComponent({
           details: this.addData.details,
         });
 
+        console.log(this.addData.details, "this is details");
+        console.log(result);
+
         this.getData();
         this.dialog = false;
         this.finalMessage = result.message;
         this.selectedAdImage = null;
-        Object.keys(this.addData).forEach((key) => (this.addData[key] = null));
+        Object.keys(this.addData).forEach((key) =>
+          key === "has_discount"
+            ? (this.addData[key] = false)
+            : (this.addData[key] = null)
+        );
       } catch (error) {
-        this.finalMessage = result.message;
+        console.log(error);
       }
       this.loading = false;
     },
@@ -231,8 +238,10 @@ export default defineComponent({
         this.editDialog = false;
         this.finalMessage = result.message;
         this.selectedAdImage = null;
-        Object.keys(this.onEditAd).forEach(
-          (key) => (this.onEditAd[key] = null)
+        Object.keys(this.onEditAd).forEach((key) =>
+          key === "has_discount"
+            ? (this.onEditAd[key] = false)
+            : (this.onEditAd[key] = null)
         );
         this.addData.image = null;
       } catch (error) {
@@ -351,6 +360,7 @@ export default defineComponent({
                               closable-chips
                               persistent-hint
                               hint=" أضف التفاصيل ثم اضغط على Enter"
+                              :rules="rules.idNumberRules"
                             >
                               <template
                                 #selection="{ attrs, item, select, selected }"
@@ -483,6 +493,7 @@ export default defineComponent({
                               closable-chips
                               persistent-hint
                               hint=" أضف التفاصيل ثم اضغط على Enter"
+                              :rules="rules.idNumberRules"
                             >
                               <template
                                 #selection="{ attrs, item, select, selected }"
