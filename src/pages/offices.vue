@@ -87,6 +87,25 @@
                   />
                 </VCol>
                 <!-- this is the category holder -->
+                <VCol cols="12" sm="6">
+                  <VTextField
+                    v-model="onEditoffices.firstNumber"
+                    label="رقم المكتب الاول"
+                    :rules="rules.idNumberRules"
+                    :disabled="!privileges.edit"
+                    type="number"
+                  />
+                </VCol>
+                <!-- this is the category holder -->
+                <VCol cols="12" sm="6">
+                  <VTextField
+                    v-model="onEditoffices.secondNumber"
+                    label="رقم المكتب الثاني"
+                    :disabled="!privileges.edit"
+                    type="number"
+                  />
+                </VCol>
+                <!-- this is the category holder -->
                 <VCol cols="12" sm="5">
                   <VTextField
                     v-model="onEditoffices.lon"
@@ -254,6 +273,25 @@
                   />
                 </VCol>
                 <!-- this is the category holder -->
+                <VCol cols="12" sm="6">
+                  <VTextField
+                    v-model="addoffices.firstNumber"
+                    label="رقم المكتب الاول"
+                    :rules="rules.idNumberRules"
+                    :disabled="!privileges.edit"
+                    type="number"
+                  />
+                </VCol>
+                <!-- this is the category holder -->
+                <VCol cols="12" sm="6">
+                  <VTextField
+                    v-model="addoffices.secondNumber"
+                    label="رقم المكتب الثاني"
+                    :disabled="!privileges.edit"
+                    type="number"
+                  />
+                </VCol>
+                <!-- this is the category holder -->
                 <VCol cols="12" sm="5">
                   <VTextField
                     v-model="addoffices.lon"
@@ -366,6 +404,8 @@ export default defineComponent({
         toBeSentImage: null,
         name: null,
         address: null,
+        firstNumber: null,
+        secondNumber: null,
         lon: null,
         lat: null,
       },
@@ -375,6 +415,8 @@ export default defineComponent({
         id: null,
         name: null,
         address: null,
+        firstNumber: null,
+        secondNumber: null,
         lon: null,
         lat: null,
       },
@@ -466,6 +508,8 @@ export default defineComponent({
       this.selectedAdImage = this.content_url + m.image;
       this.onEditoffices.name = m.name;
       this.onEditoffices.address = m.address;
+      this.onEditoffices.firstNumber = m.firstNumber;
+      this.onEditoffices.secondNumber = m.secondNumber;
       this.onEditoffices.lon = m.location.lon;
       this.onEditoffices.lat = m.location.lat;
     },
@@ -484,8 +528,8 @@ export default defineComponent({
           id: this.onEditoffices.id,
           name: this.onEditoffices.name,
           address: this.onEditoffices.address,
-          zone: this.onEditoffices.zone,
-          number: this.onEditoffices.number,
+          firstNumber: this.onEditoffices.firstNumber,
+          secondNumber: this.onEditoffices.secondNumber,
           image: this.onEditoffices.toBeSentImage
             ? this.onEditoffices.toBeSentImage
             : this.onEditoffices.image,
@@ -512,8 +556,8 @@ export default defineComponent({
           image: this.selectedAdImage,
           name: this.addoffices.name,
           address: this.addoffices.address,
-          zone: this.addoffices.zone,
-          number: this.addoffices.number,
+          firstNumber: this.addoffices.firstNumber,
+          secondNumber: this.addoffices.secondNumber,
           lon: this.addoffices.lon,
           lat: this.addoffices.lat,
         });

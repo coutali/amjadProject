@@ -48,7 +48,7 @@
         }"
       />
     </GoogleMap>
-    <VForm v-model="formValid" ref="form">
+    <VForm ref="form" v-model="formValid">
       <VDialog v-model="editDialog" width="1024">
         <VCard>
           <VCardTitle class="d-flex mt-5 mr-5">
@@ -215,8 +215,8 @@
               <VRow>
                 <VCol cols="12" sm="6">
                   <VTextField
-                    class="input"
                     v-model="addfiber.name"
+                    class="input"
                     label="اسم الكابينة"
                     required
                     :rules="rules.idNumberRules"
@@ -225,8 +225,8 @@
                 <!-- this is the title holder -->
                 <VCol cols="12" sm="6">
                   <VTextField
-                    class="input"
                     v-model="addfiber.address"
+                    class="input"
                     label="عنوان الكابينة"
                     :rules="rules.idNumberRules"
                   />
@@ -737,6 +737,7 @@ export default defineComponent({
       for (let each of this.data) {
         localPillars.push(...each.columns);
       }
+
       return (this.allPillars = localPillars);
     },
     paths(arr) {
@@ -770,7 +771,7 @@ export default defineComponent({
       this.addPillarDialog = true;
     },
     addPillar() {
-      if (this.whichDialog === "edit") {
+      if (this.editDialog) {
         this.onEditfiber.pillars.push({
           location: {
             lat: this.pillarCurrentLocation.lat,
@@ -818,7 +819,6 @@ export default defineComponent({
       } else {
         this.locationFirstDialog = true;
       }
-      this.doThis();
     },
     getGeoPoint(e) {
       if (this.whichDialog === "edit") {
@@ -882,7 +882,7 @@ export default defineComponent({
           zone: this.onEditfiber.zonePoints.map((e) => {
             return {
               lat: e.lat,
-              lon: e.lng,
+              lon: e.lng || e.lon,
             };
           }),
           columns: this.onEditfiber.pillars,

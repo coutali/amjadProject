@@ -4,6 +4,8 @@ export const add_offices_service = async ({
   image,
   name,
   address,
+  firstNumber,
+  secondNumber,
   lon,
   lat,
 }) => {
@@ -13,6 +15,8 @@ export const add_offices_service = async ({
         image,
         name,
         address,
+        firstNumber,
+        secondNumber,
         lon,
         lat,
       })
@@ -37,6 +41,8 @@ export const edit_offices_service = async ({
   image,
   name,
   address,
+  firstNumber,
+  secondNumber,
   lon,
   lat,
 }) => {
@@ -46,6 +52,8 @@ export const edit_offices_service = async ({
         image,
         name,
         address,
+        firstNumber,
+        secondNumber,
         lon,
         lat,
       })
