@@ -111,7 +111,7 @@
                     v-model="onEditoffices.lon"
                     label="خطوط الطول"
                     required
-                    disabled
+                    type="number"
                     :rules="rules.idNumberRules"
                   />
                 </VCol>
@@ -121,7 +121,7 @@
                     v-model="onEditoffices.lat"
                     label="خطوط العرض"
                     required
-                    disabled
+                    type="number"
                     :rules="rules.idNumberRules"
                   />
                 </VCol>
@@ -297,7 +297,7 @@
                     v-model="addoffices.lon"
                     label="خطوط العرض"
                     required
-                    disabled
+                    type="number"
                     :rules="rules.idNumberRules"
                   />
                 </VCol>
@@ -307,7 +307,7 @@
                     v-model="addoffices.lat"
                     label="خطوط الطول"
                     required
-                    disabled
+                    type="number"
                     :rules="rules.idNumberRules"
                   />
                 </VCol>

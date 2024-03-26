@@ -84,7 +84,7 @@
                     v-model="onEditfiber.lon"
                     label="خطوط الطول"
                     required
-                    disabled
+                    type="number"
                     :rules="rules.idNumberRules"
                   />
                 </VCol>
@@ -94,7 +94,7 @@
                     v-model="onEditfiber.lat"
                     label="خطوط العرض"
                     required
-                    disabled
+                    type="number"
                     :rules="rules.idNumberRules"
                   />
                 </VCol>
@@ -237,7 +237,7 @@
                     v-model="addfiber.lon"
                     label="خطوط العرض"
                     required
-                    disabled
+                    type="number"
                     :rules="rules.idNumberRules"
                   />
                 </VCol>
@@ -247,7 +247,7 @@
                     v-model="addfiber.lat"
                     label="خطوط الطول"
                     required
-                    disabled
+                    type="number"
                     :rules="rules.idNumberRules"
                   />
                 </VCol>

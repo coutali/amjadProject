@@ -617,6 +617,7 @@ export default defineComponent({
       }
 
       @include maxQuery(1900px) {
+        padding: 0;
         inset-inline-end: 0;
       }
     }

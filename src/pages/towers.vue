@@ -98,8 +98,8 @@
                   <VTextField
                     v-model="onEditTower.lon"
                     label="خطوط الطول"
+                    type="number"
                     required
-                    disabled
                     :rules="rules.idNumberRules"
                   />
                 </VCol>
@@ -108,8 +108,8 @@
                   <VTextField
                     v-model="onEditTower.lat"
                     label="خطوط العرض"
+                    type="number"
                     required
-                    disabled
                     :rules="rules.idNumberRules"
                   />
                 </VCol>
@@ -269,7 +269,7 @@
                     v-model="addTower.lon"
                     label="خطوط العرض"
                     required
-                    disabled
+                    type="number"
                     :rules="rules.idNumberRules"
                   />
                 </VCol>
@@ -279,7 +279,7 @@
                     v-model="addTower.lat"
                     label="خطوط الطول"
                     required
-                    disabled
+                    type="number"
                     :rules="rules.idNumberRules"
                   />
                 </VCol>
