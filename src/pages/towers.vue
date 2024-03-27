@@ -7,19 +7,21 @@
       :api-key="APIkey"
       style="width: 100%; height: calc(100vh - 125px)"
       :center="{ lat: 31.318, lng: 45.2806 }"
-      :zoom="14"
+      :zoom="11"
       @click="getGeoPoint"
     >
-      <Marker
-        v-for="(m, index) in data"
-        :key="index"
-        :options="{
-          position: { lat: m.location.lat, lng: m.location.lon },
-          icon: icon,
-          label: m.name,
-        }"
-        @click="towerIconActions(m)"
-      />
+      <MarkerCluster>
+        <Marker
+          v-for="(m, index) in data"
+          :key="index"
+          :options="{
+            position: { lat: m.location.lat, lng: m.location.lon },
+            icon: icon,
+            label: m.name,
+          }"
+          @click="towerIconActions(m)"
+        />
+      </MarkerCluster>
     </GoogleMap>
     <VForm v-model="formValid">
       <VDialog v-model="editDialog" width="1024">
@@ -338,10 +340,10 @@ import {
   remove_towers_service,
 } from "@/services/towers";
 import { defineComponent } from "vue";
-import { GoogleMap, Marker } from "vue3-google-map";
+import { GoogleMap, Marker, MarkerCluster } from "vue3-google-map";
 
 export default defineComponent({
-  components: { GoogleMap, Marker },
+  components: { GoogleMap, Marker, MarkerCluster },
   data() {
     return {
       privileges: {
